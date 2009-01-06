@@ -1021,6 +1021,7 @@ class MainPanel extends JPanel {
     }
 }
 
+
 /**
  * Listener per gestire l'immissione dinamica delle emotions 
  * nell'input text
@@ -1035,6 +1036,10 @@ class InputTextListener extends KeyAdapter {
     }
     private Log log = LogFactory.getLog(this.getClass());
 
+    /**
+     * per aggiungere le emoticons nel testo mentre si scrive
+     * @param arg0
+     */
     @Override
     public void keyReleased(KeyEvent arg0) {
         super.keyPressed(arg0);
@@ -1045,8 +1050,18 @@ class InputTextListener extends KeyAdapter {
             log.error(e);
         }
     }
-}
 
+    /**
+     * Per evitare che l'imput text perde il font
+     * @param arg0
+     */
+    @Override
+    public void keyPressed(KeyEvent arg0) {
+        chatWindow.refreshInputTextFont();
+    }
+
+
+}
 class EmotionPanelCloser extends MouseInputAdapter {
 
     @Override

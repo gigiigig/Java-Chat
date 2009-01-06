@@ -38,6 +38,11 @@ public class DamaCanvas extends JPanel implements Canvas {
     public static final String BLACK_PIECE_REVERSE_IMAGE = "resources/Blue_Simple_rev.png";
     public static final String WHITE_PIECE_IMAGE = "resources/Red_simple.png";
     public static final String WHITE_PIECE_REVERSE_IMAGE = "resources/Red_simple_rev.png";
+    public static final String WHITE_DOUBLE_IMAGE = "resources/Red_Double.png";
+    public static final String WHITE_DOUBLE_REVERSE_IMAGE = "resources/Red_Double_rev.png";
+    public static final String BLACK_DOUBLE_IMAGE = "resources/Blue_Double.png";
+    public static final String BLACK_DOUBLE_REVERSE_IMAGE = "resources/Blue_Double_rev.png";
+
     //costanti per la grafica
     public static final int WINDOWX = 6;
     public static final int WINDOWY = 26;
@@ -67,6 +72,10 @@ public class DamaCanvas extends JPanel implements Canvas {
     private ImageIcon whitePedRev;
     private ImageIcon blackPed;
     private ImageIcon blackPedRev;
+    private ImageIcon whiteDouble;
+    private ImageIcon whiteDoubleRev;
+    private ImageIcon blackDouble;
+    private ImageIcon blackDoubleRev;
 
     public DamaCanvas(GameHome home, int myColor, String nickAdversar) {
         startPedine();
@@ -86,13 +95,19 @@ public class DamaCanvas extends JPanel implements Canvas {
             message = "Partitia iniziata,inizia il tuo avversario col binaco";
         }
 
-        //carico le 2 immagini 'immagini delle pedine
+        //carico le  immagini 'immagini delle pedine
         whitePed = new ImageIcon(DamaCanvas.class.getResource(WHITE_PIECE_IMAGE));
         whitePedRev = new ImageIcon(DamaCanvas.class.getResource(WHITE_PIECE_REVERSE_IMAGE));
         log.debug("pedina bianca[" + whitePed + "]");
         blackPed = new ImageIcon(DamaCanvas.class.getResource(BLACK_PIECE_IMAGE));
         blackPedRev = new ImageIcon(DamaCanvas.class.getResource(BLACK_PIECE_REVERSE_IMAGE));
-        log.debug("pedina bianca[" + whitePed + "]");
+        log.debug("pedina nera[" + whitePed + "]");
+        whiteDouble = new ImageIcon(DamaCanvas.class.getResource(WHITE_DOUBLE_IMAGE));
+        whiteDoubleRev = new ImageIcon(DamaCanvas.class.getResource(WHITE_DOUBLE_REVERSE_IMAGE));
+        log.debug("dama bianca[" + whitePed + "]");
+        blackDouble = new ImageIcon(DamaCanvas.class.getResource(BLACK_DOUBLE_IMAGE));
+        blackDoubleRev = new ImageIcon(DamaCanvas.class.getResource(BLACK_DOUBLE_REVERSE_IMAGE));
+        log.debug("dama nera[" + whitePed + "]");
 
     }
 
@@ -149,48 +164,15 @@ public class DamaCanvas extends JPanel implements Canvas {
         }
 
 
-        boolean alternate = true;
 
-        //creo le caselle
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (alternate) {
-                    g2.setColor(Color.CYAN);
-                } else {
-                    g2.setColor(Color.BLACK);
-                }
+        //creo la scacchiera
+        createChessBoard(g2);
 
-                g2.fillRect(i * LATOCASELLA + getX(), j * LATOCASELLA + getY(), LATOCASELLA, LATOCASELLA);
-                alternate = !alternate;
-            }
-            alternate = !alternate;
-        }
-
-        //riempo con le pedine esistenti 
-
-
-
-        //faccio un ciclo che riempe tutte le caselle dove vanno le pedine
-        for (int i = 0; i < 8; i++) {
-            Pedina[] pedinas = pedine[i];
-            for (int j = 0; j < 8; j++) {
-
-                Pedina pedina = pedinas[j];
-                if (pedina != null) {
-
-                    Image toDraw = null;
-
-                    //prendo l'immmagine da disegnare e la disegno
-                    toDraw = selectPieceImageToDraw(pedina);
-                    g2.drawImage(toDraw, (int) (j) * LATOCASELLA + TRASLAZIONEPEDINA, (int) (i) * LATOCASELLA + TRASLAZIONEPEDINA, RAGGIOPEDINA, RAGGIOPEDINA, this);
-
-                }
-            }
-
-        }
+        //riepo la scacchiera con le pedine
+        drawPieces(g2);
 
         boolean presente = false;
-        boolean valid = false;
+        boolean validSelection = false;
 
         //verifico se è stata cliccata qualche casella
         if (click != null) {
@@ -206,12 +188,12 @@ public class DamaCanvas extends JPanel implements Canvas {
             presente = clicked != null;
 
             //è valida se esite che e è anche del colore a cui appartiene il turno
-            valid = (clicked != null && clicked.getColore() == activePlayer);
+            validSelection = (clicked != null && clicked.getColore() == activePlayer);
 
             log.debug("presente = " + presente);
-            log.debug("valid = " + valid);
+            log.debug("valid = " + validSelection);
 
-            if (valid) {
+            if (validSelection) {
                 //se il click è su una casella con una pedina valida la seleziono
                 g2.setColor(SELECTEDPEDINA);
                 g2.fillOval((int) click.getX() * LATOCASELLA + TRASLAZIONEPEDINA, (int) click.getY() * LATOCASELLA + TRASLAZIONEPEDINA, RAGGIOPEDINA, RAGGIOPEDINA);
@@ -234,12 +216,13 @@ public class DamaCanvas extends JPanel implements Canvas {
 
                     //booleani che indicano se la casella cliccata
                     //è valida per spostarci la pedina selezionata
-                    boolean validX = Math.abs(click.getX() - selected.getX()) == 1;
-                    boolean validY = (click.getY() - selected.getY()) * direction == 1;
+                    boolean validToMoveX = Math.abs(click.getX() - selected.getX()) == 1;
+                    boolean validToMoveY = (click.getY() - selected.getY()) * direction == 1;
                     log.debug("validX = " + (click.getX() - selected.getX()));
                     log.debug("validY = " + (click.getY() - selected.getY()));
 
-                    //verificano se c'è una posizione libera su cui spostarsi
+                    //verificano se la ceslla cliccata
+                    //è una posizione libera su cui spostarsi
                     //per fare una mangiata
                     boolean isEatenX = Math.abs(click.getX() - selected.getX()) == 2;
                     boolean isEatenY = (click.getY() - selected.getY()) * direction == 2;
@@ -255,61 +238,48 @@ public class DamaCanvas extends JPanel implements Canvas {
                     log.debug("eatenable.getY() = " + eatenedY);
 
                     //booleanco che indica se è posssibile fare la mangiata
-                    boolean isEaten = eatenable != null && eatenable.getColore() != selected.getColore() && isEatenX && isEatenY;
+                    boolean isValidEaten = eatenable != null && eatenable.getColore() != selected.getColore() && isEatenX && isEatenY;
 
                     //se una delle condizioni valide per lo spostamento è 
                     //verificata inizio lo spostamento
-                    if ((validX && validY) || (isEaten)) {
+                    if ((validToMoveX && validToMoveY) || (isValidEaten)) {
 
-                        if (isEatenX && isEatenY) {
+                        if (isValidEaten) {
                             //verifico se è stata mangiata una pedina
                             log.debug("tentativo di mangiare");
-                            int eatenX = selected.getX() + (int) (click.getX() - selected.getX()) / 2;
-                            int eatenY = selected.getY() + (int) (click.getY() - selected.getY()) / 2;
-
-                            //verifico il colore della casella della pedina mangiata
-                            //TODO : IDIOTA MUOVI SEPRE SULLLE CASELLE CHIARE!!! 
-                            if ((eatenX % 2 == 0) == (eatenY % 2 == 0)) {
-                                g2.setColor(Color.CYAN);
-                            } else {
-                                g2.setColor(Color.BLACK);
-                            }
+//                         
+                            //imposto il colore da usare
+                            g2.setColor(Color.CYAN);
+//                          
                             //elimino la pedina mangiata
-                            g2.fillRect(eatenX * LATOCASELLA + getX(), eatenY * LATOCASELLA + getY(), LATOCASELLA, LATOCASELLA);
-                            pedine[eatenY][eatenX] = null;
+                            g2.fillRect(eatenedX * LATOCASELLA + getX(), eatenedY * LATOCASELLA + getY(), LATOCASELLA, LATOCASELLA);
+                            pedine[eatenedY][eatenedX] = null;
                         }
 
-                        //verifico il colore della pedina da muovere
-                        if (selected.colore == Pedina.WHITE) {
-                            g2.setColor(WHITEPLAYER);
-                        } else {
-                            g2.setColor(BLACKPLAYER);
-                        }
+//                        //verifico il colore della pedina da muovere
+//                        if (selected.colore == Pedina.WHITE) {
+//                            g2.setColor(WHITEPLAYER);
+//                        } else {
+//                            g2.setColor(BLACKPLAYER);
+//                        }
 
                         log.debug("getX()%2 = " + selected.getX() % 2);
                         log.debug("getY()%2 = " + selected.getY() % 2);
 
-                        //verifco il colore della casella della pedina da spostare
-                        //TODO : IDIOTA MUOVI SEPRE SULLLE CASELLE CHIARE!!! 
-
-                        if ((selected.getX() % 2 == 0) == (selected.getY() % 2 == 0)) {
-                            g2.setColor(Color.CYAN);
-                        } else {
-                            g2.setColor(Color.BLACK);
-                        }
-
-                        //elimino la pedina mossa
+                        //imposto il colore da usare
+                        g2.setColor(Color.CYAN);
+//                     
+                        //TODO non serve cancellarla! !! elimino la pedina mossa
                         g2.fillRect(selected.getX() * LATOCASELLA + getX(), selected.getY() * LATOCASELLA + getY(), LATOCASELLA, LATOCASELLA);
                         pedine[selected.getY()][selected.getX()] = null;
                         activePlayer = Pedina.revertColore(selected.getColore());
 
                         //lancio il thread per l'animazione dello spostamento
                         toMove = new Pedina(selected.getX() * LATOCASELLA, selected.getY() * LATOCASELLA, selected.getColore());
+
                         new Thread(new TranslatePedina(this, toMove, (int) click.getX(), (int) click.getY())).start();
 
                         selected = null;
-
-
                     } else {
                         //se il click è su una casella non valida
                         //per lo spostamento cancello la selezione sulla pedina 
@@ -340,6 +310,48 @@ public class DamaCanvas extends JPanel implements Canvas {
 
 
 //      
+    }
+
+    /**
+     * Crea le caselle della scacchiera
+     * @param g2
+     */
+    private void createChessBoard(Graphics2D g2) {
+
+        boolean alternate = true;
+        //creo le caselle
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (alternate) {
+                    g2.setColor(Color.CYAN);
+                } else {
+                    g2.setColor(Color.BLACK);
+                }
+                g2.fillRect(i * LATOCASELLA + getX(), j * LATOCASELLA + getY(), LATOCASELLA, LATOCASELLA);
+                alternate = !alternate;
+            }
+            alternate = !alternate;
+        }
+    }
+
+    /**
+     * Disegna le pedine che sono nell'array pedine
+     * @param g2
+     */
+    private void drawPieces(Graphics2D g2) {
+        //
+        for (int i = 0; i < 8; i++) {
+            Pedina[] pedinas = pedine[i];
+            for (int j = 0; j < 8; j++) {
+                Pedina pedina = pedinas[j];
+                if (pedina != null) {
+                    Image toDraw = null;
+                    //prendo l'immmagine da disegnare e la disegno
+                    toDraw = selectPieceImageToDraw(pedina);
+                    g2.drawImage(toDraw, (int) (j) * LATOCASELLA + TRASLAZIONEPEDINA, (int) (i) * LATOCASELLA + TRASLAZIONEPEDINA, RAGGIOPEDINA, RAGGIOPEDINA, this);
+                }
+            }
+        }
     }
 
     /**
@@ -399,15 +411,31 @@ public class DamaCanvas extends JPanel implements Canvas {
             //se sono nero ho la scacchieera rigirata quindi
             //uso le pedine ribaltate per vederle dritte
             if (myColor == Pedina.BLACK) {
-                toDraw = whitePedRev.getImage();
+                if (pedina.isDama()) {
+                    toDraw = whiteDoubleRev.getImage();
+                } else {
+                    toDraw = whitePedRev.getImage();
+                }
             } else {
-                toDraw = whitePed.getImage();
+                if (pedina.isDama()) {
+                    toDraw = whiteDouble.getImage();
+                } else {
+                    toDraw = whitePed.getImage();
+                }
             }
         } else {
             if (myColor == Pedina.BLACK) {
-                toDraw = blackPedRev.getImage();
+                if (pedina.isDama()) {
+                    toDraw = blackDoubleRev.getImage();
+                } else {
+                    toDraw = blackPedRev.getImage();
+                }
             } else {
-                toDraw = blackPed.getImage();
+                if (pedina.isDama()) {
+                    toDraw = blackDouble.getImage();
+                } else {
+                    toDraw = blackPed.getImage();
+                }
             }
         }
         return toDraw;
@@ -567,6 +595,14 @@ class TranslatePedina implements Runnable {
         canvas.setToMove(null);
         canvas.getPedine()[goalY][goalX] = new Pedina(goalX, goalY, pedina.getColore());
 
+        //alla fine del movimento verifico se è una dama o no
+        //e in caso lo setto
+        if (pedina.getColore() == Pedina.WHITE && goalY == 0) {
+            canvas.getPedine()[goalY][goalX].setDama(true);
+        } else if (pedina.getColore() == Pedina.BLACK && goalY == 7) {
+            canvas.getPedine()[goalY][goalX].setDama(true);
+        }
+
         //dopo il movimento della pedina imposto i nuovii messaggi
         if (canvas.getMyColor() == canvas.getActivePlayer()) {
             canvas.setMessage("Vai è il tuo turno!!");
@@ -575,7 +611,6 @@ class TranslatePedina implements Runnable {
         }
 
         canvas.repaint();
-
         log.debug(canvas.toString());
 
     }

@@ -255,12 +255,13 @@ public class ChatClientViewHelper {
     }
 
     /**
-     * Chaiama in chat il nick passato come paramtero
+     * Avvia una nuova chat con il nick passato come paramtero
      * @param nick 
      * Il nick da chiamare in chat
      */
     private ChatWindow startChatWith(String nick) {
 
+        log.info("creo una nuova chat con [" + nick + "]");
         ChatWindow cv = new ChatWindow(true, ccv);
         cv.setLocationRelativeTo(ccv.getFrame());
         cv.getClients().add(new Client(null, nick));
@@ -284,18 +285,26 @@ public class ChatClientViewHelper {
 
         ChatWindow toReturn = null;
 
+        //cerco una chat con l'uetente selezionato
         for (ChatWindow chatWindow : chatWindows) {
-            if (chatWindow.getClients().get(0).getNick().equals(nick)) {
+            //se c'è un sollo utente è una chat
+            //altrimenti nn va bemne perchè è una conferenza
+            if (chatWindow.getClients().size() == 1 && chatWindow.getClients().get(0).getNick().equals(nick)) {
                 toReturn = chatWindow;
+                log.info("trovata chat già aperta con [" + nick + "]");
                 break;
             }
         }
 
+        
         if (toReturn != null) {
+            //se c'è già una chat con l'utente scelto la apro
             toReturn.setVisible(true);
             toReturn.toFront();
             return toReturn;
         } else {
+            //altrimenti ne creo una nuova
+            log.info("nessuna chat già aperta con [" + nick + "]");
             return startChatWith(nick);
         }
     }
@@ -306,7 +315,7 @@ public class ChatClientViewHelper {
             log.debug("chatwindows : " + chatWindows.size());
             for (ChatWindow chatWindow : chatWindows) {
                 if (chatWindow.getClients().size() == nicks.length) {
-                    //se clients e nock hanno las stessa diensione inizio la verifica sennò
+                    //se clients e nock hanno las stessa dimensione inizio la verifica sennò
                     //è sicuramente nn valida
                     int trovati = 0;
                     for (String nick : nicks) {
@@ -422,6 +431,7 @@ public class ChatClientViewHelper {
         }
     }
     // <editor-fold defaultstate="collapsed" desc=" Getter and Setter ">
+
     public ArrayList<ChatWindow> getChatWindows() {
         return chatWindows;
     }
