@@ -216,16 +216,38 @@ public class DamaCanvas extends JPanel implements Canvas {
 
                     //booleani che indicano se la casella cliccata
                     //è valida per spostarci la pedina selezionata
-                    boolean validToMoveX = Math.abs(click.getX() - selected.getX()) == 1;
-                    boolean validToMoveY = (click.getY() - selected.getY()) * direction == 1;
+                    boolean validToMoveX = false;
+                    boolean validToMoveY = false;
+
+
+                    if (!selected.isDama()) {
+                        //se selected non è una dama conta il verso
+                        validToMoveX = Math.abs(click.getX() - selected.getX()) == 1;
+                        validToMoveY = (click.getY() - selected.getY()) * direction == 1;
+                    } else {
+                        //altrimenti nn conta
+                        validToMoveX = Math.abs(click.getX() - selected.getX()) == 1;
+                        validToMoveY = Math.abs(click.getY() - selected.getY()) == 1;
+
+                    }
                     log.debug("validX = " + (click.getX() - selected.getX()));
                     log.debug("validY = " + (click.getY() - selected.getY()));
 
                     //verificano se la ceslla cliccata
                     //è una posizione libera su cui spostarsi
                     //per fare una mangiata
-                    boolean isEatenX = Math.abs(click.getX() - selected.getX()) == 2;
-                    boolean isEatenY = (click.getY() - selected.getY()) * direction == 2;
+                    boolean isEatenX = false;
+                    boolean isEatenY = false;
+
+                    if (!selected.isDama()) {
+                        //se selected non è una dama conta il verso
+                        isEatenX = Math.abs(click.getX() - selected.getX()) == 2;
+                        isEatenY = (click.getY() - selected.getY()) * direction == 2;
+                    } else {
+                        //altrimenti nn conta
+                        isEatenX = Math.abs(click.getX() - selected.getX()) == 2;
+                        isEatenY = Math.abs(click.getY() - selected.getY()) == 2;
+                    }
 
                     //prendo anche le posizioni della casella in mezzo
                     //per verificare che ci sia una pedina da mangiare
@@ -594,6 +616,7 @@ class TranslatePedina implements Runnable {
 
         canvas.setToMove(null);
         canvas.getPedine()[goalY][goalX] = new Pedina(goalX, goalY, pedina.getColore());
+        pedina.setDama(pedina.isDama());
 
         //alla fine del movimento verifico se è una dama o no
         //e in caso lo setto
