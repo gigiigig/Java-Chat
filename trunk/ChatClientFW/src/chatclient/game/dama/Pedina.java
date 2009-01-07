@@ -31,6 +31,15 @@ package chatclient.game.dama;
 
     }
 
+    public Pedina(int x, int y, int colore, boolean dama) {
+        this.x = x;
+        this.y = y;
+        this.colore = colore;
+        this.dama = dama;
+    }
+
+    
+
      // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
      public int getColore() {
          return colore;

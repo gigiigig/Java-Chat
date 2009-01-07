@@ -251,7 +251,8 @@ public class DamaCanvas extends JPanel implements Canvas {
 
                     //prendo anche le posizioni della casella in mezzo
                     //per verificare che ci sia una pedina da mangiare
-                    int eatenedY = (int) (click.getY() + (-1 * direction));
+//                    int eatenedY = (int) (click.getY() + (-1 * direction));
+                    int eatenedY = (int) (click.getY()) - ((int) (click.getY() - selected.getY()) / 2);
                     int eatenedX = (int) (click.getX()) - ((int) (click.getX() - selected.getX()) / 2);
 
                     //verifico che ci sia una pedina nella posizione ricavata
@@ -297,7 +298,8 @@ public class DamaCanvas extends JPanel implements Canvas {
                         activePlayer = Pedina.revertColore(selected.getColore());
 
                         //lancio il thread per l'animazione dello spostamento
-                        toMove = new Pedina(selected.getX() * LATOCASELLA, selected.getY() * LATOCASELLA, selected.getColore());
+                        toMove = new Pedina(selected.getX() * LATOCASELLA, selected.getY() * LATOCASELLA, selected.getColore(),selected.isDama());
+
 
                         new Thread(new TranslatePedina(this, toMove, (int) click.getX(), (int) click.getY())).start();
 
@@ -615,10 +617,11 @@ class TranslatePedina implements Runnable {
 
 
         canvas.setToMove(null);
-        canvas.getPedine()[goalY][goalX] = new Pedina(goalX, goalY, pedina.getColore());
-        pedina.setDama(pedina.isDama());
+        canvas.getPedine()[goalY][goalX] = new Pedina(goalX, goalY, pedina.getColore(),pedina.isDama());
+       
 
-        //alla fine del movimento verifico se è una dama o no
+        //alla fine del movimento verifico se la
+        //posizione d'arrivo trasforma la pedina in dama
         //e in caso lo setto
         if (pedina.getColore() == Pedina.WHITE && goalY == 0) {
             canvas.getPedine()[goalY][goalX].setDama(true);

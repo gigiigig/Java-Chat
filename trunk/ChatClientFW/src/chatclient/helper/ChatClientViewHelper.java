@@ -106,7 +106,11 @@ public class ChatClientViewHelper {
             protected Object doInBackground() throws Exception {
                 try {
 
+                    //blocco input text e bottone
                     ccv.getNickText().setEnabled(false);
+                    ccv.getLogin().setEnabled(false);
+
+                    //messaggio di stato
                     setMessage("Connecting to server");
 
                     //creo il socket
@@ -143,6 +147,7 @@ public class ChatClientViewHelper {
                         ccv.setSocket(null);
                         ccv.setOutputStream(null);
                         ccv.getNickText().setEnabled(true);
+                        ccv.getLogin().setEnabled(true);
 
                         return null;
                     }
@@ -152,11 +157,19 @@ public class ChatClientViewHelper {
 
                     ccv.getNickLabel().setText(ccv.getNick());
                     showMainPanel();
+
+                    //riattivo inputtext e bottone di login
                     ccv.getNickText().setEnabled(true);
+                    ccv.getLogin().setEnabled(true);
+                    
                     setMessage("Connected");
+
+                    //aggiorno il messaggio nella systemtray
                     if (ccv.getTray() != null) {
                         ccv.getTray().setToolTip("Gigi Messenger - connesso : " + ccv.getNick());
                     }
+
+                    //nel prperties salvo il nick impostato per  la connessione 
                     Properties properties = Util.readProperties();
                     if (properties != null) {
                         properties.setProperty("nick", nick);
