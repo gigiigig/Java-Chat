@@ -34,8 +34,8 @@ public class DamaCanvas extends JPanel implements Canvas {
     //log
     private Log log = LogFactory.getLog(this.getClass());
     //immagini delle pedine
-    public static final String BLACK_PIECE_IMAGE = "resources/Blue_Simple.png";
-    public static final String BLACK_PIECE_REVERSE_IMAGE = "resources/Blue_Simple_rev.png";
+    public static final String BLACK_PIECE_IMAGE = "resources/Blue_simple.png";
+    public static final String BLACK_PIECE_REVERSE_IMAGE = "resources/Blue_simple_rev.png";
     public static final String WHITE_PIECE_IMAGE = "resources/Red_simple.png";
     public static final String WHITE_PIECE_REVERSE_IMAGE = "resources/Red_simple_rev.png";
     public static final String WHITE_DOUBLE_IMAGE = "resources/Red_Double.png";
@@ -56,6 +56,7 @@ public class DamaCanvas extends JPanel implements Canvas {
     public static final int WHITEDIRECTION = -1;
     public static final int BLACKDIRECTION = 1;
     public static final int MESSAGEHEIGTH = (int) (70 * SCALEFACTOR);
+    //
     //varibili di istanza
     private int activePlayer;
     private Point click;
@@ -95,19 +96,24 @@ public class DamaCanvas extends JPanel implements Canvas {
             message = "Partitia iniziata,inizia il tuo avversario col binaco";
         }
 
-        //carico le  immagini 'immagini delle pedine
-        whitePed = new ImageIcon(DamaCanvas.class.getResource(WHITE_PIECE_IMAGE));
-        whitePedRev = new ImageIcon(DamaCanvas.class.getResource(WHITE_PIECE_REVERSE_IMAGE));
-        log.debug("pedina bianca[" + whitePed + "]");
-        blackPed = new ImageIcon(DamaCanvas.class.getResource(BLACK_PIECE_IMAGE));
-        blackPedRev = new ImageIcon(DamaCanvas.class.getResource(BLACK_PIECE_REVERSE_IMAGE));
-        log.debug("pedina nera[" + whitePed + "]");
-        whiteDouble = new ImageIcon(DamaCanvas.class.getResource(WHITE_DOUBLE_IMAGE));
-        whiteDoubleRev = new ImageIcon(DamaCanvas.class.getResource(WHITE_DOUBLE_REVERSE_IMAGE));
-        log.debug("dama bianca[" + whitePed + "]");
-        blackDouble = new ImageIcon(DamaCanvas.class.getResource(BLACK_DOUBLE_IMAGE));
-        blackDoubleRev = new ImageIcon(DamaCanvas.class.getResource(BLACK_DOUBLE_REVERSE_IMAGE));
-        log.debug("dama nera[" + whitePed + "]");
+        try {
+            //carico le  immagini 'immagini delle pedine
+            whitePed = new ImageIcon(this.getClass().getResource(WHITE_PIECE_IMAGE));
+            whitePedRev = new ImageIcon(this.getClass().getResource(WHITE_PIECE_REVERSE_IMAGE));
+            log.debug("pedina bianca[" + whitePed + "]");
+            blackPed = new ImageIcon(this.getClass().getResource(BLACK_PIECE_IMAGE));
+            blackPedRev = new ImageIcon(this.getClass().getResource(BLACK_PIECE_REVERSE_IMAGE));
+            log.debug("pedina nera[" + blackPed + "]");
+            whiteDouble = new ImageIcon(this.getClass().getResource(WHITE_DOUBLE_IMAGE));
+            whiteDoubleRev = new ImageIcon(this.getClass().getResource(WHITE_DOUBLE_REVERSE_IMAGE));
+            log.debug("dama bianca[" + whiteDouble + "]");
+            blackDouble = new ImageIcon(this.getClass().getResource(BLACK_DOUBLE_IMAGE));
+            blackDoubleRev = new ImageIcon(this.getClass().getResource(BLACK_DOUBLE_REVERSE_IMAGE));
+            log.debug("dama nera[" + blackDouble + "]");
+        } catch (Exception e) {
+            log.error(e);
+
+        }
 
     }
 
@@ -162,8 +168,6 @@ public class DamaCanvas extends JPanel implements Canvas {
         if (myColor == Pedina.BLACK) {
             reverseCanvas(g2);
         }
-
-
 
         //creo la scacchiera
         createChessBoard(g2);
@@ -298,7 +302,7 @@ public class DamaCanvas extends JPanel implements Canvas {
                         activePlayer = Pedina.revertColore(selected.getColore());
 
                         //lancio il thread per l'animazione dello spostamento
-                        toMove = new Pedina(selected.getX() * LATOCASELLA, selected.getY() * LATOCASELLA, selected.getColore(),selected.isDama());
+                        toMove = new Pedina(selected.getX() * LATOCASELLA, selected.getY() * LATOCASELLA, selected.getColore(), selected.isDama());
 
 
                         new Thread(new TranslatePedina(this, toMove, (int) click.getX(), (int) click.getY())).start();
@@ -617,8 +621,8 @@ class TranslatePedina implements Runnable {
 
 
         canvas.setToMove(null);
-        canvas.getPedine()[goalY][goalX] = new Pedina(goalX, goalY, pedina.getColore(),pedina.isDama());
-       
+        canvas.getPedine()[goalY][goalX] = new Pedina(goalX, goalY, pedina.getColore(), pedina.isDama());
+
 
         //alla fine del movimento verifico se la
         //posizione d'arrivo trasforma la pedina in dama

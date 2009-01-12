@@ -11,6 +11,7 @@ import chatclient.forms.ReceiveFileDialog;
 import chatclient.forms.SendFileDialog;
 import chatcommons.Client;
 import chatcommons.datamessage.MESSAGE;
+import chatcommons.datamessage.MESSAGE.Parameters.Parameter;
 import chatcommons.datamessage.MessageManger;
 import chatclient.game.GameHome;
 import chatclient.game.dama.DamaCanvas;
@@ -331,19 +332,21 @@ public class ClientReader extends SwingWorker {
 
                         /*aggiungo un nuovo utente che si è connesso*/
                         } else if (message.getName().equals(Command.ADDUSER)) {
-                            String clientToAdd = message.getParameters().getParameter().get(0).getValue();
+                            //i paramtri contengono i clints da aggiungere
+                            List<Parameter> parameters = message.getParameters().getParameter();
 
-                            ccv.getClients().add(new Client(null, clientToAdd));
-//                    JList list = ccv.getClientsList();
-                            int position = ccv.getClientsList().getModel().getSize() - 1;
+                            log.debug("nick da aggiungere ["+parameters.size()+"]");
+                           
+//                            int position = ccv.getClientsList().getModel().getSize() - 1;
                             DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
                             synchronized (listModel) {
-//                                    listModel.add(position, clientToAdd);
 
-//                                    listModel.remove(listModel.size() - 1);
-                                listModel.addElement(clientToAdd);
-//                                    listModel.addElement(null);
-
+                                for (Parameter parameter : parameters) {
+                                    ccv.getClients().add(new Client(null, parameter.getValue()));
+                                    listModel.addElement(parameter.getValue());
+                                    log.debug("aggiunto  client ["+parameter.getValue()+"]");
+                                }
+                                
                                 ccv.getClientsList().validate();
                                 ccv.getFrame().validate();
 
@@ -358,7 +361,6 @@ public class ClientReader extends SwingWorker {
                                 }
                             }
                         }
-
                     }
                 // </editor-fold>
 
