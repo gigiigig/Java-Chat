@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.SwingWorker;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author Administrator
  */
-public class ServerReaderXML extends SwingWorker {
+public class ServerReaderXML implements Runnable {
 
     public static String MAINREADER = "MAINREADER";
     public static String FILEREADER = "FILEREADER";
@@ -38,14 +37,14 @@ public class ServerReaderXML extends SwingWorker {
     public ServerReaderXML(Client client, ChatServerView cv, String type) {
         this.client = client;
         this.cv = cv;
-        active = true;
+        active = false;
         this.type = type;
 
     }
 
-    @Override
-    protected Object doInBackground() {
-        try {
+    
+      public void run() {
+         try {
             log.info("Start new reder for : " + client.getNick());
 
             //leggo l'input stream e lo sscrivo sulla chat riga per riga
@@ -63,8 +62,11 @@ public class ServerReaderXML extends SwingWorker {
             ServerWriter sw = new ServerWriter(cv);
 
             //leggo le strigne e le stampo a tutti clients
-
             StringBuffer buffer = new StringBuffer();
+
+            //segno che il tread è attivo
+            active = true;
+
             while (active && (line = in.readLine().trim()) != null) {
                 try {
 
@@ -112,18 +114,19 @@ public class ServerReaderXML extends SwingWorker {
                     log.debug(ex);
                 }
             }
-            return null;
+            
         } catch (IOException ex) {
             log.error(client.getNick() + " reader : " + ex);
             removeClient();
-            return null;
+            
         } catch (Exception ex) {
             log.error(client.getNick() + " reader : " + ex);
             removeClient();
-            return null;
+            
         }
 
     }
+   
 
     private void removeClient() {
         ArrayList<Client> clients = cv.getClients();
@@ -136,4 +139,14 @@ public class ServerReaderXML extends SwingWorker {
         sw.writeAll(toSend);
 
     }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+  
 }

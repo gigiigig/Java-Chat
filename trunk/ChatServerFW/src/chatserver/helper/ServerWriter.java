@@ -8,9 +8,6 @@ import chatserver.ChatServerView;
 import chatcommons.Client;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
-import chatserver.commons.Util;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.SocketException;
 import java.util.LinkedList;
@@ -39,28 +36,33 @@ public class ServerWriter {
     }
 
     public void writeAll(MESSAGE message) {
+
         //scrivo sulla chat del server
         writeToChatText("write all : " + MessageManger.messageToStringFormatted(message));
         log.debug("write all : " + MessageManger.messageToStringFormatted(message));
 
-
-        //invio a tutti gli altri
         List<Client> clientsList = ccv.getClients();
-        ListIterator<Client> li = clientsList.listIterator();
-        List<Client> toRemoves = new LinkedList<Client>();
-        while (li.hasNext()) {
-            Client client = li.next();
-            if (client.getMainSocket() != null) {
-                try {
-                    OutputStream outputStream = client.getMainSocket().getOutputStream();
-                    MessageManger.directWriteMessage(message, outputStream);
+        synchronized (clientsList) {
+            //invio a tutti il messaggio
 
-                //se il client non risponde lo levo dalla lista dei connessi
-                } catch (Exception ex) {
-                    log.warn(ex + " " + ex.getMessage());
-//                    System.out.println("Server redaer : " + ex.getMessage());
+            //in qiesta lista saòvo tutti gli utenti che hanno dato errore nel socket
+            List<Client> toRemoves = new LinkedList<Client>();
 
-                    toRemoves.add(client);
+            ListIterator<Client> li = clientsList.listIterator();
+            while (li.hasNext()) {
+                Client client = li.next();
+                if (client.getMainSocket() != null) {
+                    try {
+                        OutputStream outputStream = client.getMainSocket().getOutputStream();
+                        MessageManger.directWriteMessage(message, outputStream);
+
+                    //se il client non risponde lo levo dalla lista dei connessi
+                    } catch (Exception ex) {
+                        log.warn(ex + " " + ex.getMessage());
+
+                        //aggiungo alla lista il cliet che ha doto errore
+                        toRemoves.add(client);
+
 //                    //elimino il client e riallineo l'iteratore
 //                    clientsList.remove(client);
 //                    ccv.refreshTable();
@@ -75,15 +77,15 @@ public class ServerWriter {
 //                     //comunico a tutti di eliminare l'utente
 //                    writeAll(COMMAND + Command.REMOVEUSER + client.getNick());
 
+                    }
                 }
             }
-        }
 
-        //rimuovo tutti i client che risultno cascati
-        //e invio il comando a tutti
-        synchronized (clientsList) {
+            //rimuovo tutti i client che risultno cascati
+            //e invio il comando a tutti
             clientsList.removeAll(toRemoves);
 
+            //avviso tutti di eliminare gli utenti che hanno dato errore
             for (Client toRemove : toRemoves) {
                 ServerWriter sw = new ServerWriter(ccv);
                 MESSAGE toSend = MessageManger.createCommand(Command.REMOVEUSER, null);
@@ -101,36 +103,44 @@ public class ServerWriter {
         }
         log.debug("write to \"" + nick + " : " + MessageManger.messageToStringFormatted(message));
 
-        //invio a tutti gli altri
+        //cerco il client in base al nick e lo gli invio il messaggio
         List<Client> clientsList = ccv.getClients();
-        ListIterator<Client> li = clientsList.listIterator();
-        while (li.hasNext()) {
-            Client client = li.next();
-            if (client.getNick().equals(nick)) {
-                OutputStream outputStream = null;
-                try {
-//                    System.out.println("Server writer sendToClient   "+ client.getNick()+" : " +line);
-                    outputStream = client.getMainSocket().getOutputStream();
-                    MessageManger.directWriteMessage(message, outputStream);
+        Client toRemove = null;
 
-                    break;
-                } catch (SocketException ex) {
-                    synchronized (clientsList) {
-                        clientsList.remove(client);
+        synchronized (clientsList) {
+            for (Client client : clientsList) {
+                if (client.getNick().equals(nick)) {
+                    OutputStream outputStream = null;
+                    try {
+//                    System.out.println("Server writer sendToClient   "+ client.getNick()+" : " +line);
+                        outputStream = client.getMainSocket().getOutputStream();
+                        MessageManger.directWriteMessage(message, outputStream);
+                        break;
+                    } catch (SocketException ex) {
+                        toRemove = client;
+                        log.error(ex);
+                        break;
+                    } catch (Exception ex) {
+                        log.warn(ex);
+                        log.debug("Resend message : " + MessageManger.messageToStringFormatted(message) + " to client " + nick);
+                        writeToClient(nick, message);
                     }
-                    //comunico a tutti di eliminare l'utente
-                    ServerWriter sw = new ServerWriter(ccv);
-                    MESSAGE toSend = MessageManger.createCommand(Command.REMOVEUSER, null);
-                    MessageManger.addParameter(toSend, "nick", client.getNick());
-                    sw.writeAll(toSend);
-                    log.error(ex);
-                } catch (Exception ex) {
-                    log.warn(ex);
-                    log.debug("Resend message : " + MessageManger.messageToStringFormatted(message) + " to client " + nick);
-                    writeToClient(nick, message);
                 }
             }
         }
+        //se c'è stato un errrore rimuovo il client
+        if (toRemove != null) {
+            synchronized (clientsList) {
+                clientsList.remove(toRemove);
+            }
+            //comunico a tutti di eliminare l'utente
+            ServerWriter sw = new ServerWriter(ccv);
+            MESSAGE toSend = MessageManger.createCommand(Command.REMOVEUSER, null);
+            MessageManger.addParameter(toSend, "nick", toRemove.getNick());
+            sw.writeAll(toSend);
+        }
+
+
     }
 
     public void writeToClientFile(String nick, MESSAGE message) {

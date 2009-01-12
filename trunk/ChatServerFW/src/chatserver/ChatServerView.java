@@ -273,7 +273,6 @@ public class ChatServerView extends FrameView {
     private int busyIconIndex = 0;
     private JDialog aboutBox;
     //Mie Variabili
-    
     //TUTTE LE OPERAZIONI SU QUESTA LISTA VANNO SINCRONIZZATE!!!!!!
     private ArrayList<Client> clients;
 //    private ServerSocket serverSocket;
@@ -296,9 +295,9 @@ public class ChatServerView extends FrameView {
         //operazioni per l'avvio del server
         log.info("Start server");
         serverAccptor = new ServerAcceptor(port, this, true);
-        serverAccptor.execute(); 
+        serverAccptor.execute();
 //        SwingUtilities.invokeLater(serverAccptor);
-      
+
         Util util = new Util();
         log.debug(util.getPath());
         startServer.setText("Stop server");
@@ -309,9 +308,9 @@ public class ChatServerView extends FrameView {
      * Stoppa  il server
      */
     public void stopServer() {
-        
+
         //stoppa il server
-       
+
 
         for (Client client : clients) {
             try {
@@ -320,9 +319,9 @@ public class ChatServerView extends FrameView {
                 log.error(ex);
             }
         }
-        
-         serverAccptor.setActive(false);
-         
+
+        serverAccptor.setActive(false);
+
         clients = new ArrayList<Client>();
         refreshTable();
         startServer.setText("Start server");
@@ -339,7 +338,6 @@ public class ChatServerView extends FrameView {
      * 
      * @param clients
      */
-    
     public void setClients(ArrayList<Client> clients) {
         this.clients = clients;
     }
@@ -373,7 +371,6 @@ public class ChatServerView extends FrameView {
     }
 
     //**** SHOW METHODS
-    
     /**
      * Vuisaulizza pannello opzioni
      */
@@ -402,12 +399,14 @@ public class ChatServerView extends FrameView {
     /**
      * Aggiorna tabella
      */
-    public void refreshTable() {
+    public synchronized void refreshTable() {
+
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${clients}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, nickTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nick}"));
         columnBinding.setColumnName("Utenti connessi");
         columnBinding.setColumnClass(String.class);
         jTableBinding.bind();
+
     }
 }
