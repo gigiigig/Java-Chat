@@ -6,8 +6,8 @@ package chatclient.game.dama;
 
 import chatclient.game.Canvas;
 import chatclient.game.GameHome;
-import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import chatcommons.datamessage.generated.MESSAGE;
 import static chatcommons.Commands.*;
 import java.awt.Color;
 import java.awt.Font;

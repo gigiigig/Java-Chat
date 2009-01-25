@@ -4,18 +4,16 @@
  */
 package chatclient.thread;
 
-import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
 import static chatcommons.Commands.*;
 import chatclient.forms.SendFileDialog;
+import chatcommons.datamessage.generated.MESSAGE;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.swing.SwingWorker;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -64,7 +62,7 @@ public class FileSender extends SwingWorker {
             MessageManger.addParameter(requestAccpet,"file", toSend.getName());
             MessageManger.addParameter(requestAccpet,"filesize", toSend.length() + "");
             
-            log.debug("send message to server : "+MessageManger.messageToStringFormatted(requestAccpet));
+            log.debug("send message to server : "+MessageManger.messageToStringFormattedJAXBVersion(requestAccpet));
             MessageManger.directWriteMessage(requestAccpet, os);
 
             while (!accepted && active) {
@@ -98,7 +96,7 @@ public class FileSender extends SwingWorker {
 
             while ((readed = fis.read(byteArr)) != -1 && active) {
                 Calendar init = Calendar.getInstance();
-                dataMessage.setData(byteArr);
+//                dataMessage.setData(byteArr);
                 //nome del file
                 MessageManger.addParameterAt(dataMessage,"file", toSend.getName(), 0);
                 //numero dei bytes da scrivere 

@@ -7,22 +7,24 @@ package chatclient.thread;
 import chatclient.ChatClientView;
 import chatclient.chatwindow.ChatWindow;
 import chatclient.commons.Util;
+
 import chatclient.forms.ReceiveFileDialog;
 import chatclient.forms.SendFileDialog;
-import chatcommons.Client;
-import chatcommons.datamessage.MESSAGE;
-import chatcommons.datamessage.MESSAGE.Parameters.Parameter;
-import chatcommons.datamessage.MessageManger;
 import chatclient.game.GameHome;
 import chatclient.game.dama.DamaCanvas;
+import chatcommons.Client;
+import chatcommons.datamessage.MessageManger;
+import chatcommons.datamessage.generated.Content;
+import chatcommons.datamessage.generated.Contents;
+import chatcommons.datamessage.generated.MESSAGE;
+import chatcommons.datamessage.generated.Parameter;
+import chatcommons.datamessage.generated.Parameters;
+import chatcommons.datamessage.generated.Receivers;
 import emoticon.Emoticon;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,10 +32,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
@@ -93,18 +95,19 @@ public class ClientReader extends SwingWorker {
                     // <editor-fold defaultstate="collapsed" desc=" MESSAGE ">
                     if (message.getType().equals(MESSAGE)) {
 
-                        String messageSt = message.getParameters().getParameter().get(0).getValue();
-                        Font font = Font.decode(message.getParameters().getParameter().get(1).getValue());
-                        Color color = Color.decode(message.getParameters().getParameter().get(2).getValue());
+                        String messageSt = message.getParameters().getParameter(0).getContent();
+                        Font font = Font.decode(message.getParameters().getParameter(1).getContent());
+                        Color color = Color.decode(message.getParameters().getParameter(2).getContent());
 
-                        //prendo le emoticons dai contents 
+                        //prendo le emoticons dai contents
                         List<Emoticon> emoticons = new LinkedList<Emoticon>();
 
                         try {
                             if (message.getContents() != null) {
-                                List<MESSAGE.Contents.Content> contents = message.getContents().getContent();
+                                Contents contents = message.getContents();
 
-                                for (MESSAGE.Contents.Content content : contents) {
+                                for (int i = 0; i < contents.getContentCount(); i++) {
+                                    Content content = contents.getContent(i);
 
                                     log.debug("received emoticon : " + content.getName());
                                     byte[] bs = content.getValue();
@@ -133,6 +136,7 @@ public class ClientReader extends SwingWorker {
 
 
                         if (message.getName().equals(Message.SINGLE)) {
+                           
                             String sender = message.getSender();
 
                             ChatWindow cv = ccv.getHelper().getChatWith(sender);
@@ -145,14 +149,23 @@ public class ClientReader extends SwingWorker {
                             //dalla lista di partecipanti alla conferenza
                             //rcavo l'arrey di quelli che servono in questo client
                             List<String> componentsOfConferenz = new LinkedList<String>();
-                            for (String string : message.getReceivers().getReceiver()) {
+
+                            //scanndisco i riceventi e prendo tutti tranne me
+                            Receivers receivers = message.getReceivers();
+                            for (int i = 0; i < receivers.getReceiverCount(); i++) {
+                                String string = receivers.getReceiver(i);
+
                                 if (!string.equals(ccv.getNick())) {
                                     componentsOfConferenz.add(string);
                                 }
                             }
+                            //aggiungo il sender e ottengo las lista dei partecipanti
+                            //alla conferenza
                             componentsOfConferenz.add(sender);
                             log.debug(componentsOfConferenz);
 
+                            //poi recupero la relativa conferenza e ci
+                            //scrivo il messggio
                             ChatWindow cv = ccv.getHelper().getConferenceWith(componentsOfConferenz.toArray(new String[componentsOfConferenz.size()]));
                             cv.getReceivedEmoticons().addAll(emoticons);
                             cv.writeMessage(sender, messageSt, font, color, emoticons);
@@ -167,19 +180,19 @@ public class ClientReader extends SwingWorker {
                         if (message.getName().equals(Request.FILETRANSFER)) {
 
                             try {
-                                String fileName = message.getParameters().getParameter().get(0).getValue();
+                                String fileName = message.getParameters().getParameter(0).getContent();
                                 String fileurl = Util.readProperties().getProperty("downloadFolder") + "/" + fileName;
-                                int packNum = Integer.parseInt(message.getParameters().getParameter().get(3).getValue());
+                                int packNum = Integer.parseInt(message.getParameters().getParameter(3).getContent());
 
                                 File outputFile = new File(fileurl);
 
                                 FileOutputStream fos = new FileOutputStream(outputFile, true);
-                                byte[] bArr = message.getData();
+//                                byte[] bArr = message.getData();
 
-                                int readed = Integer.parseInt(message.getParameters().getParameter().get(1).getValue());
+                                int readed = Integer.parseInt(message.getParameters().getParameter(1).getContent());
                                 log.debug(ccv.getNick() + "reader readed bytes : " + readed);
                                 log.debug("write bytes to file : " + fileurl);
-                                fos.write(bArr, 0, readed);
+//                                fos.write(bArr, 0, readed);
 
                                 fos.close();
 
@@ -195,8 +208,8 @@ public class ClientReader extends SwingWorker {
                             try {
                                 //richiesta di ricezione file
                                 String sender = message.getSender();
-                                String fileName = message.getParameters().getParameter().get(0).getValue();
-                                long fileSize = Long.parseLong(message.getParameters().getParameter().get(1).getValue());
+                                String fileName = message.getParameters().getParameter(0).getContent();
+                                long fileSize = Long.parseLong(message.getParameters().getParameter(1).getContent());
 
                                 ReceiveFileDialog receiveFileDialog = new ReceiveFileDialog(ccv);
                                 receiveFileDialog.setSender(sender);
@@ -223,11 +236,11 @@ public class ClientReader extends SwingWorker {
                                 //richiesta di ricezione file
                                 String sender = message.getSender();
                                 log.debug("sender : " + sender);
-                                String fileName = message.getParameters().getParameter().get(0).getValue();
+                                String fileName = message.getParameters().getParameter(0).getContent();
                                 log.debug("fileName : " + fileName);
-                                long fileSize = Long.parseLong(message.getParameters().getParameter().get(1).getValue());
+                                long fileSize = Long.parseLong(message.getParameters().getParameter(1).getContent());
                                 log.debug("fileSize : " + fileSize);
-                                String response = message.getParameters().getParameter().get(2).getValue();
+                                String response = message.getParameters().getParameter(2).getContent();
                                 log.debug("response : " + response);
                                 SendFileDialog sendFileDialog = ccv.getHelper().getSendFileDialog(fileName, sender);
 
@@ -249,7 +262,7 @@ public class ClientReader extends SwingWorker {
 
                             try {
                                 //il priomo elemento è il nick da aggiungere gli alri i membri della conferenza
-                                String nickToAdd = message.getParameters().getParameter().get(0).getValue();
+                                String nickToAdd = message.getParameters().getParameter(0).getContent();
 
                                 //dalla lista di partecipanti alla conferenza
                                 //rcavo l'arrey di quelli che servono in questo client
@@ -286,9 +299,9 @@ public class ClientReader extends SwingWorker {
                             try {
                                 log.debug("position for dama");
 
-                                int posX = (int) Double.parseDouble(message.getParameters().getParameter().get(0).getValue());
+                                int posX = (int) Double.parseDouble(message.getParameters().getParameter(0).getContent());
                                 log.debug("posX = " + posX);
-                                int posY = (int) Double.parseDouble(message.getParameters().getParameter().get(1).getValue());
+                                int posY = (int) Double.parseDouble(message.getParameters().getParameter(1).getContent());
                                 log.debug("posY = " + posY);
 
                                 DamaCanvas canvas = (DamaCanvas) ccv.getHelper().getGameWith(message.getSender(), DamaCanvas.class);
@@ -310,7 +323,7 @@ public class ClientReader extends SwingWorker {
 
                         if (message.getName().equals(Command.REMOVEUSER)) {
 
-                            String clientToRemove = message.getParameters().getParameter().get(0).getValue();
+                            String clientToRemove = message.getParameters().getParameter(0).getContent();
 
                             ArrayList<Client> clients = ccv.getClients();
                             ListIterator<Client> li = clients.listIterator();
@@ -332,18 +345,20 @@ public class ClientReader extends SwingWorker {
                         /*aggiungo un nuovo utente che si è connesso*/
                         } else if (message.getName().equals(Command.ADDUSER)) {
                             //i paramtri contengono i clints da aggiungere
-                            List<Parameter> parameters = message.getParameters().getParameter();
+                            Parameters parameters = message.getParameters();
 
-                            log.debug("nick da aggiungere [" + parameters.size() + "]");
+                            log.debug("nick da aggiungere [" + parameters.getParameterCount() + "]");
 
 //                            int position = ccv.getClientsList().getModel().getSize() - 1;
                             DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
                             synchronized (listModel) {
 
-                                for (Parameter parameter : parameters) {
-                                    ccv.getClients().add(new Client(null, parameter.getValue()));
-                                    listModel.addElement(parameter.getValue());
-                                    log.debug("aggiunto  client [" + parameter.getValue() + "]");
+                                for (int i = 0; i < parameters.getParameterCount(); i++) {
+
+                                    Parameter parameter = parameters.getParameter(i);
+                                    ccv.getClients().add(new Client(null, parameter.getContent()));
+                                    listModel.addElement(parameter.getContent());
+                                    log.debug("aggiunto  client [" + parameter.getContent() + "]");
                                 }
 
                                 ccv.getClientsList().validate();

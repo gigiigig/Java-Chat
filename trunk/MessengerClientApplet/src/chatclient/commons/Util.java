@@ -7,6 +7,9 @@ package chatclient.commons;
  */
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -54,11 +57,20 @@ public class Util {
     public static Properties readProperties() {
 
         Properties properties = new Properties();
-        log.debug("path = " + getPath());
-        File file = new File(getPath() + "properties.xml");
-        if (file.isFile()) {
+        try {
+            log.debug("path = " + Util.class.getResource("properties.xml").toURI().toString());
+        } catch (URISyntaxException ex) {
+            log.error(ex);
+        }
+//        File file = null;
+//        try {
+//            file = new File(Util.class.getResource("properties.xml").toURI());
+//        } catch (URISyntaxException ex) {
+//            log.error(ex);
+//        }
+//        if (file != null && file.isFile()) {
             try {
-                properties.loadFromXML(new FileInputStream(file));
+                properties.loadFromXML(Util.class.getResourceAsStream("properties.xml"));
                 return properties;
             } catch (Exception ex) {
                 // XXXTODO Handle exception
@@ -66,9 +78,9 @@ public class Util {
 
                 return null;
             }
-        } else {
-            return null;
-        }
+//        } else {
+//            return null;
+//        }
     }
 
     public static String getPath() {

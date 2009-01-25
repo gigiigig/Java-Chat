@@ -15,8 +15,8 @@ import chatclient.game.GameHome;
 import chatclient.game.dama.DamaCanvas;
 import chatclient.theme.ThemeManager;
 import chatclient.thread.ClientReader;
-import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import chatcommons.datamessage.generated.MESSAGE;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,7 +36,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.Task;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import static chatcommons.Commands.*;
 
@@ -129,18 +128,19 @@ public class ChatClientViewHelper {
                     MESSAGE request = MessageManger.createCommand(Command.CONNECT, new HashMap<String, String>());
                     MessageManger.addParameter(request, "nick", nick);
 
-                    log.debug("sende command : "+MessageManger.messageToString(request));
-                    log.debug("sende command : "+MessageManger.messageToStringFormatted(request));
-//                    MessageManger.directWriteMessage(request, ccv.getOutputStream());
+                    log.debug("send command : "+MessageManger.messageToStringFormatted(request));
+//                    log.trace("send command : " + MessageManger.messageToStringFormattedJAXBVersion(request));
+                    MessageManger.directWriteMessage(request, ccv.getOutputStream());
 
                     //leggo se il nick è stato accettato
                     BufferedReader reader = new BufferedReader(new InputStreamReader(ccv.getSocket().getInputStream()));
                     String accptedNick = reader.readLine();
 
+                    log.trace("server respone line : " + accptedNick);
                     MESSAGE message = MessageManger.parseXML(accptedNick);
                     log.debug(nick + " read response : " + MessageManger.messageToStringFormatted(message));
 
-                    String response = message.getParameters().getParameter().get(0).getValue();
+                    String response = message.getParameters().getParameter(0).getContent();
                     log.debug("response value :" + response);
 
                     if (response.equals(Command.KO)) {
@@ -163,7 +163,7 @@ public class ChatClientViewHelper {
                     //riattivo inputtext e bottone di login
                     ccv.getNickText().setEnabled(true);
                     ccv.getLogin().setEnabled(true);
-                    
+
                     setMessage("Connected");
 
                     //aggiorno il messaggio nella systemtray
@@ -172,15 +172,15 @@ public class ChatClientViewHelper {
                     }
 
                     //nel prperties salvo il nick impostato per  la connessione 
-                    Properties properties = Util.readProperties();
-                    if (properties != null) {
-                        properties.setProperty("nick", nick);
-                        Util.writeProperties(properties);
-                    } else {
-                        properties = new Properties();
-                        properties.setProperty("nick", nick);
-                        Util.writeProperties(properties);
-                    }
+//                    Properties properties = Util.readProperties();
+//                    if (properties != null) {
+//                        properties.setProperty("nick", nick);
+//                        Util.writeProperties(properties);
+//                    } else {
+//                        properties = new Properties();
+//                        properties.setProperty("nick", nick);
+//                        Util.writeProperties(properties);
+//                    }
 
 //  
         /*catch for some exception*/
@@ -213,7 +213,7 @@ public class ChatClientViewHelper {
     public void disconnetti() {
         try {
             MESSAGE toSend = MessageManger.createCommand(Command.DISCONNECT, null);
-            log.debug("send : " + MessageManger.messageToStringFormatted(toSend));
+            log.debug("send : " + MessageManger.messageToStringFormattedJAXBVersion(toSend));
             MessageManger.directWriteMessage(toSend, ccv.getOutputStream());
 
             //TODO metti nel finalli i comendi da eseguire per forza
@@ -311,7 +311,7 @@ public class ChatClientViewHelper {
             }
         }
 
-        
+
         if (toReturn != null) {
             //se c'è già una chat con l'utente scelto la apro
             toReturn.setVisible(true);

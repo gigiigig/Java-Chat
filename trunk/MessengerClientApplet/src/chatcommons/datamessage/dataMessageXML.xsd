@@ -10,14 +10,14 @@
                 <xsd:element name="receivers" maxOccurs="1">
                     <xsd:complexType>
                         <xsd:sequence>
-                            <xsd:element name="receiver" maxOccurs="unbounded" type="xsd:string"/>
+                            <xsd:element name="receiver" maxOccurs="unbounded" type="xsd:string" minOccurs="0"/>
                         </xsd:sequence>
                     </xsd:complexType>
                 </xsd:element>
                 <xsd:element name="parameters" maxOccurs="1">
                     <xsd:complexType>
                         <xsd:sequence>
-                            <xsd:element name="parameter" maxOccurs="unbounded">
+                            <xsd:element name="parameter" maxOccurs="unbounded" minOccurs="0">
                                 <xsd:complexType>
                                     <xsd:simpleContent>
                                         <xsd:extension base="xsd:string">
@@ -32,7 +32,7 @@
                 <xsd:element name="contents" maxOccurs="1">
                     <xsd:complexType>
                         <xsd:sequence>
-                            <xsd:element name="content" maxOccurs="unbounded">
+                            <xsd:element name="content" maxOccurs="unbounded" minOccurs="0">
                                 <xsd:complexType>
                                     <xsd:sequence>
                                         <xsd:element name="name" type="xsd:string"/>

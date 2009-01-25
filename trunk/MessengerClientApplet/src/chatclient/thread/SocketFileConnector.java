@@ -6,8 +6,8 @@ package chatclient.thread;
 
 import chatclient.ChatClientView;
 import chatclient.commons.Util;
-import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import chatcommons.datamessage.generated.MESSAGE;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,7 +46,7 @@ public class SocketFileConnector extends SwingWorker {
 //        message.getParameters().add(0, ccv.getNick());
         MessageManger.addParameterAt(message,"nick", ccv.getNick(), 0);
         
-        log.debug("send message : "+MessageManger.messageToStringFormatted(message));
+        log.debug("send message : "+MessageManger.messageToStringFormattedJAXBVersion(message));
         MessageManger.directWriteMessage(message, os);
 
         InputStream is = newSocket.getInputStream();
@@ -54,11 +54,11 @@ public class SocketFileConnector extends SwingWorker {
         String line = in.readLine();
 
         MESSAGE serverResponse = MessageManger.parseXML(line);
-        log.debug("xml received : " + MessageManger.messageToStringFormatted(serverResponse));
+        log.debug("xml received : " + MessageManger.messageToStringFormattedJAXBVersion(serverResponse));
 
         if (serverResponse.getType().equals(COMMAND) &&
                 serverResponse.getName().equals(Command.ADDFILESOCKET) &&
-                serverResponse.getParameters().getParameter().get(0).getValue().equals(Command.OK)) {
+                serverResponse.getParameters().getParameter(0).getContent().equals(Command.OK)) {
 
             socket = newSocket;
             connected = true;

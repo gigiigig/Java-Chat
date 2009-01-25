@@ -10,7 +10,7 @@
         </layout>
     </appender>
     <logger name="chatclient" >
-        <level value="debug"/>
+        <level value="trace"/>
         <appender-ref ref="console" />
     </logger>
     <logger name="emoticon" >
@@ -18,7 +18,7 @@
         <appender-ref ref="console" />
     </logger>
     <logger name="chatcommons" >
-        <level value="debug"/> 
+        <level value="trace"/>
         <appender-ref ref="console" />
     </logger>
   

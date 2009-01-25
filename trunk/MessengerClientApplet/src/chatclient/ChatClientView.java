@@ -62,13 +62,13 @@ public class ChatClientView extends javax.swing.JApplet {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ChatClientView.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex);
         } catch (InstantiationException ex) {
-            Logger.getLogger(ChatClientView.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(ChatClientView.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex);
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(ChatClientView.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex);
         }
 
 
@@ -124,16 +124,14 @@ public class ChatClientView extends javax.swing.JApplet {
         mainPanel.addMouseListener(listeners.getClientsListOutClickListener());
         jToolBar1.addMouseListener(listeners.getClientsListOutClickListener());
 
-        //this frame
-        //Crea proprietà
-        Properties properties =  null ;//Util.readProperties();
 
-        log.debug("loaded properties ["+properties+"]");
+        //leggo le proprietà
+        Properties properties = Util.readProperties();
+        log.debug("loaded properties [" + properties + "]");
 
         if (properties == null) {
 
-            log.fatal("Properties non può essere un File Nullo");
-//            stop();
+            log.warn("Properties non dovrebbe essere un File Nullo,carico le proprietà di default");
 
             setIp("127.0.0.1");
             setPort(3434);
