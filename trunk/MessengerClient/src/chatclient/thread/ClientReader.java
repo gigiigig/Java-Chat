@@ -94,9 +94,27 @@ public class ClientReader extends SwingWorker {
                     if (message.getType().equals(MESSAGE)) {
 
                         String messageSt = message.getParameters().getParameter().get(0).getValue();
-                        Font font = Font.decode(message.getParameters().getParameter().get(1).getValue());
-                        Color color = Color.decode(message.getParameters().getParameter().get(2).getValue());
+                        String fontSt = null;
+                        String colorSt = null;
 
+                        try {
+                            fontSt = message.getParameters().getParameter().get(1).getValue();
+                            colorSt = message.getParameters().getParameter().get(2).getValue();
+                        } catch (IndexOutOfBoundsException e) {
+                            log.debug("il messaggio non contiene dati per font e colore");
+                        }
+                        Font font = null;
+                        if (fontSt != null) {
+                            font = Font.decode(fontSt);
+                        } else {
+                            font = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
+                        }
+                        Color color = null;
+                        if (colorSt != null) {
+                            color = Color.decode(colorSt);
+                        } else {
+                            color = Color.BLACK;
+                        }
                         //prendo le emoticons dai contents 
                         List<Emoticon> emoticons = new LinkedList<Emoticon>();
 
@@ -161,7 +179,7 @@ public class ClientReader extends SwingWorker {
 
 // </editor-fold>
 
-                    // <editor-fold defaultstate="collapsed" desc=" REQUEST ">
+                        // <editor-fold defaultstate="collapsed" desc=" REQUEST ">
                     } else if (message.getType().equals(REQUEST)) {
 
                         if (message.getName().equals(Request.FILETRANSFER)) {
@@ -305,7 +323,7 @@ public class ClientReader extends SwingWorker {
 
 // </editor-fold>
 
-                    // <editor-fold defaultstate="collapsed" desc=" COMMAND ">
+                        // <editor-fold defaultstate="collapsed" desc=" COMMAND ">
                     } else if (message.getType().equals(COMMAND)) {
 
                         if (message.getName().equals(Command.REMOVEUSER)) {
@@ -330,13 +348,13 @@ public class ClientReader extends SwingWorker {
                                 }
                             }
 
-                        /*aggiungo un nuovo utente che si è connesso*/
+                            /*aggiungo un nuovo utente che si è connesso*/
                         } else if (message.getName().equals(Command.ADDUSER)) {
                             //i paramtri contengono i clints da aggiungere
                             List<Parameter> parameters = message.getParameters().getParameter();
 
-                            log.debug("nick da aggiungere ["+parameters.size()+"]");
-                           
+                            log.debug("nick da aggiungere [" + parameters.size() + "]");
+
 //                            int position = ccv.getClientsList().getModel().getSize() - 1;
                             DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
                             synchronized (listModel) {
@@ -344,9 +362,9 @@ public class ClientReader extends SwingWorker {
                                 for (Parameter parameter : parameters) {
                                     ccv.getClients().add(new Client(null, parameter.getValue()));
                                     listModel.addElement(parameter.getValue());
-                                    log.debug("aggiunto  client ["+parameter.getValue()+"]");
+                                    log.debug("aggiunto  client [" + parameter.getValue() + "]");
                                 }
-                                
+
                                 ccv.getClientsList().validate();
                                 ccv.getFrame().validate();
 
@@ -362,7 +380,7 @@ public class ClientReader extends SwingWorker {
                             }
                         }
                     }
-                // </editor-fold>
+                    // </editor-fold>
 
 
                 }
