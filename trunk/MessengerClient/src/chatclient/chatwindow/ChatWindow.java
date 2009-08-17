@@ -93,6 +93,9 @@ public class ChatWindow extends javax.swing.JFrame {
         }
         // </editor-fold>
 
+        //traspèarenza testo chat
+        jScrollPane2.getViewport().setOpaque(false);
+
         this.isServer = isServer;
         this.nick = ccv.getNick();
         nickLabel.setText(nick);
@@ -167,8 +170,6 @@ public class ChatWindow extends javax.swing.JFrame {
         mainPanel = new MainPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         nickTable = new javax.swing.JTable();
-        chatTextScroller = new javax.swing.JScrollPane();
-        chatText = new javax.swing.JTextPane();
         nickLabel = new javax.swing.JLabel();
         sendButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -180,6 +181,8 @@ public class ChatWindow extends javax.swing.JFrame {
         emotionsButton = new javax.swing.JButton();
         fontButton = new javax.swing.JButton();
         colorButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        chatText = new javax.swing.JTextPane();
 
         setName("Form"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -215,22 +218,6 @@ public class ChatWindow extends javax.swing.JFrame {
         jTableBinding.bind();
         jScrollPane3.setViewportView(nickTable);
 
-        chatTextScroller.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        chatTextScroller.setAutoscrolls(true);
-        chatTextScroller.setName("chatTextScroller"); // NOI18N
-
-        chatText.setEditable(false);
-        chatText.setAlignmentX(0.0F);
-        chatText.setAlignmentY(0.0F);
-        chatText.setAutoscrolls(false);
-        chatText.setName("chatText"); // NOI18N
-        chatText.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                chatTextMouseReleased(evt);
-            }
-        });
-        chatTextScroller.setViewportView(chatText);
-
         nickLabel.setFont(resourceMap.getFont("nickLabel.font")); // NOI18N
         nickLabel.setForeground(resourceMap.getColor("nickLabel.foreground")); // NOI18N
         nickLabel.setText(resourceMap.getString("nickLabel.text")); // NOI18N
@@ -238,6 +225,7 @@ public class ChatWindow extends javax.swing.JFrame {
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(chatclient.ChatClientApp.class).getContext().getActionMap(ChatWindow.class, this);
         sendButton.setAction(actionMap.get("invia")); // NOI18N
+        sendButton.setBackground(new Color(255, 255, 255, 100));
         sendButton.setText(resourceMap.getString("sendButton.text")); // NOI18N
         sendButton.setBorderPainted(false);
         sendButton.setName("sendButton"); // NOI18N
@@ -299,6 +287,26 @@ public class ChatWindow extends javax.swing.JFrame {
         colorButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         chatToolbar.add(colorButton);
 
+        jScrollPane2.setBackground(new Color(255, 255, 255, 100));
+        jScrollPane2.setBorder(null);
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+        jScrollPane2.setOpaque(false);
+
+        chatText.setBackground(new Color(0, 0, 0, 100));
+        chatText.setBorder(null);
+        chatText.setEditable(false);
+        chatText.setAlignmentX(0.0F);
+        chatText.setAlignmentY(0.0F);
+        chatText.setAutoscrolls(false);
+        chatText.setName("chatText"); // NOI18N
+        chatText.setOpaque(false);
+        chatText.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                chatTextMouseReleased(evt);
+            }
+        });
+        jScrollPane2.setViewportView(chatText);
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -306,24 +314,26 @@ public class ChatWindow extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(chatToolbar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(userLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(nickLabel))
+                        .addComponent(nickLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 202, Short.MAX_VALUE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chatTextScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(chatToolbar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGap(9, 9, 9)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -341,8 +351,8 @@ public class ChatWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chatTextScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGap(6, 6, 6)
@@ -353,7 +363,7 @@ public class ChatWindow extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(10, 10, 10))))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -412,13 +422,13 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addChatButton;
     private javax.swing.JTextPane chatText;
-    private javax.swing.JScrollPane chatTextScroller;
     private javax.swing.JToolBar chatToolbar;
     private javax.swing.JButton colorButton;
     private javax.swing.JButton emotionsButton;
     private javax.swing.JButton fontButton;
     private javax.swing.JTextPane inputText;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPanel mainPanel;
