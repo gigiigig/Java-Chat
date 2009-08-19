@@ -18,11 +18,8 @@ import chatclient.game.dama.DamaCanvas;
 import emoticon.Emoticon;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,7 +30,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
@@ -179,7 +175,7 @@ public class ClientReader extends SwingWorker {
 
 // </editor-fold>
 
-                        // <editor-fold defaultstate="collapsed" desc=" REQUEST ">
+                    // <editor-fold defaultstate="collapsed" desc=" REQUEST ">
                     } else if (message.getType().equals(REQUEST)) {
 
                         if (message.getName().equals(Request.FILETRANSFER)) {
@@ -323,64 +319,64 @@ public class ClientReader extends SwingWorker {
 
 // </editor-fold>
 
-                        // <editor-fold defaultstate="collapsed" desc=" COMMAND ">
-                    } else if (message.getType().equals(COMMAND)) {
+                    // <editor-fold defaultstate="collapsed" desc=" COMMAND ">
+                } else if (message.getType().equals(COMMAND)) {
 
-                        if (message.getName().equals(Command.REMOVEUSER)) {
+                    if (message.getName().equals(Command.REMOVEUSER)) {
 
-                            String clientToRemove = message.getParameters().getParameter().get(0).getValue();
+                        String clientToRemove = message.getParameters().getParameter().get(0).getValue();
 
-                            ArrayList<Client> clients = ccv.getClients();
-                            ListIterator<Client> li = clients.listIterator();
-                            boolean continua = true;
-                            while (li.hasNext() && continua) {
-                                Client elem = li.next();
-                                if (elem.getNick().equals(clientToRemove)) {
-                                    log.info("remove element : " + elem);
-                                    clients.remove(elem);
-                                    DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
-                                    synchronized (listModel) {
-                                        listModel.removeElement(elem.getNick());
-                                        ccv.getClientsList().validate();
-                                        ccv.getFrame().pack();
-                                        continua = false;
-                                    }
+                        ArrayList<Client> clients = ccv.getClients();
+                        ListIterator<Client> li = clients.listIterator();
+                        boolean continua = true;
+                        while (li.hasNext() && continua) {
+                            Client elem = li.next();
+                            if (elem.getNick().equals(clientToRemove)) {
+                                log.info("remove element : " + elem);
+                                clients.remove(elem);
+                                DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
+                                synchronized (listModel) {
+                                    listModel.removeElement(elem.getNick());
+                                    ccv.getClientsList().validate();
+                                    ccv.getFrame().pack();
+                                    continua = false;
                                 }
                             }
+                        }
 
-                            /*aggiungo un nuovo utente che si è connesso*/
-                        } else if (message.getName().equals(Command.ADDUSER)) {
-                            //i paramtri contengono i clints da aggiungere
-                            List<Parameter> parameters = message.getParameters().getParameter();
+                        /*aggiungo un nuovo utente che si è connesso*/
+                    } else if (message.getName().equals(Command.ADDUSER)) {
+                        //i paramtri contengono i clints da aggiungere
+                        List<Parameter> parameters = message.getParameters().getParameter();
 
-                            log.debug("nick da aggiungere [" + parameters.size() + "]");
+                        log.debug("nick da aggiungere [" + parameters.size() + "]");
 
 //                            int position = ccv.getClientsList().getModel().getSize() - 1;
-                            DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
-                            synchronized (listModel) {
+                        DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
+                        synchronized (listModel) {
 
-                                for (Parameter parameter : parameters) {
-                                    ccv.getClients().add(new Client(null, parameter.getValue()));
-                                    listModel.addElement(parameter.getValue());
-                                    log.debug("aggiunto  client [" + parameter.getValue() + "]");
-                                }
+                            for (Parameter parameter : parameters) {
+                                ccv.getClients().add(new Client(null, parameter.getValue()));
+                                listModel.addElement(parameter.getValue());
+                                log.debug("aggiunto  client [" + parameter.getValue() + "]");
+                            }
 
-                                ccv.getClientsList().validate();
-                                ccv.getFrame().validate();
+                            ccv.getClientsList().validate();
+                            ccv.getFrame().validate();
 
-                                log.debug("utenti connessi : ");
-                                for (Object elem : listModel.toArray()) {
+                            log.debug("utenti connessi : ");
+                            for (Object elem : listModel.toArray()) {
 
-                                    try {
-                                        log.debug("utente : " + elem.toString());
-                                    } catch (Exception e) {
-                                        log.debug("elemento NULLO");
-                                    }
+                                try {
+                                    log.debug("utente : " + elem.toString());
+                                } catch (Exception e) {
+                                    log.debug("elemento NULLO");
                                 }
                             }
                         }
                     }
-                    // </editor-fold>
+                }
+                // </editor-fold>
 
 
                 }

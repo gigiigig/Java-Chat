@@ -372,21 +372,23 @@ public class ChatClientView extends FrameView {
 
         jToolBar1.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         jToolBar1.setFloatable(false);
-        jToolBar1.setOrientation(1);
         jToolBar1.setBorderPainted(false);
         jToolBar1.setOpaque(false);
 
         chat.setAction(actionMap.get("addChatWithSelected")); // NOI18N
+        chat.setIcon(resourceMap.getIcon("chat.icon")); // NOI18N
         chat.setText(resourceMap.getString("chat.text")); // NOI18N
         chat.setToolTipText(resourceMap.getString("chat.toolTipText")); // NOI18N
         chat.setFocusable(false);
         chat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chat.setOpaque(false);
+        chat.setPreferredSize(new java.awt.Dimension(59, 59));
         chat.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(chat);
 
         disconnect.setAction(actionMap.get("disconnetti")); // NOI18N
         disconnect.setBackground(resourceMap.getColor("disconnect.background")); // NOI18N
+        disconnect.setIcon(resourceMap.getIcon("disconnect.icon")); // NOI18N
         disconnect.setToolTipText(resourceMap.getString("disconnect.toolTipText")); // NOI18N
         disconnect.setFocusable(false);
         disconnect.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -421,28 +423,26 @@ public class ChatClientView extends FrameView {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(clientListScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
                         .addComponent(nickIcon)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(nickLabel))
-                    .addComponent(clientListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE))
+                        .addComponent(nickLabel)
+                        .addGap(134, 134, 134)
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(nickIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nickLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clientListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)))
+                .addGap(22, 22, 22)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(nickIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nickLabel)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(clientListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
