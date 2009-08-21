@@ -256,6 +256,7 @@ public class ChatClientView extends FrameView {
     }
     // </editor-fold>  
     /*Show metods for Frames*/
+
     /**
      * Show About Box
      */
@@ -496,7 +497,6 @@ public class ChatClientView extends FrameView {
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chat;
     private javax.swing.JScrollPane clientListScrollPane;
@@ -534,16 +534,17 @@ public class ChatClientView extends FrameView {
     private String nick;
     private TrayIcon tray;
 //    private int nextPort;
+
     /**
      * Connette al server principale 
      */
     @Action
-    public Task connetti() {
+    public void connetti() {
         if (!nickText.getText().equals("")) {
-            return helper.connettiTask();
+            helper.connect();
         } else {
             JOptionPane.showMessageDialog(getFrame(), "<html><font color=red>Il nick non può essere vuoto<html>", "Errore", JOptionPane.ERROR_MESSAGE);
-            return null;
+            return;
         }
     }
 
@@ -728,6 +729,7 @@ public class ChatClientView extends FrameView {
         this.tray = tray;
     }
     //</editor-fold>
+
     /**
      * Un renderer personalizzato per la jList di clients
      */    //GRAPHICS METHODS

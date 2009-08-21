@@ -17,6 +17,7 @@ import chatclient.theme.ThemeManager;
 import chatclient.thread.ClientReader;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,9 +35,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jdesktop.application.Application;
-import org.jdesktop.application.Task;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import static chatcommons.Commands.*;
 
@@ -94,93 +92,14 @@ public class ChatClientViewHelper {
      * Connette al server principle utilizzando un task
      * @return
      */
-    public Task connettiTask() {
+    public void connect() {
 
-        class Connect extends Task {
+        new Thread(new Runnable() {
 
-            public Connect(Application a) {
-                super(a);
-            }
-
-            @Override
-            protected Object doInBackground() throws Exception {
+            public void run() {
                 try {
-
-                    //blocco input text e bottone
-                    ccv.getNickText().setEnabled(false);
-                    ccv.getLogin().setEnabled(false);
-
-                    //messaggio di stato
-                    setMessage("Connecting to server");
-
-                    //creo il socket
-                    ccv.setSocket(new Socket());
-                    log.info("client : connect on port : " + ccv.getPort());
-
-                    //connetto il socket
-                    ccv.getSocket().connect(new InetSocketAddress(ccv.getIp(), ccv.getPort()));
-                    ccv.setOutputStream(ccv.getSocket().getOutputStream());
-
-                    //leggo il nick
-                    String nick = ccv.getNickText().getText().trim();
-                    ccv.setNick(nick);
-
-                    //invio al server il nick name
-                    MESSAGE request = MessageManger.createCommand(Command.CONNECT, new HashMap<String, String>());
-                    MessageManger.addParameter(request, "nick", nick);
-
-                    MessageManger.directWriteMessage(request, ccv.getOutputStream());
-
-                    //leggo se il nick è stato accettato
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(ccv.getSocket().getInputStream()));
-                    String accptedNick = reader.readLine();
-
-                    MESSAGE message = MessageManger.parseXML(accptedNick);
-                    log.debug(nick + " read response : " + MessageManger.messageToStringFormatted(message));
-
-                    String response = message.getParameters().getParameter().get(0).getValue();
-                    log.debug("response value :" + response);
-
-                    if (response.equals(Command.KO)) {
-                        JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=blue>Il nick scelto è già connesso<html>", "Attenzione", JOptionPane.WARNING_MESSAGE);
-                        ccv.getSocket().close();
-                        ccv.setSocket(null);
-                        ccv.setOutputStream(null);
-                        ccv.getNickText().setEnabled(true);
-                        ccv.getLogin().setEnabled(true);
-
-                        return null;
-                    }
-
-                    //lancio il thread
-                    new ClientReader(ccv.getSocket(), ccv, ClientReader.MAINREADER).execute();
-
-                    ccv.getNickLabel().setText(ccv.getNick());
-                    showMainPanel();
-
-                    //riattivo inputtext e bottone di login
-                    ccv.getNickText().setEnabled(true);
-                    ccv.getLogin().setEnabled(true);
-                    
-                    setMessage("Connected");
-
-                    //aggiorno il messaggio nella systemtray
-                    if (ccv.getTray() != null) {
-                        ccv.getTray().setToolTip("Gigi Messenger - connesso : " + ccv.getNick());
-                    }
-
-                    //nel prperties salvo il nick impostato per  la connessione 
-                    Properties properties = Util.readProperties();
-                    if (properties != null) {
-                        properties.setProperty("nick", nick);
-                        Util.writeProperties(properties);
-                    } else {
-                        properties = new Properties();
-                        properties.setProperty("nick", nick);
-                        Util.writeProperties(properties);
-                    }
-
-//  
+                    connects();
+  
         /*catch for some exception*/
                 } catch (ConnectException e) {
 //                    ccv.ShowMessageFrame("<html><font color=red>Impossibile connettersi al server<html>");
@@ -193,16 +112,70 @@ public class ChatClientViewHelper {
                 } catch (IOException ex) {
                     log.error(ex);
                 }
-                return null;
+
             }
 
-            @Override
-            protected void finished() {
-                setMessage("done");
+            private void connects() throws SocketException, IOException, HeadlessException {
+                //blocco input text e bottone
+                ccv.getNickText().setEnabled(false);
+                ccv.getLogin().setEnabled(false);
+                //messaggio di stato
+                //setMessage("Connecting to server");
+                //creo il socket
+                ccv.setSocket(new Socket());
+                log.info("client : connect on port : " + ccv.getPort());
+                //connetto il socket
+                ccv.getSocket().connect(new InetSocketAddress(ccv.getIp(), ccv.getPort()));
+                ccv.setOutputStream(ccv.getSocket().getOutputStream());
+                //leggo il nick
+                String nick = ccv.getNickText().getText().trim();
+                ccv.setNick(nick);
+                //invio al server il nick name
+                MESSAGE request = MessageManger.createCommand(Command.CONNECT, new HashMap<String, String>());
+                MessageManger.addParameter(request, "nick", nick);
+                MessageManger.directWriteMessage(request, ccv.getOutputStream());
+                //leggo se il nick è stato accettato
+                BufferedReader reader = new BufferedReader(new InputStreamReader(ccv.getSocket().getInputStream()));
+                String accptedNick = reader.readLine();
+                MESSAGE message = MessageManger.parseXML(accptedNick);
+                log.debug(nick + " read response : " + MessageManger.messageToStringFormatted(message));
+                String response = message.getParameters().getParameter().get(0).getValue();
+                log.debug("response value :" + response);
+                if (response.equals(Command.KO)) {
+                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=blue>Il nick scelto è già connesso<html>", "Attenzione", JOptionPane.WARNING_MESSAGE);
+                    ccv.getSocket().close();
+                    ccv.setSocket(null);
+                    ccv.setOutputStream(null);
+                    ccv.getNickText().setEnabled(true);
+                    ccv.getLogin().setEnabled(true);
+                }
+                //lancio il thread
+                new ClientReader(ccv.getSocket(), ccv, ClientReader.MAINREADER).execute();
+                ccv.getNickLabel().setText(ccv.getNick());
+                showMainPanel();
+                //riattivo inputtext e bottone di login
+                ccv.getNickText().setEnabled(true);
+                ccv.getLogin().setEnabled(true);
+                //setMessage("Connected");
+                //aggiorno il messaggio nella systemtray
+                if (ccv.getTray() != null) {
+                    ccv.getTray().setToolTip("Gigi Messenger - connesso : " + ccv.getNick());
+                }
+                //nel prperties salvo il nick impostato per  la connessione
+                Properties properties = Util.readProperties();
+                if (properties != null) {
+                    properties.setProperty("nick", nick);
+                    Util.writeProperties(properties);
+                } else {
+                    properties = new Properties();
+                    properties.setProperty("nick", nick);
+                    Util.writeProperties(properties);
+                }
+                /*catch for some exception*/
             }
-        }
+        }).start();
 
-        return new Connect(Application.getInstance());
+        //return new Connect(Application.getInstance());
     }
 
     /**
@@ -309,7 +282,6 @@ public class ChatClientViewHelper {
             }
         }
 
-        
         if (toReturn != null) {
             //se c'è già una chat con l'utente scelto la apro
             toReturn.setVisible(true);
