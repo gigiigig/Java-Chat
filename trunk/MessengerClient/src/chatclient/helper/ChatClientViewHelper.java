@@ -99,8 +99,8 @@ public class ChatClientViewHelper {
             public void run() {
                 try {
                     connects();
-  
-        /*catch for some exception*/
+
+                    /*catch for some exception*/
                 } catch (ConnectException e) {
 //                    ccv.ShowMessageFrame("<html><font color=red>Impossibile connettersi al server<html>");
                     JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Impossibile connettersi al server<html>", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -115,7 +115,7 @@ public class ChatClientViewHelper {
 
             }
 
-            private void connects() throws SocketException, IOException, HeadlessException {
+            private void connects() throws SocketException, IOException, UnknownHostException, ConnectException {
                 //blocco input text e bottone
                 ccv.getNickText().setEnabled(false);
                 ccv.getLogin().setEnabled(false);
