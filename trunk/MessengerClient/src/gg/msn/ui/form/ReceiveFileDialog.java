@@ -12,6 +12,7 @@ import gg.msn.core.thread.FileSender;
 import gg.msn.core.thread.SocketFileConnector;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import gg.msn.ui.listener.MessageReceivedListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
@@ -60,7 +61,7 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
         } catch (Exception e) {
             log.warn(e);
         }
-    // </editor-fold>
+        // </editor-fold>
 
     }
 
@@ -147,6 +148,7 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
     private javax.swing.JButton refuseButton;
     // End of variables declaration//GEN-END:variables
     // <editor-fold defaultstate="collapsed" desc="Getter and setter">        
+
     public String getFile() {
         return file;
     }
@@ -199,6 +201,7 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
         return packReceived;
     }
     // </editor-fold>
+
     /**
      * this is not only set method, contains receive logic
      * @param packReceived
@@ -299,8 +302,8 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
             ccv.setFileSocket(connector.getSocket());
             try {
                 ccv.setFileOutputStream(connector.getSocket().getOutputStream());
-                ClientReader clientReader = new ClientReader(ccv.getFileSocket(), ccv, ClientReader.FILEREADER);
-                clientReader.execute();
+                ClientReader clientReader = new ClientReader(new MessageReceivedListener(ccv), ClientReader.FILEREADER);
+                new Thread(clientReader).start();
             } catch (IOException ex) {
                 log.error(ex);
             }
@@ -316,10 +319,10 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
 //        paramters.put("response", Command.OK);
 
         MESSAGE requestAccpet = MessageManger.createRequest(Request.FILEACCEPTRESPONSE, receivers, null);
-        MessageManger.addParameter(requestAccpet,"file", file);
-        MessageManger.addParameter(requestAccpet,"filesize", fileSize + "");
-        MessageManger.addParameter(requestAccpet,"response", Command.OK);
-        
+        MessageManger.addParameter(requestAccpet, "file", file);
+        MessageManger.addParameter(requestAccpet, "filesize", fileSize + "");
+        MessageManger.addParameter(requestAccpet, "response", Command.OK);
+
         try {
             MessageManger.directWriteMessage(requestAccpet, ccv.getOutputStream());
         } catch (SocketException socketException) {
@@ -360,10 +363,10 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
 //        paramters.put("response", Command.KO);
 
         MESSAGE requestAccpet = MessageManger.createRequest(Request.FILEACCEPTRESPONSE, receivers, null);
-        MessageManger.addParameter(requestAccpet,"file", file);
-        MessageManger.addParameter(requestAccpet,"filesize", fileSize + "");
-        MessageManger.addParameter(requestAccpet,"response", Command.KO);
-        
+        MessageManger.addParameter(requestAccpet, "file", file);
+        MessageManger.addParameter(requestAccpet, "filesize", fileSize + "");
+        MessageManger.addParameter(requestAccpet, "response", Command.KO);
+
         try {
             MessageManger.directWriteMessage(requestAccpet, ccv.getOutputStream());
         } catch (SocketException socketException) {
@@ -371,10 +374,10 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
         }
         //chiudo la finestra
         destroy();
-        
+
         //cancello il file
         File toDelete = new File(file);
-        if(toDelete.isFile()){
+        if (toDelete.isFile()) {
             toDelete.delete();
         }
     }

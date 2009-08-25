@@ -20,6 +20,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import org.jdesktop.application.Action;
 import chatcommons.Commands.*;
+import gg.msn.ui.listener.MessageReceivedListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
@@ -54,7 +55,7 @@ public class SendFileDialog extends javax.swing.JFrame {
         } catch (Exception e) {
             log.warn(e);
         }
-    // </editor-fold>
+        // </editor-fold>
 
 
 
@@ -150,6 +151,7 @@ public class SendFileDialog extends javax.swing.JFrame {
     private javax.swing.JButton send;
     private javax.swing.JLabel statusLabel;
     // End of variables declaration//GEN-END:variables
+
     /**
      * Lancia l'invio del file
      */
@@ -194,8 +196,8 @@ public class SendFileDialog extends javax.swing.JFrame {
             ccv.setFileSocket(connector.getSocket());
             try {
                 ccv.setFileOutputStream(connector.getSocket().getOutputStream());
-                ClientReader clientReader = new ClientReader(ccv.getFileSocket(), ccv, ClientReader.FILEREADER);
-                clientReader.execute();
+                ClientReader clientReader = new ClientReader(new MessageReceivedListener(ccv), ClientReader.FILEREADER);
+                new Thread(clientReader).start();
             } catch (IOException ex) {
                 log.error(ex);
             }
@@ -234,34 +236,34 @@ public class SendFileDialog extends javax.swing.JFrame {
      * lista dei trasferimenti attivi
      */
     public void destroy() {
-        ccv.getHelper().getFileDialogs().remove(this);        
+        ccv.getHelper().getFileDialogs().remove(this);
         this.setVisible(false);
     }
-    
-    public void transferRefusedFromReceiver(){
+
+    public void transferRefusedFromReceiver() {
         statusLabel.setText("<html><font color=red>Il trasferimeto è stato rifiutato</p></html>");
         try {
             Thread.sleep(3000);
         } catch (InterruptedException interruptedException) {
             log.warn(interruptedException);
         }
-        
+
         destroy();
-        
+
     }
-    public void transferStoppedFromReceiver(){
-         statusLabel.setText("<html><font color=red>"+receiver+" ha annullato il trasferimeto"+"</p></html>");
-         fileSender.setActive(false);
-         try {
+
+    public void transferStoppedFromReceiver() {
+        statusLabel.setText("<html><font color=red>" + receiver + " ha annullato il trasferimeto" + "</p></html>");
+        fileSender.setActive(false);
+        try {
             Thread.sleep(3000);
         } catch (InterruptedException interruptedException) {
             log.warn(interruptedException);
         }
-        
+
         destroy();
     }
-    
-    
+
     // <editor-fold defaultstate="collapsed" desc="Getter and setter">        
     public JLabel getStatusLabel() {
         return statusLabel;
@@ -322,8 +324,6 @@ public class SendFileDialog extends javax.swing.JFrame {
     public void setProgressBar(JProgressBar progressBar) {
         this.progressBar = progressBar;
     }    // </editor-fold> 
-
-    
 }
 
 

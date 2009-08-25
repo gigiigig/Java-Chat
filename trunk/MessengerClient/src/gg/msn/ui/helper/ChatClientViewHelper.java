@@ -17,10 +17,9 @@ import gg.msn.ui.theme.ThemeManager;
 import gg.msn.core.thread.ClientReader;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
-import java.awt.HeadlessException;
-import java.io.BufferedReader;
+import gg.msn.core.manager.ConnectionManager;
+import gg.msn.ui.listener.MessageReceivedListener;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -89,17 +88,15 @@ public class ChatClientViewHelper {
     }
 
     /**
-     * Connette al server principle utilizzando un task
+     * Connette al server principle 
      * @return
      */
     public void connect() {
-
         new Thread(new Runnable() {
 
             public void run() {
                 try {
                     connects();
-
                     /*catch for some exception*/
                 } catch (ConnectException e) {
 //                    ccv.ShowMessageFrame("<html><font color=red>Impossibile connettersi al server<html>");
@@ -116,43 +113,42 @@ public class ChatClientViewHelper {
             }
 
             private void connects() throws SocketException, IOException, UnknownHostException, ConnectException {
+
                 //blocco input text e bottone
                 ccv.getNickText().setEnabled(false);
                 ccv.getLogin().setEnabled(false);
-                //messaggio di stato
-                //setMessage("Connecting to server");
-                //creo il socket
-                ccv.setSocket(new Socket());
-                log.info("client : connect on port : " + ccv.getPort());
-                //connetto il socket
-                ccv.getSocket().connect(new InetSocketAddress(ccv.getIp(), ccv.getPort()));
-                ccv.setOutputStream(ccv.getSocket().getOutputStream());
+
                 //leggo il nick
                 String nick = ccv.getNickText().getText().trim();
-                ccv.setNick(nick);
-                //invio al server il nick name
-                MESSAGE request = MessageManger.createCommand(Command.CONNECT, new HashMap<String, String>());
-                MessageManger.addParameter(request, "nick", nick);
-                MessageManger.directWriteMessage(request, ccv.getOutputStream());
-                //leggo se il nick è stato accettato
-                BufferedReader reader = new BufferedReader(new InputStreamReader(ccv.getSocket().getInputStream()));
-                String accptedNick = reader.readLine();
-                MESSAGE message = MessageManger.parseXML(accptedNick);
-                log.debug(nick + " read response : " + MessageManger.messageToStringFormatted(message));
-                String response = message.getParameters().getParameter().get(0).getValue();
-                log.debug("response value :" + response);
+
+                //connetto il socket
+                Socket socket = new Socket();
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(ccv.getIp(), ccv.getPort());
+                String response = new ConnectionManager().connect(socket, inetSocketAddress, nick);
+
                 if (response.equals(Command.KO)) {
                     JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=blue>Il nick scelto è già connesso<html>", "Attenzione", JOptionPane.WARNING_MESSAGE);
                     ccv.getSocket().close();
-                    ccv.setSocket(null);
-                    ccv.setOutputStream(null);
+
                     ccv.getNickText().setEnabled(true);
                     ccv.getLogin().setEnabled(true);
                     ccv.getNickText().setEnabled(true);
                     return;
+
+                } else {
+                    //messaggio di stato
+                    //setMessage("Connecting to server");
+                    //creo il socket
+                    ccv.setSocket(socket);
+                    log.info("client : connect on port : " + ccv.getPort());
+                    //connetto il socket
+                    ccv.getSocket().connect(new InetSocketAddress(ccv.getIp(), ccv.getPort()));
+                    ccv.setOutputStream(ccv.getSocket().getOutputStream());
+                    ccv.setNick(nick);
                 }
+
                 //lancio il thread
-                new ClientReader(ccv.getSocket(), ccv, ClientReader.MAINREADER).execute();
+                new Thread(new ClientReader(new MessageReceivedListener(ccv), ClientReader.MAINREADER)).start();
                 ccv.getNickLabel().setText(ccv.getNick());
                 showMainPanel();
                 //riattivo inputtext e bottone di login
@@ -185,18 +181,13 @@ public class ChatClientViewHelper {
      */
     public void disconnetti() {
         try {
-            MESSAGE toSend = MessageManger.createCommand(Command.DISCONNECT, null);
-            log.debug("send : " + MessageManger.messageToStringFormatted(toSend));
-            MessageManger.directWriteMessage(toSend, ccv.getOutputStream());
-
             //TODO metti nel finalli i comendi da eseguire per forza
 
-            ccv.getSocket().close();
+            new ConnectionManager().disconnect(ccv.getSocket());
             ccv.setOutputStream(null);
             ccv.setClients(new ArrayList<Client>());
 
             ((DefaultListModel) ccv.getClientsList().getModel()).removeAllElements();
-//            ((DefaultListModel) ccv.getClientsList().getModel()).addElement(null);
 
             chatWindows = new ArrayList<ChatWindow>();
             canvases = new ArrayList<Canvas>();
@@ -209,22 +200,6 @@ public class ChatClientViewHelper {
             JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Il server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
             showLoginPanel();
 
-        } catch (IOException ex) {
-            log.error(ex);
-        }
-    }
-
-    /**
-     * 
-     * @param request
-     */
-    public void sendRequest(String request) {
-        try {
-            ccv.getOutputStream().write(request.getBytes(Util.DEFAULTENCODING));
-        } catch (SocketException se) {
-            log.error(se);
-            JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>El server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
-            showLoginPanel();
         } catch (IOException ex) {
             log.error(ex);
         }
