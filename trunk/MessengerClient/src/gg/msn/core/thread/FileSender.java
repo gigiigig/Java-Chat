@@ -12,10 +12,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.swing.SwingWorker;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,10 +59,10 @@ public class FileSender extends SwingWorker {
 //            parameters.put("filesize", toSend.length() + "");
 
             MESSAGE requestAccpet = MessageManger.createRequest(Request.FILEACCEPTREQUEST, receivers, null);
-            MessageManger.addParameter(requestAccpet,"file", toSend.getName());
-            MessageManger.addParameter(requestAccpet,"filesize", toSend.length() + "");
-            
-            log.debug("send message to server : "+MessageManger.messageToStringFormatted(requestAccpet));
+            MessageManger.addParameter(requestAccpet, "file", toSend.getName());
+            MessageManger.addParameter(requestAccpet, "filesize", toSend.length() + "");
+
+            log.debug("send message to server : " + MessageManger.messageToStringFormatted(requestAccpet));
             MessageManger.directWriteMessage(requestAccpet, os);
 
             while (!accepted && active) {
@@ -100,13 +98,13 @@ public class FileSender extends SwingWorker {
                 Calendar init = Calendar.getInstance();
                 dataMessage.setData(byteArr);
                 //nome del file
-                MessageManger.addParameterAt(dataMessage,"file", toSend.getName(), 0);
+                MessageManger.addParameterAt(dataMessage, "file", toSend.getName(), 0);
                 //numero dei bytes da scrivere 
-                MessageManger.addParameterAt(dataMessage,"bytesreaded", readed + "", 1);
+                MessageManger.addParameterAt(dataMessage, "bytesreaded", readed + "", 1);
                 //dimansione tottale del file
-                MessageManger.addParameterAt(dataMessage, "filesize",toSend.length() + "", 2);
+                MessageManger.addParameterAt(dataMessage, "filesize", toSend.length() + "", 2);
                 //numero del pacchetto
-                MessageManger.addParameterAt(dataMessage,"packnum", cont + "", 3);
+                MessageManger.addParameterAt(dataMessage, "packnum", cont + "", 3);
 
                 MessageManger.directWriteMessage(dataMessage, os);
 
@@ -163,6 +161,7 @@ public class FileSender extends SwingWorker {
         this.active = active;
     }
     // <editor-fold defaultstate="collapsed" desc=" Getter and Setter ">
+
     public OutputStream getOs() {
         return os;
     }

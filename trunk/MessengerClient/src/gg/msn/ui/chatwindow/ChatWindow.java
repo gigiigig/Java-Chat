@@ -218,6 +218,7 @@ public class ChatWindow extends javax.swing.JFrame {
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(gg.msn.ui.ChatClientApp.class).getContext().getActionMap(ChatWindow.class, this);
         sendButton.setAction(actionMap.get("invia")); // NOI18N
         sendButton.setBackground(new Color(255, 255, 255, 100));
+        sendButton.setIcon(resourceMap.getIcon("sendButton.icon")); // NOI18N
         sendButton.setText(resourceMap.getString("sendButton.text")); // NOI18N
         sendButton.setBorderPainted(false);
         sendButton.setName("sendButton"); // NOI18N

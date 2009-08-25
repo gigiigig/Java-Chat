@@ -541,7 +541,7 @@ public class ChatClientView extends FrameView {
         if (!nickText.getText().equals("")) {
             helper.connect();
         } else {
-            JOptionPane.showMessageDialog(getFrame(), "<html><font color=red>Il nick non puÃ² essere vuoto<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(getFrame(), "<html><font color=red>Il nick non può essere vuoto<html>", "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
     }

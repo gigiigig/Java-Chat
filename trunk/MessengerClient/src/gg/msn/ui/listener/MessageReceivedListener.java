@@ -317,7 +317,6 @@ public class MessageReceivedListener extends AbstractMessageListener {
 //                            int position = ccv.getClientsList().getModel().getSize() - 1;
                 DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
                 synchronized (listModel) {
-
                     for (Parameter parameter : parameters) {
                         ccv.getClients().add(new Client(null, parameter.getValue()));
                         listModel.addElement(parameter.getValue());
