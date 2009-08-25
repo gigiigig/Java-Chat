@@ -17,21 +17,13 @@
             <param name="ConversionPattern" value="%d [%t] [%C.%M] [%L] %p - %m%n"/>
         </layout>
     </appender>
-    <logger name="chatclient" >
+   
+    <logger name="gg.msn">
         <level value="debug"/>
         <appender-ref ref="appender" />
         <appender-ref ref="console" />
     </logger>
-    <logger name="emoticon" >
-        <level value="debug"/> 
-        <appender-ref ref="console" />
-        <appender-ref ref="appender" />
-    </logger>
-    <logger name="chatcommons" >
-        <level value="debug"/> 
-        <appender-ref ref="console" />
-        <appender-ref ref="appender" />
-    </logger>
+   
   
     <!--
     <root><appender-ref ref="console" />

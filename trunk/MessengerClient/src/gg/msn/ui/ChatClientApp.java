@@ -3,8 +3,9 @@
  */
 package gg.msn.ui;
 
-import gg.msn.ui.ChatClientView;
 import java.util.EventObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
@@ -12,7 +13,7 @@ import org.jdesktop.application.SingleFrameApplication;
  * The main class of the application.
  */
 public class ChatClientApp extends SingleFrameApplication {
-
+    private static Log log = LogFactory.getLog(ChatClientApp.class);
     /**
      * At startup create and show the main frame of the application.
      */
@@ -23,7 +24,7 @@ public class ChatClientApp extends SingleFrameApplication {
 //            File file = new File("test.properties");
 //            System.out.println(file.getPath());
 //            properties.load(new FileInputStream(file));
-       
+       log.debug("porca madonnnnnnaaaaaa!!!!");
             show(new ChatClientView(this));         
     }
 

@@ -18,6 +18,7 @@ import gg.msn.core.thread.ClientReader;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
 import gg.msn.core.manager.ConnectionManager;
+import gg.msn.ui.facebook.FBLoginPanel;
 import gg.msn.ui.listener.MessageReceivedListener;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -81,6 +82,14 @@ public class ChatClientViewHelper {
     public void showLoginPanel() {
         ccv.getFrame().remove(ccv.getMainPanel());
         ccv.getFrame().add(ccv.getLoginPanel());
+//        ccv.getLogin().setContentAreaFilled(false);
+//        ccv.getNickText().setEnabled(true);
+        ccv.getFrame().repaint();
+        ccv.getFrame().validate();
+    }
+    public void showFacebookLoginPanel() {
+        ccv.getFrame().remove(ccv.getMainPanel());
+        ccv.getFrame().setContentPane(new FBLoginPanel(ccv));
 //        ccv.getLogin().setContentAreaFilled(false);
 //        ccv.getNickText().setEnabled(true);
         ccv.getFrame().repaint();

@@ -10,6 +10,8 @@ import gg.msn.ui.form.OptionsDialog;
 import gg.msn.ui.helper.ChatClientViewHelper;
 import gg.msn.ui.theme.ThemeManager;
 import chatcommons.Client;
+import facebookchat.common.FacebookBuddyList;
+import facebookchat.common.FacebookUser;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
@@ -40,6 +42,7 @@ import java.awt.event.WindowAdapter;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.Timer;
@@ -53,6 +56,7 @@ import javax.swing.ListCellRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Application;
+
 
 /**
  * The application's main frame.
@@ -310,6 +314,7 @@ public class ChatClientView extends FrameView {
         jToolBar2 = new javax.swing.JToolBar();
         login = new javax.swing.JButton();
         userLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(gg.msn.ui.ChatClientApp.class).getContext().getResourceMap(ChatClientView.class);
         menuBar.setBackground(resourceMap.getColor("menuBar.background")); // NOI18N
@@ -453,6 +458,7 @@ public class ChatClientView extends FrameView {
         jToolBar2.setOpaque(false);
 
         login.setAction(actionMap.get("connetti")); // NOI18N
+        login.setIcon(resourceMap.getIcon("login.icon")); // NOI18N
         login.setText(resourceMap.getString("login.text")); // NOI18N
         login.setFocusable(false);
         login.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -462,6 +468,9 @@ public class ChatClientView extends FrameView {
 
         userLabel.setIcon(resourceMap.getIcon("userLabel.icon")); // NOI18N
         userLabel.setText(resourceMap.getString("userLabel.text")); // NOI18N
+
+        jButton1.setAction(actionMap.get("showFacebookLogin")); // NOI18N
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
 
         javax.swing.GroupLayout loginPanelLayout = new javax.swing.GroupLayout(loginPanel);
         loginPanel.setLayout(loginPanelLayout);
@@ -474,11 +483,13 @@ public class ChatClientView extends FrameView {
                         .addComponent(userLabel))
                     .addGroup(loginPanelLayout.createSequentialGroup()
                         .addGap(109, 109, 109)
-                        .addComponent(nickText, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(nickText, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(loginPanelLayout.createSequentialGroup()
                         .addGap(126, 126, 126)
-                        .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(137, Short.MAX_VALUE))
+                        .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
         loginPanelLayout.setVerticalGroup(
             loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -489,7 +500,9 @@ public class ChatClientView extends FrameView {
                 .addComponent(nickText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(jButton1)
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         setMenuBar(menuBar);
@@ -500,6 +513,7 @@ public class ChatClientView extends FrameView {
     private javax.swing.JScrollPane clientListScrollPane;
     private javax.swing.JList clientsList;
     private javax.swing.JButton disconnect;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
@@ -751,6 +765,22 @@ public class ChatClientView extends FrameView {
         manageFrame.setVisible(true);
     }
 
+    public void updateBuddyListPane() {
+		//fmod.removeAll();
+		clientsList.removeAll();
+		Iterator<String> it = FacebookBuddyList.buddies.keySet().iterator();
+		while(it.hasNext()){
+			String key = it.next();
+			log.debug("userID: " + key);
+			FacebookUser fu = FacebookBuddyList.buddies.get(key);
+			log.debug("status: " + fu.onlineStatus.toString());
+			((DefaultListModel)clientsList.getModel()).addElement(fu.firstName);
+		}
+		clientsList.repaint();
+		clientsList.revalidate();
+
+    }
+
     class ClientsListRenderer extends JLabel implements ListCellRenderer {
 
         Log log = LogFactory.getLog(this.getClass());
@@ -791,8 +821,12 @@ public class ChatClientView extends FrameView {
 
         }
     }
-}
 
+    @Action
+    public void showFacebookLogin() {
+        helper.showFacebookLoginPanel();
+    }
+}
 class LoginPanel extends JPanel {
 
     private Log log = LogFactory.getLog(this.getClass());
