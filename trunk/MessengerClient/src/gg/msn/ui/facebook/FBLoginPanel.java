@@ -12,7 +12,6 @@ package gg.msn.ui.facebook;
 
 import facebookchat.common.ErrorCode;
 import facebookchat.common.Launcher;
-import facebookchat.ui.main.Cheyenne;
 import gg.msn.ui.ChatClientView;
 import javax.swing.JOptionPane;
 import org.apache.commons.logging.Log;
@@ -180,6 +179,11 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 .addContainerGap(113, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    @Action
+    public void connect() {
+        connectStart();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField emailText;

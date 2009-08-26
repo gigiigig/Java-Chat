@@ -17,7 +17,12 @@
             <param name="ConversionPattern" value="%d [%t] [%C.%M] [%L] %p - %m%n"/>
         </layout>
     </appender>
-    <logger name="">
+    <logger name="gg.msn">
+        <level value="debug"/>
+        <appender-ref ref="appender" />
+        <appender-ref ref="console" />
+    </logger>
+    <logger name="facebookchat">
         <level value="debug"/>
         <appender-ref ref="appender" />
         <appender-ref ref="console" />
