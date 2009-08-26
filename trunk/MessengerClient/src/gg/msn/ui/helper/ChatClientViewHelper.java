@@ -68,8 +68,8 @@ public class ChatClientViewHelper {
      * rende visibile il MainPanel e nasconde loginPanel
      */
     public void showMainPanel() {
-        ccv.getFrame().remove(ccv.getLoginPanel());
-        ccv.getFrame().add(ccv.getMainPanel());
+//        ccv.getFrame().remove(ccv.getLoginPanel());
+        ccv.getFrame().setContentPane(ccv.getMainPanel());
 //        ccv.getFrame().add(ccv.getStatusPanel());
 //        ccv.getConnect().setContentAreaFilled(false);
         ccv.getFrame().repaint();
@@ -80,13 +80,15 @@ public class ChatClientViewHelper {
      * rende visibile il loginPanel e nasconde mainPanel
      */
     public void showLoginPanel() {
-        ccv.getFrame().remove(ccv.getMainPanel());
-        ccv.getFrame().add(ccv.getLoginPanel());
+
+        ccv.getFrame().setContentPane(ccv.getLoginPanel());
+
 //        ccv.getLogin().setContentAreaFilled(false);
 //        ccv.getNickText().setEnabled(true);
         ccv.getFrame().repaint();
         ccv.getFrame().validate();
     }
+
     public void showFacebookLoginPanel() {
         ccv.getFrame().remove(ccv.getMainPanel());
         ccv.getFrame().setContentPane(new FBLoginPanel(ccv));

@@ -768,6 +768,7 @@ public class ChatClientView extends FrameView {
     public void updateBuddyListPane() {
 		//fmod.removeAll();
 		clientsList.removeAll();
+                log.debug("utenti presenti ["+FacebookBuddyList.buddies.size()+"]");
 		Iterator<String> it = FacebookBuddyList.buddies.keySet().iterator();
 		while(it.hasNext()){
 			String key = it.next();

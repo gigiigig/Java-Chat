@@ -36,8 +36,8 @@ public class FBLoginPanel extends javax.swing.JPanel {
     }
 
     private void connectStart() {
-        String email = emailText.getText();
-        String pass = passwText.getText();
+        String email = emailText.getText().trim();
+        String pass = passwText.getText().trim();
 
         /*String email = "username@email.com.cn";
         String pass = "password";*/
@@ -72,6 +72,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                     public void run() {
                         log.debug("Keep requesting buddylist...");
                         while (true) {
+                            log.debug("refresh buddies");
                             try {
                                 Launcher.getBuddyList();
                             } catch (Exception e) {
@@ -94,6 +95,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 //TODO post
                 //Init GUI
                 log.debug("Init GUI...");
+
+                ccv.getHelper().showMainPanel();
+                log.debug("showed maon panel");
                 //必须在getbuddylist之后
 //                fbc = new Cheyenne();
 //                fbc.setVisible(true);
