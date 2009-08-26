@@ -25,7 +25,7 @@ public class ChatClientApp extends SingleFrameApplication {
 //            System.out.println(file.getPath());
 //            properties.load(new FileInputStream(file));
        log.debug("porca madonnnnnnaaaaaa!!!!");
-            show(new ChatClientView(this));         
+           // show(new ChatClientView(this));
     }
 
     /**

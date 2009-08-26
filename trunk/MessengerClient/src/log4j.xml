@@ -17,14 +17,11 @@
             <param name="ConversionPattern" value="%d [%t] [%C.%M] [%L] %p - %m%n"/>
         </layout>
     </appender>
-   
-    <logger name="gg.msn">
+    <logger name="">
         <level value="debug"/>
         <appender-ref ref="appender" />
         <appender-ref ref="console" />
     </logger>
-   
-  
     <!--
     <root><appender-ref ref="console" />
         <appender-ref ref="appender"/>
