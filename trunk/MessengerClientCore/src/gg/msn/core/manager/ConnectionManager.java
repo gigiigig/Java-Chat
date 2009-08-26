@@ -42,7 +42,7 @@ public class ConnectionManager {
         return response;
     }
 
-     public  void disconnect(Socket socket) throws IOException, SocketException {
+    public void disconnect(Socket socket) throws IOException, SocketException {
         MESSAGE toSend = MessageManger.createCommand(Command.DISCONNECT, null);
         log.debug("send : " + MessageManger.messageToStringFormatted(toSend));
         MessageManger.directWriteMessage(toSend, socket.getOutputStream());

@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,7 +34,8 @@ public class Util {
     public static final String PROPERTY_NICK = "nick";
     public static final String PROPERTY_FONT = "font";
     public static final String PROPERTY_COLOR = "color";
-    public static final String VALUE_DEFAULT_THEME_FOLDER = "images/theme/default";
+    private static final char SEPARATOR = IOUtils.DIR_SEPARATOR;
+    public static final String VALUE_DEFAULT_THEME_FOLDER = "images" + SEPARATOR + "theme" + SEPARATOR + "default";
 
     public Util() {
     }
@@ -73,24 +75,26 @@ public class Util {
 
     public static String getPath() {
 
-        String fullPath = "";
-
-        fullPath = Util.class.getResource(IOUtils.DIR_SEPARATOR+"").toString();
-        fullPath = fullPath.replace("%20", " ");
-
-        String[] temp = fullPath.split("/");
-
-        String path = "";
-
-        if (!temp[1].contains(":")) {
-            path = "/";
-        }
-        for (int i = 1; i < temp.length - 2; i++) {
-            String string = temp[i];
-            path += string + "/";
-        }
-
-        return path;
+        return System.getProperty("user.dir") + IOUtils.DIR_SEPARATOR;
+//
+//
+//        String fullPath = "";
+//        fullPath = Util.class.getResource(IOUtils.DIR_SEPARATOR+"").toString();
+//        fullPath = fullPath.replace("%20", " ");
+//
+//        String[] temp = fullPath.split("/");
+//
+//        String path = "";
+//
+//        if (!temp[1].contains(":")) {
+//            path = "/";
+//        }
+//        for (int i = 1; i < temp.length - 2; i++) {
+//            String string = temp[i];
+//            path += string + "/";
+//        }
+//
+//        return path;
     }
 
     public static void main(String[] args) {
