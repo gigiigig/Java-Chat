@@ -339,7 +339,11 @@ public class Launcher {
         }
     }
 
+<<<<<<< .mine
+    public  int doLogin(String email, String pass) {
+=======
     public int doLogin(String email, String pass) {
+>>>>>>> .r665
         log.debug("Target URL: " + loginPageUrl);
         try {
             HttpGet loginGet = new HttpGet(loginPageUrl);
@@ -397,7 +401,11 @@ public class Launcher {
         return ErrorCode.Error_Global_NoError;
     }
 
+<<<<<<< .mine
+    public  int doParseHomePage() {
+=======
     public int doParseHomePage() {
+>>>>>>> .r665
         String getMethodResponseBody = facebookGetMethod(homePageUrl);
         log.debug("=========HomePage: getMethodResponseBody begin=========");
         //System.out.print(getMethodResponseBody);
@@ -511,7 +519,7 @@ public class Launcher {
         }
     }
 
-    private void keepRequesting() throws Exception {
+    public void keepRequesting() throws Exception {
         seq = getSeq();
 
         //go seq
