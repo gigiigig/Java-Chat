@@ -7,10 +7,8 @@ package chatserver;
 import chatcommons.Client;
 import chatserver.commons.Util;
 import chatserver.threads.ServerAcceptor;
-import java.awt.Desktop.Action;
 import java.io.IOException;
-import java.util.ArrayList;
-import javax.swing.JFrame;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -23,8 +21,7 @@ public class Main {
     private Log log = LogFactory.getLog(Main.class);
     //Mie Variabili
     //TUTTE LE OPERAZIONI SU QUESTA LISTA VANNO SINCRONIZZATE!!!!!!
-    private ArrayList<Client> clients;
-//    private ServerSocket serverSocket;
+    private ConcurrentHashMap<String,Client> clients;
     private ServerAcceptor serverAccptor;
     private int port;
 
@@ -36,7 +33,7 @@ public class Main {
 
     public Main() {
         port = 3434;
-        clients = new ArrayList<Client>();
+        clients = new ConcurrentHashMap<String, Client>();
     }
 
     /**
@@ -48,8 +45,6 @@ public class Main {
         log.info("Start server");
         serverAccptor = new ServerAcceptor(port, this, true);
         new Thread(serverAccptor).start();
-//        SwingUtilities.invokeLater(serverAccptor);
-
         Util util = new Util();
         log.debug(util.getPath());
 
@@ -61,9 +56,7 @@ public class Main {
     public void stopServer() {
 
         //stoppa il server
-
-
-        for (Client client : clients) {
+        for (Client client : clients.values()) {
             try {
                 client.getMainSocket().close();
             } catch (IOException ex) {
@@ -72,13 +65,12 @@ public class Main {
         }
 
         serverAccptor.setActive(false);
-        clients = new ArrayList<Client>();
-
+        clients = new ConcurrentHashMap<String, Client>();
     }
 
 
     //*** Getter and Setter
-    public ArrayList<Client> getClients() {
+    public ConcurrentHashMap<String,Client> getClients() {
         return clients;
     }
 
@@ -86,7 +78,7 @@ public class Main {
      *
      * @param clients
      */
-    public void setClients(ArrayList<Client> clients) {
+    public void setClients(ConcurrentHashMap<String,Client> clients) {
         this.clients = clients;
     }
 

@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -74,7 +75,7 @@ public class ServerReaderXML implements Runnable {
 
                         client.getMainSocket().close();
 
-                        cv.getClients().remove(client);
+                        cv.getClients().remove(client.getNick());
 
                         MESSAGE toSend = MessageManger.createCommand(Command.REMOVEUSER, null);
                         MessageManger.addParameter(toSend, "nick", client.getNick());
@@ -123,9 +124,9 @@ public class ServerReaderXML implements Runnable {
     }
 
     private void removeClient() {
-        ArrayList<Client> clients = cv.getClients();
+        ConcurrentHashMap<String, Client> clients = cv.getClients();
         synchronized (clients) {
-            clients.remove(client);
+            clients.remove(client.getNick());
         }
         ServerWriter sw = new ServerWriter(cv);
         MESSAGE toSend = MessageManger.createCommand(Command.REMOVEUSER, null);

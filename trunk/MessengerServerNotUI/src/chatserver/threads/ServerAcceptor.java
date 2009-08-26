@@ -82,7 +82,7 @@ public class ServerAcceptor implements Runnable {
 
                 new Thread(new Connector(clientSocket, cv)).start();
 
-            // <editor-fold defaultstate="collapsed" desc=" Old Code ">
+                // <editor-fold defaultstate="collapsed" desc=" Old Code ">
 //                try {
 //
 //                    cv.getChatText().setText(cv.getChatText().getText().concat("Server - Accepted new Socket  on port : " + clientSocket.getPort() + " from ip : " + clientSocket.getInetAddress() + "\n"));
@@ -275,13 +275,9 @@ class Connector implements Runnable {
                 log.debug("add socket to client : " + sender);
                 Client client = null;
 
-                synchronized (cv.getClients()) {
-                    for (Client elem : cv.getClients()) {
-                        if (elem.getNick().equals(sender)) {
-                            client = elem;
-                        }
-                    }
-                }
+
+                client = cv.getClients().get(sender);
+
 
                 client.setFileSenderSocket(clientSocket);
                 ServerReaderXML srxml = new ServerReaderXML(client, cv, ServerReaderXML.FILEREADER);
@@ -292,7 +288,7 @@ class Connector implements Runnable {
                 MessageManger.directWriteMessage(message, clientSocket.getOutputStream());
 //                        continue;
 
-            //altrimenti è una nuova connessione
+                //altrimenti è una nuova connessione
             } else {
 
                 nick = message.getParameters().getParameter().get(0).getValue();
@@ -301,13 +297,12 @@ class Connector implements Runnable {
                 //verifico se il nick è connesso
                 boolean connesso = false;
                 synchronized (cv.getClients()) {
-                    for (Client client : cv.getClients()) {
-                        if (client.getNick().equals(nick)) {
-                            //se c'è già invio NOK
-                            connesso = true;
-                            break;
-                        }
+
+                    if (cv.getClients().containsKey(nick)) {
+                        //se c'è già invio NOK
+                        connesso = true;
                     }
+
                 }
 
 
@@ -320,7 +315,7 @@ class Connector implements Runnable {
                     MessageManger.directWriteMessage(response, clientSocket.getOutputStream());
                     clientSocket.close();
 
-                //ok starto il colient
+                    //ok starto il colient
                 } else {
 
                     //il nick è disponibile e scrivo OK
@@ -363,7 +358,7 @@ class Connector implements Runnable {
 
                         //aggiungo il client alla lista
                         synchronized (cv.getClients()) {
-                            cv.getClients().add(client);
+                            cv.getClients().put(nick, client);
                         }
                         log.debug("aggiunto il nuovo client [" + nick + "] alla lista dei clients");
 
@@ -371,7 +366,7 @@ class Connector implements Runnable {
                         toSend = MessageManger.createCommand(Command.ADDUSER, null);
                         //invio al client la lista di utenti connessi
                         synchronized (cv.getClients()) {
-                            for (Client elem : cv.getClients()) {
+                            for (Client elem : cv.getClients().values()) {
                                 if (elem != client) {
                                     MessageManger.addParameter(toSend, "nick", elem.getNick());
                                 }
