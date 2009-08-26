@@ -339,7 +339,7 @@ public class Launcher {
         }
     }
 
-    private int doLogin(String email, String pass) {
+    public int doLogin(String email, String pass) {
         log.debug("Target URL: " + loginPageUrl);
         try {
             HttpGet loginGet = new HttpGet(loginPageUrl);
@@ -397,7 +397,7 @@ public class Launcher {
         return ErrorCode.Error_Global_NoError;
     }
 
-    private int doParseHomePage() {
+    public int doParseHomePage() {
         String getMethodResponseBody = facebookGetMethod(homePageUrl);
         log.debug("=========HomePage: getMethodResponseBody begin=========");
         //System.out.print(getMethodResponseBody);
@@ -419,11 +419,11 @@ public class Launcher {
         }
 
         if (getMethodResponseBody == null) {
-           log.debug("Can't get the home page! Exit.");
+            log.debug("Can't get the home page! Exit.");
             return ErrorCode.Error_Async_UnexpectedNullResponse;
         }
         if (uid == null) {
-           log.debug("Can't get the user's id! Exit.");
+            log.debug("Can't get the user's id! Exit.");
             return ErrorCode.Error_System_UIDNotFound;
         }
         //<a href="http://www.facebook.com/profile.php?id=xxxxxxxxx" class="profile_nav_link">
@@ -448,12 +448,12 @@ public class Launcher {
         String channelPrefix = " \"channel";
         int channelBeginPos = getMethodResponseBody.indexOf(channelPrefix) + channelPrefix.length();
         if (channelBeginPos < channelPrefix.length()) {
-           log.debug("Error: Can't find channel!");
+            log.debug("Error: Can't find channel!");
             return ErrorCode.Error_System_ChannelNotFound;
         } else {
             channel = getMethodResponseBody.substring(channelBeginPos,
                     channelBeginPos + 2);
-           log.debug("Channel: " + channel);
+            log.debug("Channel: " + channel);
         }
 
         //find the post form id
@@ -462,7 +462,7 @@ public class Launcher {
         String postFormIDPrefix = "<input type=\"hidden\" id=\"post_form_id\" name=\"post_form_id\" value=\"";
         int formIdBeginPos = getMethodResponseBody.indexOf(postFormIDPrefix) + postFormIDPrefix.length();
         if (formIdBeginPos < postFormIDPrefix.length()) {
-           log.debug("Error: Can't find post form ID!");
+            log.debug("Error: Can't find post form ID!");
             return ErrorCode.Error_System_PostFormIDNotFound;
         } else {
             post_form_id = getMethodResponseBody.substring(formIdBeginPos,
