@@ -339,11 +339,9 @@ public class Launcher {
         }
     }
 
-<<<<<<< .mine
-    public  int doLogin(String email, String pass) {
-=======
+
     public int doLogin(String email, String pass) {
->>>>>>> .r665
+
         log.debug("Target URL: " + loginPageUrl);
         try {
             HttpGet loginGet = new HttpGet(loginPageUrl);
@@ -352,7 +350,7 @@ public class Launcher {
 
             log.debug("Login form get: " + response.getStatusLine());
             if (entity != null) {
-                log.debug(EntityUtils.toString(entity));
+                //log.debug(EntityUtils.toString(entity));
                 entity.consumeContent();
             }
             log.debug("Initial set of cookies:");
@@ -401,11 +399,9 @@ public class Launcher {
         return ErrorCode.Error_Global_NoError;
     }
 
-<<<<<<< .mine
-    public  int doParseHomePage() {
-=======
+
     public int doParseHomePage() {
->>>>>>> .r665
+
         String getMethodResponseBody = facebookGetMethod(homePageUrl);
         log.debug("=========HomePage: getMethodResponseBody begin=========");
         //System.out.print(getMethodResponseBody);
@@ -429,6 +425,8 @@ public class Launcher {
         if (getMethodResponseBody == null) {
             log.debug("Can't get the home page! Exit.");
             return ErrorCode.Error_Async_UnexpectedNullResponse;
+        }else{
+            //log.debug("home : "+getMethodResponseBody);
         }
         if (uid == null) {
             log.debug("Can't get the user's id! Exit.");
@@ -457,7 +455,7 @@ public class Launcher {
         int channelBeginPos = getMethodResponseBody.indexOf(channelPrefix) + channelPrefix.length();
         if (channelBeginPos < channelPrefix.length()) {
             log.debug("Error: Can't find channel!");
-            return ErrorCode.Error_System_ChannelNotFound;
+            //return ErrorCode.Error_System_ChannelNotFound;
         } else {
             channel = getMethodResponseBody.substring(channelBeginPos,
                     channelBeginPos + 2);
@@ -625,7 +623,7 @@ public class Launcher {
             // testHttpClient("http://www.facebook.com/home.php?");
             ResponseParser.buddylistParser(responseStr);
         } catch (JSONException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 

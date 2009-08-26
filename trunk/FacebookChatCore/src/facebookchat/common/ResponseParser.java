@@ -71,6 +71,7 @@ public class ResponseParser {
                         JSONObject buddyList = (JSONObject) payload.get("buddy_list");
                         if (buddyList != null) {
                             FacebookBuddyList.updateBuddyList(buddyList);
+                            log.debug("buddy lisst updated");
                         }
                     }
                 } catch (ClassCastException cce) {

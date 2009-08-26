@@ -62,8 +62,6 @@ public class FacebookUser {
 
     public FacebookUser(String id, JSONObject user) throws JSONException {
 
-
-
         uid = id;
         if (user == null) {
             throw new JSONException("Param user is null when init FacebookUser");
@@ -71,16 +69,16 @@ public class FacebookUser {
         name = (String) user.get("name");
         firstName = (String) user.get("firstName");
         thumbSrc = (String) user.get("thumbSrc");
-        Object temp = user.get("status");
-        log.debug(temp.toString());
-        log.debug(temp.getClass());
-        if (!temp.equals(org.json.JSONObject.NULL)) {
-            status = (String) temp;
-        } else {
+        //Object temp = user.get("status");
+        //log.debug(temp.toString());
+        //log.debug(temp.getClass());
+//        if (!temp.equals(org.json.JSONObject.NULL)) {
+//            status = (String) temp;
+//        } else {
             status = "";
-        }
-        statusTime = (Number) user.get("statusTime");
-        statusTimeRel = (String) user.get("statusTimeRel");
+//        }
+        //statusTime = (Number) user.get("statusTime");
+        //statusTimeRel = (String) user.get("statusTimeRel");
 
         try {
             portrait = new ImageIcon(new URL(thumbSrc));

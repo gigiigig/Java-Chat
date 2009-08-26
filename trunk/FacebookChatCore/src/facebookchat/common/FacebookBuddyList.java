@@ -30,18 +30,20 @@ public class FacebookBuddyList {
         log.debug("availableCount: " + (Number) buddyList.get("availableCount"));
 
         JSONObject nowAvailableList = (JSONObject) buddyList.get("nowAvailableList");
+        log.debug("utenti presenti : " + nowAvailableList);
         JSONObject userInfos = (JSONObject) buddyList.get("userInfos");
+        log.debug("utenti presenti INFO : " + userInfos);
 
         if (nowAvailableList == null) {
             return;
         }
 
-        JSONObject user = (JSONObject) userInfos.get(Launcher.uid);
-        me = new FacebookUser(Launcher.uid, user);
+//        JSONObject user = (JSONObject) userInfos.get(Launcher.uid);
+//        me = new FacebookUser(Launcher.uid, user);
         //update my profile
-        if (Launcher.fbc != null) {
-            Launcher.fbc.updateMyStatus();
-        }
+//        if (Launcher.fbc != null) {
+//            Launcher.fbc.updateMyStatus();
+//        }
 
         //tag all the buddies as offline
         Iterator<String> oldIt = buddies.keySet().iterator();
@@ -52,19 +54,28 @@ public class FacebookBuddyList {
         }
 
         Iterator<String> it = nowAvailableList.keys();
+        //log.debug("first element :" +it.next());
         while (it.hasNext()) {
             String key = it.next();
             log.debug("userID: " + key);
-            user = (JSONObject) userInfos.get(key);
-            FacebookUser fu = new FacebookUser(key, user);
-            buddies.put(key, fu);
-            Launcher.getChatroomAnyway(key).setRoomName(fu.name);
+            JSONObject user = (JSONObject) userInfos.get(key);
+            log.debug("user : " + user);
+            FacebookUser fu = null;
+            try {
+                fu = new FacebookUser(key, user);
+                buddies.put(key, fu);
+            //Launcher.getChatroomAnyway(key).setRoomName(fu.name);
             printUserInfo(fu);
+            } catch (JSONException jSONException) {
+                
+                log.error("error parsing user : "+jSONException);
+            }
+            
         }
     }
 
     private static void printUserInfo(FacebookUser user) {
-        log.debug("name:\t" + user.name)        ;
+        log.debug("name:\t" + user.name);
         log.debug("firstName:\t" + user.firstName);
         log.debug("thumbSrc:\t" + user.thumbSrc);
         log.debug("status:\t" + user.status);
