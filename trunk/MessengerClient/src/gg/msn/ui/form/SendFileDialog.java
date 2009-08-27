@@ -42,7 +42,7 @@ public class SendFileDialog extends javax.swing.JFrame {
         super();
         initComponents();
         this.receiver = receiver;
-//        this.ccv = ccv;
+        this.ccv = ccv;
         socket = new Socket();
         percentLabel.setVisible(false);
         progressBar.setVisible(false);
@@ -180,8 +180,8 @@ public class SendFileDialog extends javax.swing.JFrame {
 
         //creo un fileSocket se nn esiste e gli assegno un client reader
         if (PersistentDataManager.getFileSocket() == null || !PersistentDataManager.getFileSocket().isConnected()) {
-            SocketFileConnector connector = new SocketFileConnector(ccv);
-            connector.execute();
+            SocketFileConnector connector = new SocketFileConnector();
+            new Thread(connector).start();
 
             while (!connector.isConnected()) {
                 try {

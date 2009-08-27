@@ -150,7 +150,6 @@ public class MessageReceivedListener extends AbstractMessageListener {
                     int packNum = Integer.parseInt(message.getParameters().getParameter().get(3).getValue());
 
                     File outputFile = new File(fileurl);
-
                     FileOutputStream fos = new FileOutputStream(outputFile, true);
                     byte[] bArr = message.getData();
 
@@ -290,7 +289,7 @@ public class MessageReceivedListener extends AbstractMessageListener {
 
                 String clientToRemove = message.getParameters().getParameter().get(0).getValue();
 
-                Hashtable<String,Client> clients = PersistentDataManager.getClients();
+                Hashtable<String, Client> clients = PersistentDataManager.getClients();
                 Iterator<Client> li = clients.values().iterator();
                 boolean continua = true;
                 while (li.hasNext() && continua) {
@@ -319,7 +318,7 @@ public class MessageReceivedListener extends AbstractMessageListener {
                 DefaultListModel listModel = (DefaultListModel) ccv.getMainPanel().getClientsList().getModel();
                 synchronized (listModel) {
                     for (Parameter parameter : parameters) {
-                        PersistentDataManager.getClients().put(parameter.getValue(),new Client(null, parameter.getValue()));
+                        PersistentDataManager.getClients().put(parameter.getValue(), new Client(null, parameter.getValue()));
                         listModel.addElement(parameter.getValue());
                         log.debug("aggiunto  client [" + parameter.getValue() + "]");
                     }
