@@ -16,6 +16,7 @@ public class Client {
    private Socket mainSocket;
    private Socket fileSenderSocket;
    private String nick;
+   private byte[] image;
    
    public Client(){
       
@@ -47,6 +48,14 @@ public class Client {
 
     public void setFileSenderSocket(Socket fileSenderSocket) {
         this.fileSenderSocket = fileSenderSocket;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     
