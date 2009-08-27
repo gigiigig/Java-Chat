@@ -8,6 +8,7 @@ import gg.msn.core.commons.Util;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
 import gg.msn.core.listener.AbstractMessageListener;
+import gg.msn.core.manager.PersistentDataManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +26,6 @@ import static chatcommons.Commands.*;
  */
 public class ClientReader implements Runnable {
 
-    private Socket so;
     private Log log = LogFactory.getLog(this.getClass());
     // private ChatClientView ccv;
     private AbstractMessageListener listener;
@@ -62,7 +62,7 @@ public class ClientReader implements Runnable {
         BufferedReader in;
         MessageManger.directWriteMessage(responseConn, listener.getOutputStream());
 //            ccv.getHelper().sendRequest("~OK\n");
-        is = so.getInputStream();
+        is = PersistentDataManager.getSocket().getInputStream();
         in = new BufferedReader(new InputStreamReader(is, Util.DEFAULTENCODING));
         String line = "";
         
