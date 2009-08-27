@@ -8,21 +8,29 @@
  *
  * Created on 26-ago-2009, 14.22.12
  */
-
 package gg.msn.ui.panel;
 
+import facebookchat.common.FacebookBuddyList;
+import facebookchat.common.FacebookUser;
 import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.ChatClientView;
+import gg.msn.ui.listener.ChatClientViewListeners;
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jdesktop.application.Action;
 
 /**
  *
@@ -30,12 +38,28 @@ import org.apache.commons.logging.LogFactory;
  */
 public class MainPanel extends javax.swing.JPanel {
 
+    private ChatClientView ccv;
     private Log log = LogFactory.getLog(this.getClass());
 
-
     /** Creates new form MainPanel */
-    public MainPanel() {
+    public MainPanel(ChatClientView ccv) {
         initComponents();
+        this.ccv = ccv;
+
+        //trasparenza lista
+        clientListScrollPane.getViewport().setOpaque(false);
+
+        ChatClientViewListeners listeners = new ChatClientViewListeners(ccv);
+
+        clientsList.addMouseListener(listeners.getClientsListRightClickListener());
+        clientsList.setCellRenderer(new ClientsListCellRenderer());
+        clientsList.setFixedCellHeight(30);
+        //mainpanel
+        //nickTable.addMouseListener(new nickTableOutClickListener());
+        this.addMouseListener(listeners.getClientsListOutClickListener());
+        jToolBar1.addMouseListener(listeners.getClientsListOutClickListener());
+
+        insertIcons();
     }
 
     /** This method is called from within the constructor to
@@ -62,7 +86,6 @@ public class MainPanel extends javax.swing.JPanel {
         nickLabel.setText(resourceMap.getString("nickLabel.text")); // NOI18N
         nickLabel.setName("nickLabel"); // NOI18N
 
-        jToolBar1.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         jToolBar1.setFloatable(false);
         jToolBar1.setBorderPainted(false);
         jToolBar1.setName("jToolBar1"); // NOI18N
@@ -70,9 +93,7 @@ public class MainPanel extends javax.swing.JPanel {
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(gg.msn.ui.ChatClientApp.class).getContext().getActionMap(MainPanel.class, this);
         disconnect.setAction(actionMap.get("disconnetti")); // NOI18N
-        disconnect.setBackground(resourceMap.getColor("disconnect.background")); // NOI18N
-        disconnect.setIcon(null);
-        disconnect.setToolTipText(resourceMap.getString("disconnect.toolTipText")); // NOI18N
+        disconnect.setIcon(resourceMap.getIcon("disconnect.icon")); // NOI18N
         disconnect.setFocusable(false);
         disconnect.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         disconnect.setName("disconnect"); // NOI18N
@@ -81,8 +102,7 @@ public class MainPanel extends javax.swing.JPanel {
         jToolBar1.add(disconnect);
 
         chat.setAction(actionMap.get("addChatWithSelected")); // NOI18N
-        chat.setIcon(null);
-        chat.setToolTipText(resourceMap.getString("chat.toolTipText")); // NOI18N
+        chat.setIcon(resourceMap.getIcon("chat.icon")); // NOI18N
         chat.setFocusable(false);
         chat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chat.setName("chat"); // NOI18N
@@ -93,13 +113,13 @@ public class MainPanel extends javax.swing.JPanel {
 
         clientListScrollPane.setBackground(new Color(255,255,255,100)
         );
+        clientListScrollPane.setBorder(null);
         clientListScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         clientListScrollPane.setName("clientListScrollPane"); // NOI18N
         clientListScrollPane.setOpaque(false);
 
         clientsList.setBackground(new Color(255, 255, 255, 100));
         clientsList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("clientsList.border.title"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, resourceMap.getFont("clientsList.border.titleFont"))); // NOI18N
-        clientsList.setFont(resourceMap.getFont("clientsList.font")); // NOI18N
         clientsList.setModel(new DefaultListModel()
         );
         clientsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -111,14 +131,13 @@ public class MainPanel extends javax.swing.JPanel {
         clientsList.setVisibleRowCount(1);
         clientListScrollPane.setViewportView(clientsList);
 
-        nickIcon.setIcon(null);
+        nickIcon.setIcon(resourceMap.getIcon("nickIcon.icon")); // NOI18N
         nickIcon.setName("nickIcon"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 301, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -127,13 +146,12 @@ public class MainPanel extends javax.swing.JPanel {
                         .addComponent(nickIcon)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(nickLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 387, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -145,8 +163,6 @@ public class MainPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chat;
     private javax.swing.JScrollPane clientListScrollPane;
@@ -157,7 +173,7 @@ public class MainPanel extends javax.swing.JPanel {
     private javax.swing.JLabel nickLabel;
     // End of variables declaration//GEN-END:variables
 
-      @Override
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         super.paintComponent(g2d);
@@ -165,7 +181,7 @@ public class MainPanel extends javax.swing.JPanel {
 
         try {
 
-            ImageIcon icon = ((ChatClientView) ChatClientApp.getApplication().getMainView()).getHelper().getTheme().get(ThemeManager.MAIN_BACKGROUND);
+            ImageIcon icon = ThemeManager.getTheme().get(ThemeManager.MAIN_BACKGROUND);
 
             if (icon != null) {
                 Image image = icon.getImage();
@@ -174,7 +190,7 @@ public class MainPanel extends javax.swing.JPanel {
                 log.warn("image " + icon.getDescription() + " not Found");
             }
 
-            icon = ((ChatClientView) ChatClientApp.getApplication().getMainView()).getHelper().getTheme().get(ThemeManager.MAIN_IMAGE);
+            icon = ThemeManager.getTheme().get(ThemeManager.MAIN_IMAGE);
 
             if (icon != null) {
 
@@ -188,5 +204,105 @@ public class MainPanel extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Un renderer personalizzato per la jList di clients
+     */    //GRAPHICS METHODS
+    public void insertIcons() {
+
+        try {
+            //imposto le icone
+            ImageIcon userIcon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
+            if (userIcon != null) {
+                nickIcon.setIcon(userIcon);
+            }
+        } catch (NullPointerException e) {
+        }
+    }
+
+    public void updateBuddyListPane() {
+        //fmod.removeAll();
+        clientsList.removeAll();
+        log.debug("utenti presenti [" + FacebookBuddyList.buddies.size() + "]");
+        Iterator<String> it = FacebookBuddyList.buddies.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next();
+            log.debug("userID: " + key);
+            FacebookUser fu = FacebookBuddyList.buddies.get(key);
+            log.debug("status: " + fu.onlineStatus.toString());
+            ((DefaultListModel) clientsList.getModel()).addElement(fu.firstName);
+        }
+        clientsList.repaint();
+        clientsList.revalidate();
+
+    }
+
+    public JList getClientsList() {
+        return clientsList;
+    }
+
+    public void setClientsList(JList clientsList) {
+        this.clientsList = clientsList;
+    }
+
+    public JLabel getNickLabel() {
+        return nickLabel;
+    }
+
+    public void setNickLabel(JLabel nickLabel) {
+        this.nickLabel = nickLabel;
+    }
+
+    /**
+     * Disconnettte dal serever principale
+     */
+    @Action
+    public void disconnetti() {
+        ccv.getHelper().disconnetti();
+    }
+
+     @Action
+    public void addChatWithSelected() {
+        ccv.getHelper().addChatWithSelected();
+    }
 }
 
+class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
+
+    Log log = LogFactory.getLog(this.getClass());
+
+    public ClientsListCellRenderer() {
+    }
+
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+        /*se il valore non Ã¨ nullo impossto il renderig altrimenti lo lascio nascosto,
+        questo impedisce che lo spazio bianco selweziona sempre l'utlimo elemento*/
+
+
+//                log.debug("Render lement : " + value);
+
+        if (isSelected) {
+            setOpaque(true);
+            setBackground(list.getSelectionBackground());
+            setForeground(list.getSelectionForeground());
+        } else {
+            setOpaque(false);
+            setBackground(list.getBackground());
+            setForeground(list.getForeground());
+        }
+        setText((String) value.toString());
+
+        try {
+            ImageIcon icon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
+            ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
+            setFont(list.getFont());
+            setIcon(scaledIcon);
+        } catch (Exception e) {
+            log.warn(e);
+        }
+
+        return this;
+
+    }
+}

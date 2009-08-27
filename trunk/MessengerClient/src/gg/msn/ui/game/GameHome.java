@@ -5,6 +5,7 @@
  */
 package gg.msn.ui.game;
 
+import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.game.dama.*;
 import javax.swing.JButton;
@@ -97,8 +98,8 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         setContentPane(newCanvas);
         setSize((int) (8 * DamaCanvas.LATOCASELLA + DamaCanvas.WINDOWX), (int) (8 * DamaCanvas.LATOCASELLA + DamaCanvas.WINDOWY) + DamaCanvas.MESSAGEHEIGTH);
         validate();
-        log.debug("add to canvs os = " + ccv.getOutputStream());
-        newCanvas.setOs(ccv.getOutputStream());
+        log.debug("add to canvs os = " + PersistentDataManager.getOutputStream());
+        newCanvas.setOs(PersistentDataManager.getOutputStream());
         this.canvas = newCanvas;
         ccv.getHelper().getCanvases().add(newCanvas);
 //        new ClientReader(ccv.getSocket(), canvas).execute();
@@ -112,8 +113,8 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         setContentPane(newCanvas);
         setSize((int) (8 * DamaCanvas.LATOCASELLA + DamaCanvas.WINDOWX), (int) (8 * DamaCanvas.LATOCASELLA + DamaCanvas.WINDOWY) + DamaCanvas.MESSAGEHEIGTH);
         validate();
-        log.debug("add to canvs os = " + ccv.getOutputStream());
-        newCanvas.setOs(ccv.getOutputStream());
+        log.debug("add to canvs os = " + PersistentDataManager.getOutputStream());
+        newCanvas.setOs(PersistentDataManager.getOutputStream());
 
         this.canvas = newCanvas;
         ccv.getHelper().getCanvases().add(newCanvas);

@@ -10,8 +10,10 @@ import gg.msn.ui.chatwindow.ChatWindow;
 import chatcommons.Client;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import gg.msn.core.manager.PersistentDataManager;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
@@ -31,12 +33,12 @@ public class SelectClientsToAdd extends javax.swing.JFrame {
     /** Creates new form SelectClientsToAdd */
     public SelectClientsToAdd(ChatWindow cv, ChatClientView ccv) {
         ArrayList<Client> inChat = cv.getClients();
-        ArrayList<Client> tutti = ccv.getClients();
+        Hashtable<String,Client> tutti = PersistentDataManager.getClients();
         clients = new ArrayList<Client>();
 
 
         // aggiungo a clients gli utenti non presenti nella chat
-        for (Client elem : tutti) {
+        for (Client elem : tutti.values()) {
             boolean presente = false;
             for (Client elem2 : inChat) {
                 if (elem.getNick().equals(elem2.getNick()) || elem.getNick().equals(cv.getNick())) {
@@ -131,7 +133,7 @@ public class SelectClientsToAdd extends javax.swing.JFrame {
 //        message.getParameters().add(nickSelected);
         MessageManger.addParameter(message,"nick", nickSelected);
         try {
-            MessageManger.directWriteMessage(message, ccv.getOutputStream());
+            MessageManger.directWriteMessage(message, PersistentDataManager.getOutputStream());
         } catch (SocketException socketException) {
             log.error(socketException);
         }

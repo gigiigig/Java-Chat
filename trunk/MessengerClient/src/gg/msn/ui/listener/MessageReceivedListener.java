@@ -14,6 +14,7 @@ import chatcommons.datamessage.MESSAGE.Parameters.Parameter;
 import emoticon.Emoticon;
 import gg.msn.core.commons.Util;
 import gg.msn.core.listener.AbstractMessageListener;
+import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.chatwindow.ChatWindow;
 import gg.msn.ui.form.ReceiveFileDialog;
@@ -26,10 +27,10 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import org.apache.commons.io.IOUtils;
@@ -123,7 +124,7 @@ public class MessageReceivedListener extends AbstractMessageListener {
                 //rcavo l'arrey di quelli che servono in questo client
                 List<String> componentsOfConferenz = new LinkedList<String>();
                 for (String string : message.getReceivers().getReceiver()) {
-                    if (!string.equals(ccv.getNick())) {
+                    if (!string.equals(PersistentDataManager.getNick())) {
                         componentsOfConferenz.add(string);
                     }
                 }
@@ -154,7 +155,7 @@ public class MessageReceivedListener extends AbstractMessageListener {
                     byte[] bArr = message.getData();
 
                     int readed = Integer.parseInt(message.getParameters().getParameter().get(1).getValue());
-                    log.debug(ccv.getNick() + "reader readed bytes : " + readed);
+                    log.debug(PersistentDataManager.getNick() + "reader readed bytes : " + readed);
                     log.debug("write bytes to file : " + fileurl);
                     fos.write(bArr, 0, readed);
 
@@ -233,7 +234,7 @@ public class MessageReceivedListener extends AbstractMessageListener {
                     List<String> componentsOfConferenz = new LinkedList<String>();
                     for (String string : message.getReceivers().getReceiver()) {
 
-                        if (!string.equals(ccv.getNick())) {
+                        if (!string.equals(PersistentDataManager.getNick())) {
                             componentsOfConferenz.add(string);
                         }
                     }
@@ -289,18 +290,18 @@ public class MessageReceivedListener extends AbstractMessageListener {
 
                 String clientToRemove = message.getParameters().getParameter().get(0).getValue();
 
-                ArrayList<Client> clients = ccv.getClients();
-                ListIterator<Client> li = clients.listIterator();
+                Hashtable<String,Client> clients = PersistentDataManager.getClients();
+                Iterator<Client> li = clients.values().iterator();
                 boolean continua = true;
                 while (li.hasNext() && continua) {
                     Client elem = li.next();
                     if (elem.getNick().equals(clientToRemove)) {
                         log.info("remove element : " + elem);
-                        clients.remove(elem);
-                        DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
+                        clients.remove(elem.getNick());
+                        DefaultListModel listModel = (DefaultListModel) ccv.getMainPanel().getClientsList().getModel();
                         synchronized (listModel) {
                             listModel.removeElement(elem.getNick());
-                            ccv.getClientsList().validate();
+                            ccv.getMainPanel().getClientsList().validate();
                             ccv.getFrame().pack();
                             continua = false;
                         }
@@ -315,16 +316,15 @@ public class MessageReceivedListener extends AbstractMessageListener {
                 log.debug("nick da aggiungere [" + parameters.size() + "]");
 
 //                            int position = ccv.getClientsList().getModel().getSize() - 1;
-                DefaultListModel listModel = (DefaultListModel) ccv.getClientsList().getModel();
+                DefaultListModel listModel = (DefaultListModel) ccv.getMainPanel().getClientsList().getModel();
                 synchronized (listModel) {
                     for (Parameter parameter : parameters) {
-                        ccv.getClients().add(new Client(null, parameter.getValue()));
+                        PersistentDataManager.getClients().put(parameter.getValue(),new Client(null, parameter.getValue()));
                         listModel.addElement(parameter.getValue());
                         log.debug("aggiunto  client [" + parameter.getValue() + "]");
                     }
 
-                    ccv.getClientsList().validate();
-                    ccv.getFrame().validate();
+                    ccv.getMainPanel().validate();
 
                     log.debug("utenti connessi : ");
                     for (Object elem : listModel.toArray()) {
@@ -343,12 +343,12 @@ public class MessageReceivedListener extends AbstractMessageListener {
 
     @Override
     public String getNick() {
-        return ccv.getNick();
+        return PersistentDataManager.getNick();
     }
 
     @Override
     public OutputStream getOutputStream() {
-        return ccv.getOutputStream();
+        return PersistentDataManager.getOutputStream();
     }
 }
 

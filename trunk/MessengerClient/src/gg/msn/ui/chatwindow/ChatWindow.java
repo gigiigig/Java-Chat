@@ -21,6 +21,7 @@ import emoticon.Emoticon;
 import emoticon.EmoticonAddDialog;
 import emoticon.EmoticonsManger;
 import emoticon.Util;
+import gg.msn.core.manager.PersistentDataManager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -109,11 +110,11 @@ public class ChatWindow extends javax.swing.JFrame {
         jScrollPane3.getViewport().setOpaque(false);
 
         this.isServer = isServer;
-        this.nick = ccv.getNick();
+        this.nick = PersistentDataManager.getNick();
         nickLabel.setText(nick);
         clients = new ArrayList<Client>();
         this.ccv = ccv;
-        this.outputStream = ccv.getOutputStream();
+        this.outputStream = PersistentDataManager.getOutputStream();
 
         //imposto l'evento per ENTER
         inputText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
@@ -133,12 +134,12 @@ public class ChatWindow extends javax.swing.JFrame {
 
         //grafica
         try {
-            ImageIcon userIcon = ccv.getHelper().getTheme().get(ThemeManager.USER_ICON);
+            ImageIcon userIcon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
             if (userIcon != null) {
                 userLabel.setIcon(userIcon);
             }
 
-            ImageIcon addUserIcon = ccv.getHelper().getTheme().get(ThemeManager.ADD_USER_ICON);
+            ImageIcon addUserIcon =  ThemeManager.getTheme().get(ThemeManager.ADD_USER_ICON);
             if (userIcon != null) {
                 addChatButton.setIcon(addUserIcon);
             }
@@ -1017,7 +1018,7 @@ class MainPanel extends JPanel {
 
         try {
 
-            ImageIcon icon = ((ChatClientView) ChatClientApp.getApplication().getMainView()).getHelper().getTheme().get(ThemeManager.CHAT_BACKGROUND);
+            ImageIcon icon =  ThemeManager.getTheme().get(ThemeManager.CHAT_BACKGROUND);
 
             if (icon != null) {
                 Image image = icon.getImage();

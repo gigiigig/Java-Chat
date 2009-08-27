@@ -9,6 +9,7 @@ import gg.msn.ui.ChatClientView;
 import gg.msn.core.commons.Util;
 import gg.msn.ui.theme.ThemeManager;
 import emoticon.EmoticonsManageFrame;
+import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientApp;
 import java.io.File;
 import java.util.Properties;
@@ -271,13 +272,13 @@ public class OptionsDialog extends javax.swing.JDialog {
         Util.writeProperties(properties);
 
         ChatClientView ccv = (ChatClientView) ChatClientApp.getApplication().getMainView();
-        ccv.setPort(Integer.parseInt(portaText.getText()));
-        ccv.setIp(ipText.getText());
+        PersistentDataManager.setPort(Integer.parseInt(portaText.getText()));
+        PersistentDataManager.setIp(ipText.getText());
 //        ccv.setNick(nickText.getText());
         ccv.getNickText().setText(nickText.getText());
-        ccv.getHelper().setTheme(ThemeManager.loadTheme(properties.getProperty(Util.PROPERTY_THEME_FOLDER)));
+//        ccv.getHelper().setTheme(ThemeManager.loadTheme(properties.getProperty(Util.PROPERTY_THEME_FOLDER)));
         log.info("property saved");
-        ccv.insertIcons();        
+        ccv.getMainPanel().insertIcons();
         setVisible(false);
         ccv.getFrame().validate();
         ccv.getFrame().repaint();

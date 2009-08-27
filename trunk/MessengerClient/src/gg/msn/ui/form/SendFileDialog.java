@@ -6,7 +6,6 @@
 package gg.msn.ui.form;
 
 import gg.msn.ui.ChatClientView;
-import gg.msn.core.commons.Util;
 import gg.msn.core.thread.ClientReader;
 import gg.msn.core.thread.FileSender;
 import gg.msn.core.thread.SocketFileConnector;
@@ -20,10 +19,9 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import org.jdesktop.application.Action;
 import chatcommons.Commands.*;
+import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.listener.MessageReceivedListener;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JRootPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -44,7 +42,7 @@ public class SendFileDialog extends javax.swing.JFrame {
         super();
         initComponents();
         this.receiver = receiver;
-        this.ccv = ccv;
+//        this.ccv = ccv;
         socket = new Socket();
         percentLabel.setVisible(false);
         progressBar.setVisible(false);
@@ -181,7 +179,7 @@ public class SendFileDialog extends javax.swing.JFrame {
 //        fileSender.execute();
 
         //creo un fileSocket se nn esiste e gli assegno un client reader
-        if (ccv.getFileSocket() == null || !ccv.getFileSocket().isConnected()) {
+        if (PersistentDataManager.getFileSocket() == null || !PersistentDataManager.getFileSocket().isConnected()) {
             SocketFileConnector connector = new SocketFileConnector(ccv);
             connector.execute();
 
@@ -193,9 +191,9 @@ public class SendFileDialog extends javax.swing.JFrame {
                 }
             }
 
-            ccv.setFileSocket(connector.getSocket());
+            PersistentDataManager.setFileSocket(connector.getSocket());
             try {
-                ccv.setFileOutputStream(connector.getSocket().getOutputStream());
+                PersistentDataManager.setFileOutputStream(connector.getSocket().getOutputStream());
                 ClientReader clientReader = new ClientReader(new MessageReceivedListener(ccv), ClientReader.FILEREADER);
                 new Thread(clientReader).start();
             } catch (IOException ex) {
@@ -204,7 +202,7 @@ public class SendFileDialog extends javax.swing.JFrame {
         }
 
         try {
-            fileSender = new FileSender(new File(fileText.getText()), receiver, ccv.getFileOutputStream(), this);
+            fileSender = new FileSender(new File(fileText.getText()), receiver, PersistentDataManager.getFileOutputStream(), this);
             fileSender.execute();
 
             send.setText("Ferma");

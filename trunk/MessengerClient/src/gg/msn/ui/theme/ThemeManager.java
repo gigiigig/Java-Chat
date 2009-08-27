@@ -4,10 +4,12 @@
  */
 package gg.msn.ui.theme;
 
+import gg.msn.core.commons.Util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -29,6 +31,16 @@ public class ThemeManager {
     public static final String USER_ICON = "usericon";
     public static final String ADD_USER_ICON = "addusericon";
     private static Log log = LogFactory.getLog(ThemeManager.class);
+    private static HashMap<String, ImageIcon> theme;
+
+    static {
+        Properties properties = Util.readProperties();
+        if (properties != null) {
+            theme = (HashMap<String, ImageIcon>) ThemeManager.loadTheme(properties.getProperty(Util.PROPERTY_THEME_FOLDER));
+        } else {
+            theme = new HashMap<String, ImageIcon>();
+        }
+    }
 
     /**
      * Carica il tema dall'xml che sta nella 
@@ -64,15 +76,15 @@ public class ThemeManager {
                     log.warn("image " + image.getPath() + " not Found");
                 }
             }
+            theme = (HashMap<String, ImageIcon>) images;
             return images;
         } catch (IOException ex) {
             log.error(ex);
             return new HashMap<String, ImageIcon>();
         }
     }//    public static void main(String[] args) {
-//        Map<String,ImageIcon> images = loadTheme("C:/Users/Luigi/Documents/ProgettiNetBeans/ChatClientFW/images/theme/default/");
-//        for (String string : images.keySet()) {
-//            System.out.println(string+ "  : "+images.get(string).getDescription());
-//        }
-//    }
+
+    public static HashMap<String, ImageIcon> getTheme() {
+        return theme;
+    }
 }

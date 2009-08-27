@@ -7,9 +7,12 @@ package gg.msn.ui.listener;
 import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.ChatClientView;
 import gg.msn.core.commons.Util;
+import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.form.OptionsDialog;
 
 import gg.msn.ui.form.SendFileDialog;
+import gg.msn.ui.helper.ChatClientViewHelper;
+import gg.msn.ui.panel.MainPanel;
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -63,14 +66,14 @@ public class ChatClientViewListeners {
      */
     public class ClientsListRightClickListener extends MouseInputAdapter {
 
-        private Log log = LogFactory.getLog(this.getClass());
+        private Log log = LogFactory.getLog(ClietsListOutClickListener.class);
         private ChatClientView ccv;
         private JPopupMenu jpm;
 
         public ClientsListRightClickListener(ChatClientView ccv) {
             super();
+//            this.ccv = (ChatClientView) ChatClientApp.getApplication().getMainView();
             this.ccv = ccv;
-
             //creo il popup menù
             jpm = new JPopupMenu();
             JMenuItem startChat = new JMenuItem();
@@ -92,7 +95,7 @@ public class ChatClientViewListeners {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ChatClientView ccv = (ChatClientView) (ChatClientApp.getApplication().getMainView());
-                    String nickSelected = (String) ccv.getClientsList().getSelectedValue();
+                    String nickSelected = (String) ccv.getMainPanel().getClientsList().getSelectedValue();
 
                     SendFileDialog sendFileDialog = new SendFileDialog(nickSelected, ccv);
                     sendFileDialog.setLocationRelativeTo(ccv.getFrame());
@@ -128,7 +131,7 @@ public class ChatClientViewListeners {
                 }
                 log.debug("selected row of the list : " + row);
 
-            /*caso due click sinistro*/
+                /*caso due click sinistro*/
             } else if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
                 JList listPressed = ((JList) e.getComponent());
                 int row = listPressed.locationToIndex(e.getPoint());
@@ -137,7 +140,7 @@ public class ChatClientViewListeners {
 
                     //chiama in chat l'elemento selezionato
                     listPressed.setSelectedIndex(row);
-                    ccv.addChatWithSelected();
+                    ccv.getHelper().addChatWithSelected();
                 }
             }
         }
@@ -153,12 +156,13 @@ public class ChatClientViewListeners {
         public ClietsListOutClickListener(ChatClientView ccv) {
             super();
             this.ccv = ccv;
+
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
 
-            JList clientsList = ccv.getClientsList();
+            JList clientsList = ccv.getMainPanel().getClientsList();
 //            clientsList.setEnabled(false);
             clientsList.getSelectionModel().clearSelection();
 
@@ -175,15 +179,16 @@ public class ChatClientViewListeners {
         public MainViewListerner(ChatClientView ccv) {
             super();
             this.ccv = ccv;
+
         }
 
         @Override
         public void windowClosing(WindowEvent arg0) {
             super.windowClosing(arg0);
             log.info("window closing");
-            if (ccv.getOutputStream() != null) {
+            if (PersistentDataManager.getOutputStream() != null) {
                 log.info("nell'if");
-                ccv.disconnetti();
+                ccv.getHelper().disconnetti();
             }
         }
 
@@ -211,12 +216,12 @@ public class ChatClientViewListeners {
                 ccv.getNickText().setText(properties.getProperty("nick"));
             }
             if (properties != null && !properties.getProperty(Util.PROPERTY_IP).equals("")) {
-                ccv.setIp(properties.getProperty(Util.PROPERTY_IP));
+                PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
             }
 
             try {
                 if (properties != null && !properties.getProperty(Util.PROPERTY_PORT).equals("")) {
-                    ccv.setPort(Integer.parseInt(properties.getProperty(Util.PROPERTY_PORT)));
+                    PersistentDataManager.setPort(Integer.parseInt(properties.getProperty(Util.PROPERTY_PORT)));
                 }
             } catch (NumberFormatException numberFormatException) {
                 log.error(numberFormatException);
@@ -224,7 +229,7 @@ public class ChatClientViewListeners {
 
 
             if (properties != null && properties.getProperty(Util.PROPERTY_THEME_FOLDER).equals("")) {
-                ccv.getHelper().setTheme(ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER));
+                ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
                 ccv.getFrame().repaint();
             }
 

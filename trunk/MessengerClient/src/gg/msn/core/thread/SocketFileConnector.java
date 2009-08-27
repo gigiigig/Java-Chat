@@ -8,6 +8,7 @@ import gg.msn.ui.ChatClientView;
 import gg.msn.core.commons.Util;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import gg.msn.core.manager.PersistentDataManager;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,13 +39,13 @@ public class SocketFileConnector extends SwingWorker {
     @Override
     protected Object doInBackground() throws Exception {
         Socket newSocket = new Socket();
-        newSocket.connect(new InetSocketAddress(ccv.getIp(), ccv.getPort()));
+        newSocket.connect(new InetSocketAddress(PersistentDataManager.getIp(), PersistentDataManager.getPort()));
 
         OutputStream os = newSocket.getOutputStream();
 
         MESSAGE message = MessageManger.createCommand(Command.ADDFILESOCKET, null);
 //        message.getParameters().add(0, ccv.getNick());
-        MessageManger.addParameterAt(message,"nick", ccv.getNick(), 0);
+        MessageManger.addParameterAt(message,"nick", PersistentDataManager.getNick(), 0);
         
         log.debug("send message : "+MessageManger.messageToStringFormatted(message));
         MessageManger.directWriteMessage(message, os);

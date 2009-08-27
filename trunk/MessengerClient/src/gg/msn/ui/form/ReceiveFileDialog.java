@@ -12,15 +12,14 @@ import gg.msn.core.thread.FileSender;
 import gg.msn.core.thread.SocketFileConnector;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.listener.MessageReceivedListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -287,7 +286,7 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
         }
 
         //creo un fileSocketse nn esiste e gli assegno un client reader
-        if (ccv.getFileSocket() == null || !ccv.getFileSocket().isConnected()) {
+        if (PersistentDataManager.getFileSocket() == null || !PersistentDataManager.getFileSocket().isConnected()) {
             SocketFileConnector connector = new SocketFileConnector(ccv);
             connector.execute();
 
@@ -299,9 +298,9 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
                 }
             }
 
-            ccv.setFileSocket(connector.getSocket());
+            PersistentDataManager.setFileSocket(connector.getSocket());
             try {
-                ccv.setFileOutputStream(connector.getSocket().getOutputStream());
+                PersistentDataManager.setFileOutputStream(connector.getSocket().getOutputStream());
                 ClientReader clientReader = new ClientReader(new MessageReceivedListener(ccv), ClientReader.FILEREADER);
                 new Thread(clientReader).start();
             } catch (IOException ex) {
@@ -324,7 +323,7 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
         MessageManger.addParameter(requestAccpet, "response", Command.OK);
 
         try {
-            MessageManger.directWriteMessage(requestAccpet, ccv.getOutputStream());
+            MessageManger.directWriteMessage(requestAccpet, PersistentDataManager.getOutputStream());
         } catch (SocketException socketException) {
             log.error(socketException);
         }
@@ -368,7 +367,7 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
         MessageManger.addParameter(requestAccpet, "response", Command.KO);
 
         try {
-            MessageManger.directWriteMessage(requestAccpet, ccv.getOutputStream());
+            MessageManger.directWriteMessage(requestAccpet, PersistentDataManager.getOutputStream());
         } catch (SocketException socketException) {
             log.error(socketException);
         }

@@ -13,11 +13,12 @@ import gg.msn.core.commons.Util;
 import gg.msn.ui.game.Canvas;
 import gg.msn.ui.game.GameHome;
 import gg.msn.ui.game.dama.DamaCanvas;
-import gg.msn.ui.theme.ThemeManager;
 import gg.msn.core.thread.ClientReader;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
 import gg.msn.core.manager.ConnectionManager;
+import gg.msn.core.manager.PersistentDataManager;
+import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.facebook.FBLoginPanel;
 import gg.msn.ui.listener.MessageReceivedListener;
 import java.io.IOException;
@@ -27,15 +28,14 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Hashtable;
 import java.util.Properties;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.swing.JFrame;
+import org.jdesktop.application.Application;
 import static chatcommons.Commands.*;
 
 /**
@@ -44,24 +44,18 @@ import static chatcommons.Commands.*;
  */
 public class ChatClientViewHelper {
 
-    private Log log = LogFactory.getLog(this.getClass());
+    private static Log log = LogFactory.getLog(ChatClientViewHelper.class);
     private ChatClientView ccv;
     private ArrayList<ChatWindow> chatWindows;
     private ArrayList<Canvas> canvases;
     private ArrayList<JFrame> fileDialogs;
-    private Map<String, ImageIcon> theme;
 
     public ChatClientViewHelper(ChatClientView ccv) {
         this.ccv = ccv;
         chatWindows = new ArrayList<ChatWindow>();
         canvases = new ArrayList<Canvas>();
         fileDialogs = new ArrayList<JFrame>();
-        Properties properties = Util.readProperties();
-        if (properties != null) {
-            theme = ThemeManager.loadTheme(properties.getProperty(Util.PROPERTY_THEME_FOLDER));
-        } else {
-            theme = new HashMap<String, ImageIcon>();
-        }
+
     }
 
     /**
@@ -108,16 +102,24 @@ public class ChatClientViewHelper {
             public void run() {
                 try {
                     connects();
+                    return;
                     /*catch for some exception*/
                 } catch (ConnectException e) {
 //                    ccv.ShowMessageFrame("<html><font color=red>Impossibile connettersi al server<html>");
                     JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Impossibile connettersi al server<html>", "Errore", JOptionPane.ERROR_MESSAGE);
-                    ccv.getNickText().setEnabled(true);
+                    resetLoginPanel();
+                    log.error(e);
                 } catch (SocketException e) {
-                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + e.getMessage() + "<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + e + "<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                    resetLoginPanel();
+                    log.error(e);
                 } catch (UnknownHostException ex) {
+                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + ex + "<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                    resetLoginPanel();
                     log.error(ex);
                 } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + ex + "<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                    resetLoginPanel();
                     log.error(ex);
                 }
 
@@ -134,33 +136,36 @@ public class ChatClientViewHelper {
 
                 //connetto il socket
                 Socket socket = new Socket();
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(ccv.getIp(), ccv.getPort());
+                String ip = PersistentDataManager.getIp();
+                int port = PersistentDataManager.getPort();
+
+                log.debug("address ip [" + ip + "] port [" + port + "]");
+
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(ip, port);
                 String response = new ConnectionManager().connect(socket, inetSocketAddress, nick);
+
+                log.debug("server response [" + response + "]");
 
                 if (response.equals(Command.KO)) {
                     JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=blue>Il nick scelto è già connesso<html>", "Attenzione", JOptionPane.WARNING_MESSAGE);
-                    ccv.getSocket().close();
-
-                    ccv.getNickText().setEnabled(true);
-                    ccv.getLogin().setEnabled(true);
-                    ccv.getNickText().setEnabled(true);
+                    resetLoginPanel();
                     return;
 
                 } else {
                     //messaggio di stato
                     //setMessage("Connecting to server");
                     //creo il socket
-                    ccv.setSocket(socket);
-                    log.info("client : connect on port : " + ccv.getPort());
+                    PersistentDataManager.setSocket(socket);
+                    log.info("client : connect on port : " + PersistentDataManager.getPort());
                     //connetto il socket
-                    ccv.getSocket().connect(new InetSocketAddress(ccv.getIp(), ccv.getPort()));
-                    ccv.setOutputStream(ccv.getSocket().getOutputStream());
-                    ccv.setNick(nick);
+                    //-PersistentDataManager.getSocket().connect(new InetSocketAddress(PersistentDataManager.getIp(), PersistentDataManager.getPort()));
+                    PersistentDataManager.setOutputStream(PersistentDataManager.getSocket().getOutputStream());
+                    PersistentDataManager.setNick(nick);
                 }
 
                 //lancio il thread
                 new Thread(new ClientReader(new MessageReceivedListener(ccv), ClientReader.MAINREADER)).start();
-                ccv.getNickLabel().setText(ccv.getNick());
+                ccv.getMainPanel().getNickLabel().setText(PersistentDataManager.getNick());
                 showMainPanel();
                 //riattivo inputtext e bottone di login
                 ccv.getNickText().setEnabled(true);
@@ -168,7 +173,7 @@ public class ChatClientViewHelper {
                 //setMessage("Connected");
                 //aggiorno il messaggio nella systemtray
                 if (ccv.getTray() != null) {
-                    ccv.getTray().setToolTip("Gigi Messenger - connesso : " + ccv.getNick());
+                    ccv.getTray().setToolTip("Gigi Messenger - connesso : " + PersistentDataManager.getNick());
                 }
                 //nel prperties salvo il nick impostato per  la connessione
                 Properties properties = Util.readProperties();
@@ -182,6 +187,11 @@ public class ChatClientViewHelper {
                 }
                 /*catch for some exception*/
             }
+
+            private void resetLoginPanel() {
+                ccv.getNickText().setEnabled(true);
+                ccv.getLogin().setEnabled(true);
+            }
         }).start();
 
         //return new Connect(Application.getInstance());
@@ -194,11 +204,11 @@ public class ChatClientViewHelper {
         try {
             //TODO metti nel finalli i comendi da eseguire per forza
 
-            new ConnectionManager().disconnect(ccv.getSocket());
-            ccv.setOutputStream(null);
-            ccv.setClients(new ArrayList<Client>());
+            new ConnectionManager().disconnect(PersistentDataManager.getSocket());
+            PersistentDataManager.setOutputStream(null);
+            PersistentDataManager.setClients(new Hashtable<String, Client>());
 
-            ((DefaultListModel) ccv.getClientsList().getModel()).removeAllElements();
+            ((DefaultListModel) ccv.getMainPanel().getClientsList().getModel()).removeAllElements();
 
             chatWindows = new ArrayList<ChatWindow>();
             canvases = new ArrayList<Canvas>();
@@ -221,7 +231,7 @@ public class ChatClientViewHelper {
      */
     public void addChatWithSelected() {
 
-        String nickSelected = (String) ccv.getClientsList().getSelectedValue();
+        String nickSelected = (String) ccv.getMainPanel().getClientsList().getSelectedValue();
         if (nickSelected != null && !nickSelected.equals("")) {
             log.info("nick selected : " + nickSelected);
             ChatWindow chatWith = getChatWith(nickSelected);
@@ -388,7 +398,7 @@ public class ChatClientViewHelper {
      */
     public void startGameWithSelected() {
 
-        String nickSelected = (String) ccv.getClientsList().getSelectedValue();
+        String nickSelected = (String) ccv.getMainPanel().getClientsList().getSelectedValue();
         GameHome home = new GameHome(ccv);
         home.setLocationRelativeTo(ccv.getFrame());
         home.setVisible(true);
@@ -398,7 +408,7 @@ public class ChatClientViewHelper {
         MessageManger.addReceiver(message, nickSelected);
 
         try {
-            MessageManger.directWriteMessage(message, ccv.getOutputStream());
+            MessageManger.directWriteMessage(message, PersistentDataManager.getOutputStream());
         } catch (SocketException socketException) {
             log.error(socketException);
         }
@@ -428,12 +438,5 @@ public class ChatClientViewHelper {
     public void setFileDialogs(ArrayList<JFrame> fileDialogs) {
         this.fileDialogs = fileDialogs;
     }
-
-    public Map<String, ImageIcon> getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Map<String, ImageIcon> theme) {
-        this.theme = theme;
-    }    // </editor-fold>
+    // </editor-fold>
 }
