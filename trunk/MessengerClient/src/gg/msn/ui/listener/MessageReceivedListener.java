@@ -290,36 +290,38 @@ public class MessageReceivedListener extends AbstractMessageListener {
                 String clientToRemove = message.getParameters().getParameter().get(0).getValue();
 
                 Hashtable<String, Client> clients = PersistentDataManager.getClients();
-                Iterator<Client> li = clients.values().iterator();
-                boolean continua = true;
-                while (li.hasNext() && continua) {
-                    Client elem = li.next();
-                    if (elem.getNick().equals(clientToRemove)) {
-                        log.info("remove element : " + elem);
-                        clients.remove(elem.getNick());
-                        DefaultListModel listModel = (DefaultListModel) ccv.getMainPanel().getClientsList().getModel();
-                        synchronized (listModel) {
-                            listModel.removeElement(elem.getNick());
-                            ccv.getMainPanel().getClientsList().validate();
-                            ccv.getFrame().pack();
-                            continua = false;
-                        }
-                    }
+//                Iterator<Client> li = clients.values().iterator();
+//                boolean continua = true;
+//                while (li.hasNext() && continua) {
+//                    Client elem = li.next();
+//                    if (elem.getNick().equals(clientToRemove)) {
+                Client toRemove = clients.get(clientToRemove);
+                log.info("remove element : " + toRemove);
+                clients.remove(clientToRemove);
+                DefaultListModel listModel = (DefaultListModel) ccv.getMainPanel().getClientsList().getModel();
+                synchronized (listModel) {
+                    listModel.removeElement(toRemove);
+                    ccv.getMainPanel().getClientsList().validate();
+                    ccv.getFrame().pack();
+
                 }
+
+
 
                 /*aggiungo un nuovo utente che si è connesso*/
             } else if (message.getName().equals(Command.ADDUSER)) {
                 //i paramtri contengono i clints da aggiungere
                 List<Parameter> parameters = message.getParameters().getParameter();
-
                 log.debug("nick da aggiungere [" + parameters.size() + "]");
 
 //                            int position = ccv.getClientsList().getModel().getSize() - 1;
                 DefaultListModel listModel = (DefaultListModel) ccv.getMainPanel().getClientsList().getModel();
                 synchronized (listModel) {
                     for (Parameter parameter : parameters) {
-                        PersistentDataManager.getClients().put(parameter.getValue(), new Client(null, parameter.getValue()));
-                        listModel.addElement(parameter.getValue());
+                        final Client client = new Client(null, parameter.getValue());
+                        PersistentDataManager.getClients().put(parameter.getValue(), client);
+
+                        listModel.addElement(client);
                         log.debug("aggiunto  client [" + parameter.getValue() + "]");
                     }
 
@@ -338,6 +340,7 @@ public class MessageReceivedListener extends AbstractMessageListener {
             }
         }
         // </editor-fold>
+
     }
 
     @Override
@@ -350,4 +353,3 @@ public class MessageReceivedListener extends AbstractMessageListener {
         return PersistentDataManager.getOutputStream();
     }
 }
-

@@ -79,7 +79,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                                 e.printStackTrace();
                             }
 
-                            ccv.getMainPanel().updateBuddyListPane();
+                            ccv.getMainPanel().updateListWithFACEBOOKContacts();
 
                             // it's said that the buddy list is updated every 3 minutes at the server end.
                             // we refresh the buddy list every 1.5 minutes
@@ -96,6 +96,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 //Init GUI
                 log.debug("Init GUI...");
 
+                ChatClientView.protocol = ChatClientView.FACEBOOK_PROTOCOL;
                 ccv.getHelper().showMainPanel();
                 log.debug("showed maon panel");
                 //必须在getbuddylist之后

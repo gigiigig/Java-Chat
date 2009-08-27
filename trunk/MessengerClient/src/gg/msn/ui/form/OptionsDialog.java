@@ -274,9 +274,9 @@ public class OptionsDialog extends javax.swing.JDialog {
         ChatClientView ccv = (ChatClientView) ChatClientApp.getApplication().getMainView();
         PersistentDataManager.setPort(Integer.parseInt(portaText.getText()));
         PersistentDataManager.setIp(ipText.getText());
-//        ccv.setNick(nickText.getText());
+        PersistentDataManager.setNick(nickText.getText());
         ccv.getNickText().setText(nickText.getText());
-//        ccv.getHelper().setTheme(ThemeManager.loadTheme(properties.getProperty(Util.PROPERTY_THEME_FOLDER)));
+        ThemeManager.loadTheme(properties.getProperty(Util.PROPERTY_THEME_FOLDER));
         log.info("property saved");
         ccv.getMainPanel().insertIcons();
         setVisible(false);

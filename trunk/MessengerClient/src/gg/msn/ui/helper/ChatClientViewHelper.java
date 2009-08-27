@@ -16,6 +16,7 @@ import gg.msn.ui.game.dama.DamaCanvas;
 import gg.msn.core.thread.ClientReader;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import facebookchat.common.FacebookUser;
 import gg.msn.core.manager.ConnectionManager;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientApp;
@@ -152,6 +153,9 @@ public class ChatClientViewHelper {
                     return;
 
                 } else {
+
+                    //setto il protocolllo
+                    ChatClientView.protocol = ChatClientView.GIGIMSN_PROTOCOL;
                     //messaggio di stato
                     //setMessage("Connecting to server");
                     //creo il socket
@@ -162,6 +166,7 @@ public class ChatClientViewHelper {
                     PersistentDataManager.setOutputStream(PersistentDataManager.getSocket().getOutputStream());
                     PersistentDataManager.setNick(nick);
                 }
+
 
                 //lancio il thread
                 new Thread(new ClientReader(new MessageReceivedListener(ccv), ClientReader.MAINREADER)).start();
@@ -231,7 +236,13 @@ public class ChatClientViewHelper {
      */
     public void addChatWithSelected() {
 
-        String nickSelected = (String) ccv.getMainPanel().getClientsList().getSelectedValue();
+        String nickSelected = "";
+
+        if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
+            nickSelected = ((FacebookUser) ccv.getMainPanel().getClientsList().getSelectedValue()).name;
+        } else {
+            nickSelected = ((Client) ccv.getMainPanel().getClientsList().getSelectedValue()).getNick();
+        }
         if (nickSelected != null && !nickSelected.equals("")) {
             log.info("nick selected : " + nickSelected);
             ChatWindow chatWith = getChatWith(nickSelected);

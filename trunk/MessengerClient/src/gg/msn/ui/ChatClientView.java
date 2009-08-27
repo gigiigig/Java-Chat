@@ -53,6 +53,9 @@ public class ChatClientView extends FrameView {
     private Log log = LogFactory.getLog(this.getClass());
     private ChatClientViewHelper helper;// = new ChatClientViewHelper();
     private MainPanel mainPanel;
+    public static String protocol;
+    public static final String GIGIMSN_PROTOCOL = "ggmsn";
+    public static final String FACEBOOK_PROTOCOL = "facebook";
 
     // <editor-fold defaultstate="collapsed" desc="Costruttore">                          
     public ChatClientView(SingleFrameApplication app) {
@@ -361,11 +364,9 @@ public class ChatClientView extends FrameView {
         }
     }
 
-   
     /**
      * Azione che lancia una chat con l'utente selezionato sulla tabella nick
      */
-   
     //<editor-fold defaultstate="collapsed" desc="Getter & Setter">
 
     /* Getter and setter for varibles */

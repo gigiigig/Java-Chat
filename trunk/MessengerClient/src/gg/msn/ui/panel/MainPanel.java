@@ -10,6 +10,7 @@
  */
 package gg.msn.ui.panel;
 
+import chatcommons.Client;
 import facebookchat.common.FacebookBuddyList;
 import facebookchat.common.FacebookUser;
 import gg.msn.ui.ChatClientApp;
@@ -22,6 +23,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.net.URL;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -123,6 +125,7 @@ public class MainPanel extends javax.swing.JPanel {
         clientsList.setModel(new DefaultListModel()
         );
         clientsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        clientsList.setCellRenderer(new ClientsListCellRenderer());
         clientsList.setFocusable(false);
         clientsList.setInheritsPopupMenu(true);
         clientsList.setName("clientsList"); // NOI18N
@@ -219,9 +222,9 @@ public class MainPanel extends javax.swing.JPanel {
         }
     }
 
-    public void updateBuddyListPane() {
+    public void updateListWithFACEBOOKContacts() {
         //fmod.removeAll();
-        clientsList.removeAll();
+        ((DefaultListModel) clientsList.getModel()).removeAllElements();
         log.debug("utenti presenti [" + FacebookBuddyList.buddies.size() + "]");
         Iterator<String> it = FacebookBuddyList.buddies.keySet().iterator();
         while (it.hasNext()) {
@@ -229,7 +232,7 @@ public class MainPanel extends javax.swing.JPanel {
             log.debug("userID: " + key);
             FacebookUser fu = FacebookBuddyList.buddies.get(key);
             log.debug("status: " + fu.onlineStatus.toString());
-            ((DefaultListModel) clientsList.getModel()).addElement(fu.firstName);
+            ((DefaultListModel) clientsList.getModel()).addElement(fu);
         }
         clientsList.repaint();
         clientsList.revalidate();
@@ -260,7 +263,7 @@ public class MainPanel extends javax.swing.JPanel {
         ccv.getHelper().disconnetti();
     }
 
-     @Action
+    @Action
     public void addChatWithSelected() {
         ccv.getHelper().addChatWithSelected();
     }
@@ -281,7 +284,6 @@ class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
 
 
 //                log.debug("Render lement : " + value);
-
         if (isSelected) {
             setOpaque(true);
             setBackground(list.getSelectionBackground());
@@ -291,13 +293,23 @@ class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
-        setText((String) value.toString());
 
         try {
-            ImageIcon icon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
-            ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
-            setFont(list.getFont());
-            setIcon(scaledIcon);
+            if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
+                final FacebookUser user = (FacebookUser) value;
+                setText(user.name);
+                ImageIcon icon  = user.portrait;
+                log.debug("icon [" + icon + "]");
+                ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
+                setFont(list.getFont());
+                setIcon(scaledIcon);
+            } else {
+                setText(((Client) value).getNick());
+                ImageIcon icon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
+                ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
+                setFont(list.getFont());
+                setIcon(scaledIcon);
+            }
         } catch (Exception e) {
             log.warn(e);
         }
