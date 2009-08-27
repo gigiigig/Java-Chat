@@ -50,22 +50,27 @@ public class ClientReader implements Runnable {
         } catch (IOException ex) {
             log.error(ex);
         }
-
-
     }
 
     private void startRead() throws UnsupportedEncodingException, IOException, SocketException {
         //leggo l'input stream e lo sscrivo sulla chat riga per riga
         InputStream is = null;
-        MESSAGE responseConn = MessageManger.createCommand(Command.CONNECT, null);
-        MessageManger.addParameter(responseConn, "response", Command.OK);
-        BufferedReader in;
-        MessageManger.directWriteMessage(responseConn, listener.getOutputStream());
+
+        if (type.equals(MAINREADER)) {
+            MESSAGE responseConn = MessageManger.createCommand(Command.CONNECT, null);
+            MessageManger.addParameter(responseConn, "response", Command.OK);
+            MessageManger.directWriteMessage(responseConn, listener.getOutputStream());
+            is = PersistentDataManager.getSocket().getInputStream();
+
+        } else if (type.equals(FILEREADER)) {
+            is = PersistentDataManager.getFileSocket().getInputStream();
+        }
 //            ccv.getHelper().sendRequest("~OK\n");
-        is = PersistentDataManager.getSocket().getInputStream();
+
+        BufferedReader in;
         in = new BufferedReader(new InputStreamReader(is, Util.DEFAULTENCODING));
         String line = "";
-        
+
         while ((line = in.readLine()) != null) {
             try {
                 if (line.startsWith("<")) {

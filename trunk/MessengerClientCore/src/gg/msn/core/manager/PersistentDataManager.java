@@ -8,7 +8,6 @@ package gg.msn.core.manager;
 import chatcommons.Client;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
