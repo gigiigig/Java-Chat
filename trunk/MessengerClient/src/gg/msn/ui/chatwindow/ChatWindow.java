@@ -73,6 +73,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
@@ -139,7 +140,7 @@ public class ChatWindow extends javax.swing.JFrame {
                 userLabel.setIcon(userIcon);
             }
 
-            ImageIcon addUserIcon =  ThemeManager.getTheme().get(ThemeManager.ADD_USER_ICON);
+            ImageIcon addUserIcon = ThemeManager.getTheme().get(ThemeManager.ADD_USER_ICON);
             if (userIcon != null) {
                 addChatButton.setIcon(addUserIcon);
             }
@@ -622,7 +623,6 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
                     String fontSt = fontToString(font);
 
                     log.debug("font : " + fontSt);
-
                     MessageManger.addParameter(message, "font", fontSt);
                     MessageManger.addParameter(message, "color", color.getRGB() + "");
 
@@ -638,12 +638,12 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             FileInputStream fis = new FileInputStream(source);
 
+                            IOUtils.copy(fis, baos);
+                            /*
                             byte[] temp = new byte[1024];
                             while (fis.read(temp) != -1) {
-                                baos.write(temp);
-                            }
-
-                            baos.close();
+                            baos.write(temp);
+                            }*/
 
                             try {
 
@@ -665,15 +665,15 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
                             //invio il messaggio
                             MessageManger.directWriteMessage(message, outputStream);
                         } catch (SocketException socketException) {
-                            // se il server n risponde chiudo tutte le finestre
+                            // se il server nn risponde chiudo tutte le finestre
                             log.warn("server not respond : " + socketException);
                             List<ChatWindow> chatWindows = ccv.getHelper().getChatWindows();
 
                             for (ChatWindow chatWindow : chatWindows) {
                                 chatWindow.setVisible(false);
                             }
-                            JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Il server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
-
+                            //JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Il server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                            ccv.getHelper().showErrorDialog("Il server non risponde");
                             ccv.getHelper().showLoginPanel();
                         }
 
@@ -685,7 +685,7 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
             }).start();
 
         } else {
-            JOptionPane.showMessageDialog(this, "<html><font color=blue>Il testo da inviare non puÃ² essere vuoto<html>", "Attenzione", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "<html><font color=blue>Il testo da inviare non può essere vuoto<html>", "Attenzione", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -705,12 +705,9 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
      */
     @Action
     public void showSelectClientToAdd() {
-//    
         SelectClientsToAdd scta = new SelectClientsToAdd(this, (ChatClientView) ChatClientApp.getApplication().getMainView());
         scta.setLocationRelativeTo(this);
         scta.setVisible(true);
-
-
     }
 
     /**
@@ -748,7 +745,6 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
         StyleConstants.setItalic(regular, false);
 
         // My Format
-
         Style s = doc.addStyle("headerName", regular);
         StyleConstants.setFontFamily(s, "SansSerif");
         StyleConstants.setBold(s, true);
@@ -764,35 +760,35 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
         StyleConstants.setForeground(s, Color.BLACK);
 
     }
-
     /**
      * scrive il messaggio nel testo della chat con tutta la formatttazione
      * @param sender - il nick cha ha inviato il messaggio
      * @param message
      */
-    public void writeMessage(String sender, String message) {
-        try {
+    private String lastSender = "";
+    /* public void writeMessage(String sender, String message) {
+    try {
 
-            SimpleDateFormat format = new SimpleDateFormat("HH-mm-ss");
-            Calendar calendar = Calendar.getInstance();
-            String headerData = format.format(calendar.getTime()) + " : ";
-            String headerName = sender + "  ";
-            doc.insertString(doc.getLength(), headerData, doc.getStyle("headerData"));
-            doc.insertString(doc.getLength(), headerName, doc.getStyle("headerName"));
-            doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
+    SimpleDateFormat format = new SimpleDateFormat("HH-mm-ss");
+    Calendar calendar = Calendar.getInstance();
+    String headerData = format.format(calendar.getTime()) + " : ";
+    String headerName = sender + "  ";
+    doc.insertString(doc.getLength(), headerData, doc.getStyle("headerData"));
+    doc.insertString(doc.getLength(), headerName, doc.getStyle("headerName"));
+    doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
 
-//            doc.insertString(doc.getLength(), message + "\n", doc.getStyle("regular"));
-            emoctionsManger.insertChatTextWithEmoticons(doc, message, sender, null);
-            doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
+    //            doc.insertString(doc.getLength(), message + "\n", doc.getStyle("regular"));
+    emoctionsManger.insertChatTextWithEmoticons(doc, message, sender, null);
+    doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
+    chatText.setCaretPosition(chatText.getStyledDocument().getLength());
+    this.toFront();
+    inputText.requestFocus();
 
-            chatText.setCaretPosition(chatText.getStyledDocument().getLength());
-            this.toFront();
-            inputText.requestFocus();
-        } catch (BadLocationException ex) {
-            log.error(ex);
-        }
-
+    } catch (BadLocationException ex) {
+    log.error(ex);
     }
+
+    }*/
 
     /**
      * scrive il messaggio nel testo della chat con tutta la formatttazione
@@ -800,41 +796,45 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
      * @param message
      */
     public void writeMessage(String sender, String message, Font font, Color color) {
-        try {
+        writeMessage(sender, message, font, color, null);
+        /*    try {
 
-            String styleName = fontToString(font) + color.getRGB();
-            log.debug("style name = " + styleName);
+        String styleName = fontToString(font) + color.getRGB();
+        log.debug("style name = " + styleName);
 
-            //aggiungo al documento il nuovo stile
-            Style senderStyle = doc.addStyle(styleName, doc.getStyle("regular"));
-            StyleConstants.setFontFamily(senderStyle, font.getFamily());
-            StyleConstants.setBold(senderStyle, font.isBold());
-            StyleConstants.setItalic(senderStyle, font.isItalic());
-            StyleConstants.setFontSize(senderStyle, font.getSize());
-            StyleConstants.setForeground(senderStyle, color);
+        //aggiungo al documento il nuovo stile
+        Style senderStyle = doc.addStyle(styleName, doc.getStyle("regular"));
+        StyleConstants.setFontFamily(senderStyle, font.getFamily());
+        StyleConstants.setBold(senderStyle, font.isBold());
+        StyleConstants.setItalic(senderStyle, font.isItalic());
+        StyleConstants.setFontSize(senderStyle, font.getSize());
+        StyleConstants.setForeground(senderStyle, color);
 
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-            Calendar calendar = Calendar.getInstance();
-            String headerData = format.format(calendar.getTime()) + " - ";
-            String headerName = sender + "  ";
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        String headerData = format.format(calendar.getTime()) + " - ";
+        String headerName = sender + "  ";
 
-            //inserisco heder e user name
-            doc.insertString(doc.getLength(), headerData, doc.getStyle("headerData"));
-            doc.insertString(doc.getLength(), headerName, doc.getStyle("headerName"));
-            doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
-
-            //scrivo il nuovo testo con le emoticon e il suo stile
-            emoctionsManger.insertChatTextWithEmoticons(doc, message, styleName, null);
-            doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
-
-            //aggiorno la posizione dello scroll
-            chatText.setCaretPosition(chatText.getStyledDocument().getLength());
-            this.toFront();
-            inputText.requestFocus();
-        } catch (BadLocationException ex) {
-            log.error(ex);
+        //inserisco heder e user name solo se è cambiato chi scrive
+        if (!lastSender.equals(sender)) {
+        doc.insertString(doc.getLength(), headerData, doc.getStyle("headerData"));
+        doc.insertString(doc.getLength(), headerName, doc.getStyle("headerName"));
+        doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
+        lastSender = sender;
         }
 
+        //scrivo il nuovo testo con le emoticon e il suo stile
+        emoctionsManger.insertChatTextWithEmoticons(doc, message, styleName, null);
+        doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
+
+        //aggiorno la posizione dello scroll
+        chatText.setCaretPosition(chatText.getStyledDocument().getLength());
+        this.toFront();
+        inputText.requestFocus();
+        } catch (BadLocationException ex) {
+        log.error(ex);
+        }
+         */
     }
 
     /**
@@ -842,7 +842,7 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
      * @param sender - il nick cha ha inviato il messaggio
      * @param message
      */
-    public void writeMessage(String sender, String message, Font font, Color color, List<Emoticon> emotions) {
+    public void writeMessage(String sender, String message, Font font, Color color, List<Emoticon> emoticons) {
         try {
 
             String styleName = fontToString(font) + color.getRGB();
@@ -861,17 +861,20 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
             String headerData = format.format(calendar.getTime()) + " - ";
             String headerName = sender + "  ";
 
-            //inserisco heder e user name
-            doc.insertString(doc.getLength(), headerData, doc.getStyle("headerData"));
-            doc.insertString(doc.getLength(), headerName, doc.getStyle("headerName"));
-            doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
+            //inserisco heder e user name solo se è cambiato chi scrive
+            if (!lastSender.equals(sender)) {
+                doc.insertString(doc.getLength(), headerData, doc.getStyle("headerData"));
+                doc.insertString(doc.getLength(), headerName, doc.getStyle("headerName"));
+                doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
+                lastSender = sender;
+            }
 
             //aggiungo emoticons ricevute
-            emoctionsManger.loadEmotionsOnDocument(doc, emotions);
-
+            if (emoticons != null) {
+                emoctionsManger.loadEmotionsOnDocument(doc, emoticons);
+            }
             //scrivo il nuovo testo con le emoticon e il suo stile
-            emoctionsManger.insertChatTextWithEmoticons(doc, message, styleName, emotions);
-
+            emoctionsManger.insertChatTextWithEmoticons(doc, message, styleName, emoticons);
             doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
 
 
@@ -1018,7 +1021,7 @@ class MainPanel extends JPanel {
 
         try {
 
-            ImageIcon icon =  ThemeManager.getTheme().get(ThemeManager.CHAT_BACKGROUND);
+            ImageIcon icon = ThemeManager.getTheme().get(ThemeManager.CHAT_BACKGROUND);
 
             if (icon != null) {
                 Image image = icon.getImage();

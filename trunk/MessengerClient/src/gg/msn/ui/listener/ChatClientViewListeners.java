@@ -4,6 +4,7 @@
  */
 package gg.msn.ui.listener;
 
+import chatcommons.Client;
 import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.ChatClientView;
 import gg.msn.core.commons.Util;
@@ -95,11 +96,16 @@ public class ChatClientViewListeners {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ChatClientView ccv = (ChatClientView) (ChatClientApp.getApplication().getMainView());
-                    String nickSelected = (String) ccv.getMainPanel().getClientsList().getSelectedValue();
-
-                    SendFileDialog sendFileDialog = new SendFileDialog(nickSelected, ccv);
-                    sendFileDialog.setLocationRelativeTo(ccv.getFrame());
-                    sendFileDialog.setVisible(true);
+                    Client selected = null;
+                    try {
+                        selected = (Client) ccv.getMainPanel().getClientsList().getSelectedValue();
+                        String nickSelected = selected.getNick();
+                        SendFileDialog sendFileDialog = new SendFileDialog(nickSelected, ccv);
+                        sendFileDialog.setLocationRelativeTo(ccv.getFrame());
+                        sendFileDialog.setVisible(true);
+                    } catch (Exception ex) {
+                        log.error(ex);
+                    }
                 }
             });
             startSendFile.setText("Invia un file");

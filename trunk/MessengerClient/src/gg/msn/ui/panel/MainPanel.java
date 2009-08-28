@@ -310,7 +310,7 @@ class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
                 try {
                     new ImageIcon(client.getImage());
                 } catch (Exception e) {
-                    log.debug("immgine non presente");
+//                    log.debug("immgine non presente");
                     icon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
                 }
                 ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
