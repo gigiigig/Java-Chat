@@ -57,6 +57,9 @@ public class ClientReader implements Runnable {
         InputStream is = null;
 
         if (type.equals(MAINREADER)) {
+
+            //questo comando avvisa il server che sono pronto per la lettura
+            //quindi non può essere spostato
             MESSAGE responseConn = MessageManger.createCommand(Command.CONNECT, null);
             MessageManger.addParameter(responseConn, "response", Command.OK);
             MessageManger.directWriteMessage(responseConn, listener.getOutputStream());
