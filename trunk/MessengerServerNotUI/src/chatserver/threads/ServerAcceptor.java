@@ -275,9 +275,7 @@ class Connector implements Runnable {
                 log.debug("add socket to client : " + sender);
                 Client client = null;
 
-
                 client = cv.getClients().get(sender);
-
 
                 client.setFileSenderSocket(clientSocket);
                 ServerReaderXML srxml = new ServerReaderXML(client, cv, ServerReaderXML.FILEREADER);
