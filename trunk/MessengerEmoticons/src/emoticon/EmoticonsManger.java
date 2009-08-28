@@ -158,8 +158,7 @@ public class EmoticonsManger {
                 index = 0;
                 oldIndex = startIndex;
             } catch (BadLocationException ex) {
-                Logger.getLogger(EmoticonsManger.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                log.error(ex);            }
         }
 
     }
@@ -347,6 +346,11 @@ public class EmoticonsManger {
         }
     }
 
+    /**
+     * vede quali emotcons sono all'interno del testo
+     * @param text il testo su cui cercare
+     * @return Le emoticons trovate
+     */
     public List<Emoticon> emoticonsInDoc(String text) {
 
 
@@ -355,14 +359,26 @@ public class EmoticonsManger {
         int cont = 0;
         log.debug("text : " + text);
 
-        for (Emoticon emotion : emoticons) {
-            if (text.contains(emotion.getShortcut()) && cont > 63) {
-                toReturn.add(emotion);
+        for (int i = 63; i < emoticons.size(); i++) {
+            Emoticon emoticon = emoticons.get(i);
+            if (text.contains(emoticon.getShortcut()) && cont > 63) {
+                toReturn.add(emoticon);
             }
             log.trace("cont : " + cont);
-            log.trace("shortcut : " + emotion.getShortcut());
-            cont++;
+            log.trace("shortcut : " + emoticon.getShortcut());
+            i++;
         }
+
+        /* così faccio 63 giri a vuoto!
+        for (Emoticon emotion : emoticons) {
+        if (text.contains(emotion.getShortcut()) && cont > 63) {
+        toReturn.add(emotion);
+        }
+        log.trace("cont : " + cont);
+        log.trace("shortcut : " + emotion.getShortcut());
+        cont++;
+        }*/
+
         return toReturn;
 
 
@@ -375,6 +391,7 @@ public class EmoticonsManger {
         return null;
     }
     // <editor-fold defaultstate="collapsed" desc=" Getter and Setter ">
+
     public LinkedList<Emoticon> getEmotions() {
         return emoticons;
     }
