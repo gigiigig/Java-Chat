@@ -455,7 +455,7 @@ public class Launcher {
         int channelBeginPos = getMethodResponseBody.indexOf(channelPrefix) + channelPrefix.length();
         if (channelBeginPos < channelPrefix.length()) {
             log.debug("Error: Can't find channel!");
-            //return ErrorCode.Error_System_ChannelNotFound;
+            return ErrorCode.Error_System_ChannelNotFound;
         } else {
             channel = getMethodResponseBody.substring(channelBeginPos,
                     channelBeginPos + 2);
