@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chatcommons;
 
 import java.net.Socket;
@@ -12,20 +11,22 @@ import java.net.Socket;
  * @author Administrator
  */
 public class Client {
-    
-   private Socket mainSocket;
-   private Socket fileSenderSocket;
-   private String nick;
-   private byte[] image;
-   
-   public Client(){
-      
-   }
-   public Client(Socket socket,String nick){
-       this.mainSocket = socket;
-       this.nick = nick;
-   }
-    
+
+    private Socket mainSocket;
+    private Socket fileSenderSocket;
+    private String nick;
+    private String status;
+    private String message;
+    private byte[] image;
+
+    public Client() {
+    }
+
+    public Client(Socket socket, String nick) {
+        this.mainSocket = socket;
+        this.nick = nick;
+    }
+
     public String getNick() {
         return nick;
     }
@@ -58,8 +59,21 @@ public class Client {
         this.image = image;
     }
 
-    
-   
-   
+    public String getStatus() {
+        return status;
+    }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    
 }
