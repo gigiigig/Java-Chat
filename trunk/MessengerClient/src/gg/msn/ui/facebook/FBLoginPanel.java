@@ -30,11 +30,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
 
     public FBLoginPanel(ChatClientView ccv) {
         initComponents();
-
         this.ccv = ccv;
 
     }
-
     private void connectStart() {
         String email = emailText.getText().trim();
         String pass = passwText.getText().trim();

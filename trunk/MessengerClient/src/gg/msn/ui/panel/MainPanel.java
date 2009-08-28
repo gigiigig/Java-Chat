@@ -13,7 +13,6 @@ package gg.msn.ui.panel;
 import chatcommons.Client;
 import facebookchat.common.FacebookBuddyList;
 import facebookchat.common.FacebookUser;
-import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.listener.ChatClientViewListeners;
 import gg.msn.ui.theme.ThemeManager;
@@ -23,7 +22,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.net.URL;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -295,17 +293,26 @@ class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
         }
 
         try {
+            //render per utenti Facebook
             if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
                 final FacebookUser user = (FacebookUser) value;
                 setText(user.name);
-                ImageIcon icon  = user.portrait;
+                ImageIcon icon = user.portrait;
                 log.debug("icon [" + icon + "]");
                 ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
                 setFont(list.getFont());
                 setIcon(scaledIcon);
+                //render per utenti Client
             } else {
-                setText(((Client) value).getNick());
-                ImageIcon icon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
+                Client client = (Client) value;
+                setText((client).getNick());
+                ImageIcon icon = null;
+                try {
+                    new ImageIcon(client.getImage());
+                } catch (Exception e) {
+                    log.debug("immgine non presente");
+                    icon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
+                }
                 ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
                 setFont(list.getFont());
                 setIcon(scaledIcon);

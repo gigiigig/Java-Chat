@@ -50,7 +50,7 @@ import org.jdesktop.application.Application;
 public class ChatClientView extends FrameView {
 
     /* varibili generali */
-    private Log log = LogFactory.getLog(this.getClass());
+    private Log log = LogFactory.getLog(ChatClientView.class);
     private ChatClientViewHelper helper;// = new ChatClientViewHelper();
     private MainPanel mainPanel;
     public static String protocol;
@@ -435,6 +435,7 @@ public class ChatClientView extends FrameView {
     }
 
     //</editor-fold>
+
     @Action
     public void showNewEmotionManage() {
         EmoticonsManageFrame manageFrame = new EmoticonsManageFrame();

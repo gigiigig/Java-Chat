@@ -22,6 +22,7 @@ import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.facebook.FBLoginPanel;
 import gg.msn.ui.listener.MessageReceivedListener;
+import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
@@ -63,10 +64,7 @@ public class ChatClientViewHelper {
      * rende visibile il MainPanel e nasconde loginPanel
      */
     public void showMainPanel() {
-//        ccv.getFrame().remove(ccv.getLoginPanel());
         ccv.getFrame().setContentPane(ccv.getMainPanel());
-//        ccv.getFrame().add(ccv.getStatusPanel());
-//        ccv.getConnect().setContentAreaFilled(false);
         ccv.getFrame().repaint();
         ccv.getFrame().validate();
     }
@@ -75,11 +73,7 @@ public class ChatClientViewHelper {
      * rende visibile il loginPanel e nasconde mainPanel
      */
     public void showLoginPanel() {
-
         ccv.getFrame().setContentPane(ccv.getLoginPanel());
-
-//        ccv.getLogin().setContentAreaFilled(false);
-//        ccv.getNickText().setEnabled(true);
         ccv.getFrame().repaint();
         ccv.getFrame().validate();
     }
@@ -87,8 +81,6 @@ public class ChatClientViewHelper {
     public void showFacebookLoginPanel() {
         ccv.getFrame().remove(ccv.getMainPanel());
         ccv.getFrame().setContentPane(new FBLoginPanel(ccv));
-//        ccv.getLogin().setContentAreaFilled(false);
-//        ccv.getNickText().setEnabled(true);
         ccv.getFrame().repaint();
         ccv.getFrame().validate();
     }
@@ -106,20 +98,19 @@ public class ChatClientViewHelper {
                     return;
                     /*catch for some exception*/
                 } catch (ConnectException e) {
-//                    ccv.ShowMessageFrame("<html><font color=red>Impossibile connettersi al server<html>");
-                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Impossibile connettersi al server<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                    showErrorDialog("Impossibile connettersi al server");
                     resetLoginPanel();
                     log.error(e);
                 } catch (SocketException e) {
-                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + e + "<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                    showErrorDialog(e.toString());
                     resetLoginPanel();
                     log.error(e);
                 } catch (UnknownHostException ex) {
-                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + ex + "<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                    showErrorDialog(ex.toString());
                     resetLoginPanel();
                     log.error(ex);
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + ex + "<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                    showErrorDialog(ex.toString());
                     resetLoginPanel();
                     log.error(ex);
                 }
@@ -200,6 +191,10 @@ public class ChatClientViewHelper {
         }).start();
 
         //return new Connect(Application.getInstance());
+    }
+
+    public void showErrorDialog(String message) throws HeadlessException {
+        JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + message + "</html>", "Errore", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
