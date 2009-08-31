@@ -14,12 +14,17 @@ public class Client {
 
     private Socket mainSocket;
     private Socket fileSenderSocket;
+    private String uid;
     private String nick;
     private String status;
     private String message;
     private byte[] image;
 
     public Client() {
+    }
+
+    public Client(String nick) {
+        this.nick = nick;
     }
 
     public Client(Socket socket, String nick) {
@@ -75,5 +80,11 @@ public class Client {
         this.message = message;
     }
 
-    
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 }
