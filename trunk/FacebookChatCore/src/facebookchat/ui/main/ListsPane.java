@@ -16,7 +16,7 @@ import javax.swing.MenuElement;
 import javax.swing.ScrollPaneConstants;
 
 import facebookchat.common.FacebookUser;
-import facebookchat.common.Launcher;
+import facebookchat.common.FacebookManager;
 import facebookchat.ui.common.ObjectList;
 
 @SuppressWarnings("serial")
@@ -126,7 +126,7 @@ public class ListsPane extends JPanel {
 	 * @param listItem
 	 */
 	private void showChatroom(String uid) {
-		Launcher.getChatroomAnyway(uid).setVisible(true);
+		FacebookManager.getChatroomAnyway(uid).setVisible(true);
 	}
 	public void refresh() {
 		buddyList.update();

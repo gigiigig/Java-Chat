@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import facebookchat.common.FacebookBuddyList;
-import facebookchat.common.Launcher;
+import facebookchat.common.FacebookManager;
 import facebookchat.common.SystemPath;
 import facebookchat.ui.common.NoxFrame;
 import org.apache.commons.logging.Log;
@@ -146,7 +146,7 @@ public class Cheyenne extends NoxFrame {
         public void run() {
             while (true) {
                 //一轮轮询之后休息一段时间(InterStatusCheckingsSleepTime)
-                Launcher.getBuddyList();
+                FacebookManager.getBuddyList();
                 log.debug("Now refresh the buddy list");
                 buddyListPane.refresh();
                 try {

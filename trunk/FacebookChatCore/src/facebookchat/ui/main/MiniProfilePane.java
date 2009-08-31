@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import facebookchat.common.Launcher;
+import facebookchat.common.FacebookManager;
 import facebookchat.common.SystemPath;
 
 public class MiniProfilePane extends JPanel {
@@ -140,7 +140,7 @@ public class MiniProfilePane extends JPanel {
 				mySignField.setOpaque(false);
 				mySignField.setForeground(myNick.getForeground());
 				if(!mySignField.getText().trim().equals(lastSignStr.trim()))
-				    Launcher.setStatusMessage(mySignField.getText());
+				    FacebookManager.setStatusMessage(mySignField.getText());
 			}
 		});
 		

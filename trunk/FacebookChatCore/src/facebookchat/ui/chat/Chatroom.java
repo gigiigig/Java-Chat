@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import javax.swing.BoxLayout;
 
 import facebookchat.common.FacebookBuddyList;
-import facebookchat.common.Launcher;
+import facebookchat.common.FacebookManager;
 import facebookchat.common.SystemPath;
 import facebookchat.ui.common.NoxFrame;
 
@@ -83,7 +83,7 @@ public class Chatroom extends NoxFrame{
 	 */
 	public boolean SendMsg(String strmsg){
 		//TODO send msg
-		Launcher.PostMessage(roomID, strmsg);
+		FacebookManager.PostMessage(roomID, strmsg);
 		return true;
 	}
 	public void incomingMsgProcessor(String sender, String time,

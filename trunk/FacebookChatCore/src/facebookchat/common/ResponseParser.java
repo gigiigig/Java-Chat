@@ -2,29 +2,15 @@ package facebookchat.common;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
-import java.awt.Color;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
+import javax.swing.JOptionPane;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import facebookchat.ui.chat.Chatroom;
-import facebookchat.ui.chat.SlideInNotification;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -62,10 +48,10 @@ public class ResponseParser {
             kError_Chat_TooManyMessages = 1356008,
             kError_Platform_CallbackValidationFailure = 1349007,
             kError_Platform_ApplicationResponseInvalid = 1349008;*/
+            try {
+                if (respObjs.getInt("error") == 0) {
+                    //no error
 
-            if (respObjs.getInt("error") == 0) {
-                //no error
-                try {
                     JSONObject payload = (JSONObject) respObjs.get("payload");
                     if (payload != null) {
                         JSONObject buddyList = (JSONObject) payload.get("buddy_list");
@@ -74,14 +60,16 @@ public class ResponseParser {
                             log.debug("buddy lisst updated");
                         }
                     }
-                } catch (ClassCastException cce) {
-                    cce.printStackTrace();
-                    //for (;;);{"error":0,"errorSummary":"","errorDescription":"No error.","payload":[],"bootload":[{"name":"js\/common.js.pkg.php","type":"js","src":"http:\/\/static.ak.fbcdn.net\/rsrc.php\/pkg\/60\/106715\/js\/common.js.pkg.php"}]}
-                    //"payload":[]
-                    //not "{}"
-                    //we do nothing
                 }
-            } /*else if((Number)respObjs.get("error") == 1346001){
+            } catch (ClassCastException cce) {
+                log.error(cce);
+                JOptionPane.showMessageDialog(null, cce, "Errore", JOptionPane.ERROR_MESSAGE);
+                //for (;;);{"error":0,"errorSummary":"","errorDescription":"No error.","payload":[],"bootload":[{"name":"js\/common.js.pkg.php","type":"js","src":"http:\/\/static.ak.fbcdn.net\/rsrc.php\/pkg\/60\/106715\/js\/common.js.pkg.php"}]}
+                //"payload":[]
+                //not "{}"
+                //we do nothing
+                }
+            /*else if((Number)respObjs.get("error") == 1346001){
             ;
             } else if((Number)respObjs.get("error") == 1348009){
             ;
@@ -101,9 +89,9 @@ public class ResponseParser {
             ;
             } else if((Number)respObjs.get("error") == 1349008){
             ;
-            }*/ else {
-                log.debug("Error(" + (Long) respObjs.get("error") + "): " + (String) respObjs.get("errorSummary") + ";" + (String) respObjs.get("errorDescription"));
-            }
+            } else {
+            log.debug("Error(" + (Long) respObjs.get("error") + "): " + (String) respObjs.get("errorSummary") + ";" + (String) respObjs.get("errorDescription"));
+            }*/
         }
     }
 
@@ -164,10 +152,11 @@ public class ResponseParser {
 
             if (errorCode == ErrorCode.Error_Global_NoError) {
                 //do nothing
-            } else {
-                if (Launcher.isChatroomExist(uid)) {
-                    Launcher.getChatroomAnyway(uid).showFeedbackMsg(msg, errorString);
-                }
+//            } else {
+//                if (FacebookManager.isChatroomExist(uid)) {
+//                    FacebookManager.getChatroomAnyway(uid).showFeedbackMsg(msg, errorString);
+//                }
+//            }
             }
         }
     }
@@ -179,10 +168,10 @@ public class ResponseParser {
      * @param response
      * @throws JSONException
      */
-    public static void messageRequestResultParser(String response) throws JSONException {
-        if (response == null) {
-            return;
-        }
+    public static FacebookMessage messageRequestResultParser(String response) throws JSONException {
+        FacebookMessage toReturn = null;
+
+
         String prefix = "for (;;);";
         if (response.startsWith(prefix)) {
             response = response.substring(prefix.length());
@@ -199,11 +188,15 @@ public class ResponseParser {
                 while (index < ms.length()) {
                     JSONObject msg = ms.getJSONObject(index);
                     index++;
-
-                    if (msg.get("type").equals("typ"));//do nothing
-                    else if (msg.get("type").equals("msg")) {
+                    log.debug("message [ " + msg + " ]");
+                    if (msg.get("type").equals("typ")) {
+                        //do nothing
+                        log.debug("typing message");
+                    } else if (msg.get("type").equals("msg")) {
                         //the message itself
                         JSONObject realmsg = (JSONObject) msg.get("msg");
+
+
                         /*{"text":"FINE",
                         "time":1214614165139,
                         "clientTime":1214614163774,
@@ -228,17 +221,17 @@ public class ResponseParser {
                         fm.fromFirstName = (String) msg.get("from_first_name");
                         fm.toFirstName = (String) msg.get("to_first_name");
 
-                        if (Launcher.msgIDCollection.contains(fm.msgID)) {
+                        if (FacebookManager.msgIDCollection.contains(fm.msgID)) {
                             log.debug("Omitting a already handled message: msgIDCollection.contains(msgID)");
                             continue;
                         }
-                        Launcher.msgIDCollection.add(fm.msgID);
-                        log.debug("Size of msgIDCollection:" + Launcher.msgIDCollection.size());
+                        FacebookManager.msgIDCollection.add(fm.msgID);
+                        log.debug("Size of msgIDCollection:" + FacebookManager.msgIDCollection.size());
 
-                        printMessage(fm);
+                        logMessage(fm);
 
-                        if (!fm.from.toString().equals(Launcher.uid)) {
-                            promoteMessage(fm);
+                        if (!fm.from.toString().equals(FacebookManager.uid)) {
+                            toReturn = fm;
                         }
                     }
                 }
@@ -252,10 +245,12 @@ public class ResponseParser {
             } else {
                 log.debug("Unrecognized response type: " + (String) respObjs.get("t"));
             }
+
         }
+        return toReturn;
     }
 
-    public static void printMessage(FacebookMessage msg) {
+    public static void logMessage(FacebookMessage msg) {
         log.debug("text:\t" + msg.text);
         log.debug("time:\t" + msg.time);
         log.debug("clientTime:\t" + msg.clientTime);
@@ -269,69 +264,71 @@ public class ResponseParser {
     }
 
     public static void promoteMessage(FacebookMessage msg) {
-        final Chatroom room = Launcher.getChatroomAnyway(msg.from.toString());
+
+        /* final Chatroom room = Launcher.getChatroomAnyway(msg.from.toString());
         room.incomingMsgProcessor(msg.fromFirstName, new Date((Long) msg.time).toString(), msg.text);
         if (!room.isVisible()) {
-            log.debug("The window is null or not visible , I make it be!");
-            Icon infoIcon = UIManager.getIcon("OptionPane.informationIcon");
-            //JLabel label = new JLabel ("New message from " + this.getRoomName(), infoIcon, SwingConstants.LEFT);
-            JPanel notif = new JPanel();
-            JLabel label = new JLabel("<html>New message from:  <br><Font color=red><center>" + msg.fromFirstName + "</center></Font>",
-                    infoIcon, SwingConstants.LEFT);
-            label.setBackground(Color.WHITE);
-            label.setForeground(Color.BLACK);
-            JButton showMeIt = new JButton("Show Me");
-            showMeIt.setMargin(new Insets(0, 0, 0, 0));
+        log.debug("The window is null or not visible , I make it be!");
+        Icon infoIcon = UIManager.getIcon("OptionPane.informationIcon");
+        //JLabel label = new JLabel ("New message from " + this.getRoomName(), infoIcon, SwingConstants.LEFT);
+        JPanel notif = new JPanel();
+        JLabel label = new JLabel("<html>New message from:  <br><Font color=red><center>" + msg.fromFirstName + "</center></Font>",
+        infoIcon, SwingConstants.LEFT);
+        label.setBackground(Color.WHITE);
+        label.setForeground(Color.BLACK);
+        JButton showMeIt = new JButton("Show Me");
+        showMeIt.setMargin(new Insets(0, 0, 0, 0));
 
-            JButton ignoreIt = new JButton("Check it later");
-            ignoreIt.setMargin(new Insets(0, 0, 0, 0));
+        JButton ignoreIt = new JButton("Check it later");
+        ignoreIt.setMargin(new Insets(0, 0, 0, 0));
 
-            notif.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
-            notif.setLayout(new BoxLayout(notif, BoxLayout.X_AXIS));
-            notif.add(label);
-            notif.add(showMeIt);
-            notif.add(ignoreIt);
+        notif.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
+        notif.setLayout(new BoxLayout(notif, BoxLayout.X_AXIS));
+        notif.add(label);
+        notif.add(showMeIt);
+        notif.add(ignoreIt);
 
-            final SlideInNotification slider = new SlideInNotification(notif);
-            slider.showAt(450);
+        final SlideInNotification slider = new SlideInNotification(notif);
+        slider.showAt(450); */
 
-            Thread playThd = new Thread(new Runnable() {
+        Thread playThd = new Thread(new Runnable() {
 
-                public void run() {
-                    playAudio();
+            public void run() {
+                playAudio();
+            }
+
+            /**
+             * 接收消息时播放提示音
+             */
+            private void playAudio() {
+
+                final AudioClip msgBeep;
+                try {
+                    URL url = new URL("file:/" + System.getProperty("user.dir") + System.getProperty("file.separator") + SystemPath.AUDIO_RESOURCE_PATH + "upwpcm.wav");
+                    msgBeep = Applet.newAudioClip(url);
+                    msgBeep.play();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    log.debug(e.toString());
                 }
+            }
+        }, "Beeper");
+        playThd.start();
 
-                /**
-                 * 接收消息时播放提示音
-                 */
-                private void playAudio() {
+        /*
+        showMeIt.addActionListener(new ActionListener() {
 
-                    final AudioClip msgBeep;
-                    try {
-                        URL url = new URL("file:/" + System.getProperty("user.dir") + System.getProperty("file.separator") + SystemPath.AUDIO_RESOURCE_PATH + "upwpcm.wav");
-                        msgBeep = Applet.newAudioClip(url);
-                        msgBeep.play();
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                        log.debug(e.toString());
-                    }
-                }
-            }, "Beeper");
-            playThd.start();
-
-            showMeIt.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent arg0) {
-                    room.setVisible(true);
-                    slider.Dispose();
-                }
-            });
-            ignoreIt.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent arg0) {
-                    slider.Dispose();
-                }
-            });
+        public void actionPerformed(ActionEvent arg0) {
+        room.setVisible(true);
+        slider.Dispose();
         }
+        });
+        ignoreIt.addActionListener(new ActionListener() {
+
+        public void actionPerformed(ActionEvent arg0) {
+        slider.Dispose();
+        }
+        });
+         * */
     }
 }

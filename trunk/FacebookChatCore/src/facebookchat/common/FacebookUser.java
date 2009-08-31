@@ -14,6 +14,8 @@ import org.json.JSONObject;
 public class FacebookUser {
 
     private static Log log = LogFactory.getLog(FacebookUser.class);
+
+  
     /*{"listChanged":true,
     "availableCount":2,
 
@@ -60,6 +62,11 @@ public class FacebookUser {
     public long lastSeen;
     public OnlineStatus onlineStatus;
 
+    public FacebookUser(String uid) {
+        this.uid = uid;
+    }
+
+    
     public FacebookUser(String id, JSONObject user) throws JSONException {
 
         uid = id;
