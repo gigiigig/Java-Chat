@@ -451,7 +451,7 @@ public class ChatClientView extends FrameView {
 
 class LoginPanel extends JPanel {
 
-    private Log log = LogFactory.getLog(this.getClass());
+    private static  Log log = LogFactory.getLog(LoginPanel.class);
 
     @Override
     protected void paintComponent(Graphics g) {

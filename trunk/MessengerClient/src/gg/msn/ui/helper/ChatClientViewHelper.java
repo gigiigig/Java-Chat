@@ -19,10 +19,11 @@ import chatcommons.datamessage.MessageManger;
 import facebookchat.common.FacebookUser;
 import gg.msn.core.manager.ConnectionManager;
 import gg.msn.core.manager.PersistentDataManager;
-import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.facebook.FBLoginPanel;
 import gg.msn.ui.listener.MessageReceivedListener;
 import java.awt.HeadlessException;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
@@ -32,12 +33,12 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Properties;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.swing.JFrame;
-import org.jdesktop.application.Application;
 import static chatcommons.Commands.*;
 
 /**
@@ -229,14 +230,14 @@ public class ChatClientViewHelper {
     /**
      * Azione che lancia una chat con l'utente selezionato sulla tabella nick
      */
-    public void addChatWithSelected() {
+    public void startChatWithSelected() {
 
-        String nickSelected = "";
+        Client nickSelected = null;
 
         if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
-            nickSelected = ((FacebookUser) ccv.getMainPanel().getClientsList().getSelectedValue()).name;
+            nickSelected = clientFromFacebookUser((FacebookUser) ccv.getMainPanel().getClientsList().getSelectedValue());
         } else {
-            nickSelected = ((Client) ccv.getMainPanel().getClientsList().getSelectedValue()).getNick();
+            nickSelected = ((Client) ccv.getMainPanel().getClientsList().getSelectedValue());
         }
         if (nickSelected != null && !nickSelected.equals("")) {
             log.info("nick selected : " + nickSelected);
@@ -249,16 +250,16 @@ public class ChatClientViewHelper {
      * @param nick 
      * Il nick da chiamare in chat
      */
-    private ChatWindow startChatWith(String nick) {
+    private ChatWindow startChatWith(Client selected) {
 
-        log.info("creo una nuova chat con [" + nick + "]");
+        log.info("creo una nuova chat con [" + selected + "]");
         ChatWindow cv = new ChatWindow(true, ccv);
         cv.setLocationRelativeTo(ccv.getFrame());
-        cv.getClients().add(new Client(null, nick));
+        cv.getClients().add(selected);
         cv.refreshTable();
         cv.setVisible(true);
         cv.toFront();
-        cv.setTitle(nick + " - Conversazione");
+        cv.setTitle(selected + " - Conversazione");
         chatWindows.add(cv);
 
         return cv;
@@ -270,7 +271,7 @@ public class ChatClientViewHelper {
      * @param nick 
      * Il nick da chiamare in chat
      */
-    public ChatWindow getChatWith(String nick) {
+    public ChatWindow getChatWith(Client selected) {
 //        ChatClientApp.getApplication().show(new ChatView(true, getNick(), "localhost", 3636));
 
         ChatWindow toReturn = null;
@@ -279,9 +280,9 @@ public class ChatClientViewHelper {
         for (ChatWindow chatWindow : chatWindows) {
             //se c'è un sollo utente è una chat
             //altrimenti nn va bemne perchè è una conferenza
-            if (chatWindow.getClients().size() == 1 && chatWindow.getClients().get(0).getNick().equals(nick)) {
+            if (chatWindow.getClients().size() == 1 && chatWindow.getClients().get(0).getNick().equals(selected.getNick())) {
                 toReturn = chatWindow;
-                log.info("trovata chat già aperta con [" + nick + "]");
+                log.info("trovata chat già aperta con [" + selected + "]");
                 break;
             }
         }
@@ -293,8 +294,8 @@ public class ChatClientViewHelper {
             return toReturn;
         } else {
             //altrimenti ne creo una nuova
-            log.info("nessuna chat già aperta con [" + nick + "]");
-            return startChatWith(nick);
+            log.info("nessuna chat già aperta con [" + selected + "]");
+            return startChatWith(selected);
         }
     }
 
@@ -418,6 +419,19 @@ public class ChatClientViewHelper {
         } catch (SocketException socketException) {
             log.error(socketException);
         }
+    }
+
+    private Client clientFromFacebookUser(FacebookUser fu) {
+        Client client = new Client();
+        client.setNick(fu.name);
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write((BufferedImage) fu.portrait.getImage(),"jpg",baos);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
+        client.setUid(fu.uid);
+        return client;
     }
     // <editor-fold defaultstate="collapsed" desc=" Getter and Setter ">
 

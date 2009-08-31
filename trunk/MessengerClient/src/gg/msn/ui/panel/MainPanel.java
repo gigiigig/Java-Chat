@@ -263,7 +263,7 @@ public class MainPanel extends javax.swing.JPanel {
 
     @Action
     public void addChatWithSelected() {
-        ccv.getHelper().addChatWithSelected();
+        ccv.getHelper().startChatWithSelected();
     }
 }
 
@@ -298,7 +298,7 @@ class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
                 final FacebookUser user = (FacebookUser) value;
                 setText(user.name);
                 ImageIcon icon = user.portrait;
-                log.debug("icon [" + icon + "]");
+                //log.debug("icon [" + icon + "]");
                 ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
                 setFont(list.getFont());
                 setIcon(scaledIcon);

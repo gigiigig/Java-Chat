@@ -146,7 +146,7 @@ public class ChatClientViewListeners {
 
                     //chiama in chat l'elemento selezionato
                     listPressed.setSelectedIndex(row);
-                    ccv.getHelper().addChatWithSelected();
+                    ccv.getHelper().startChatWithSelected();
                 }
             }
         }

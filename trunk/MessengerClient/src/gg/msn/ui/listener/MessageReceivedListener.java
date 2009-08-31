@@ -113,7 +113,7 @@ public class MessageReceivedListener extends AbstractMessageListener {
             if (message.getName().equals(Message.SINGLE)) {
                 String sender = message.getSender();
 
-                ChatWindow cv = ccv.getHelper().getChatWith(sender);
+                ChatWindow cv = ccv.getHelper().getChatWith(new Client(null, sender));
                 cv.getReceivedEmoticons().addAll(emoticons);
                 cv.writeMessage(sender, messageSt, font, color, emoticons);
 

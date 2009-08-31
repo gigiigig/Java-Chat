@@ -21,6 +21,7 @@ import emoticon.Emoticon;
 import emoticon.EmoticonAddDialog;
 import emoticon.EmoticonsManger;
 import emoticon.Util;
+import facebookchat.common.FacebookManager;
 import gg.msn.core.manager.PersistentDataManager;
 import java.awt.Color;
 import java.awt.Component;
@@ -605,80 +606,86 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
 
                 public void run() {
 
-                    MESSAGE message = null;
-                    //parametri
-                    List<String> receivers = new LinkedList<String>();
-                    if (clients.size() == 1) {
-                        receivers.add(clients.get(0).getNick());
-                        message = MessageManger.createMessage(Message.SINGLE, receivers, null);
+                    if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
+                        FacebookManager.PostMessage(clients.get(0).getUid(), newText);
+
                     } else {
-                        for (Client client : clients) {
-                            receivers.add(client.getNick());
-                        }
-                        message = MessageManger.createMessage(Message.CONFERENCE, receivers, null);
-                    }
 
-                    //paramtri
-                    MessageManger.addParameter(message, "text", newText);
-                    String fontSt = fontToString(font);
-
-                    log.debug("font : " + fontSt);
-                    MessageManger.addParameter(message, "font", fontSt);
-                    MessageManger.addParameter(message, "color", color.getRGB() + "");
-
-                    EmoticonsManger emotionsManger = new EmoticonsManger();
-
-                    try {
-                        List<Emoticon> emotocinsToAdd = emotionsManger.emoticonsInDoc(newText);
-                        log.debug("emotocinsToAdd : " + emotocinsToAdd.size());
-                        for (Emoticon emotion : emotocinsToAdd) {
-
-                            File source = new File(Util.getInstance().getPath() + EmoticonsManger.EMOTICONSPATH + emotion.getFileName());
-
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            FileInputStream fis = new FileInputStream(source);
-
-                            IOUtils.copy(fis, baos);
-                            /*
-                            byte[] temp = new byte[1024];
-                            while (fis.read(temp) != -1) {
-                            baos.write(temp);
-                            }*/
-
-                            try {
-
-                                baos.close();
-                                log.trace("ByteArrayOutputStream = " + baos.size());
-                                byte[] data = baos.toByteArray();
-                                byte[] compressed = gg.msn.core.commons.Util.compress(data);
-                                log.debug("initial size = " + data.length);
-                                log.debug("final size = " + compressed.length);
-                                MessageManger.addContent(message, emotion.getShortcut(), compressed);
-
-                            } catch (IOException ex) {
-                                log.error(ex);
+                        MESSAGE message = null;
+                        //parametri
+                        List<String> receivers = new LinkedList<String>();
+                        if (clients.size() == 1) {
+                            receivers.add(clients.get(0).getNick());
+                            message = MessageManger.createMessage(Message.SINGLE, receivers, null);
+                        } else {
+                            for (Client client : clients) {
+                                receivers.add(client.getNick());
                             }
-
+                            message = MessageManger.createMessage(Message.CONFERENCE, receivers, null);
                         }
+
+                        //paramtri
+                        MessageManger.addParameter(message, "text", newText);
+                        String fontSt = fontToString(font);
+
+                        log.debug("font : " + fontSt);
+                        MessageManger.addParameter(message, "font", fontSt);
+                        MessageManger.addParameter(message, "color", color.getRGB() + "");
+
+                        EmoticonsManger emotionsManger = new EmoticonsManger();
 
                         try {
-                            //invio il messaggio
-                            MessageManger.directWriteMessage(message, outputStream);
-                        } catch (SocketException socketException) {
-                            // se il server nn risponde chiudo tutte le finestre
-                            log.warn("server not respond : " + socketException);
-                            List<ChatWindow> chatWindows = ccv.getHelper().getChatWindows();
+                            List<Emoticon> emotocinsToAdd = emotionsManger.emoticonsInDoc(newText);
+                            log.debug("emotocinsToAdd : " + emotocinsToAdd.size());
+                            for (Emoticon emotion : emotocinsToAdd) {
 
-                            for (ChatWindow chatWindow : chatWindows) {
-                                chatWindow.setVisible(false);
+                                File source = new File(Util.getInstance().getPath() + EmoticonsManger.EMOTICONSPATH + emotion.getFileName());
+
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                FileInputStream fis = new FileInputStream(source);
+
+                                IOUtils.copy(fis, baos);
+                                /*
+                                byte[] temp = new byte[1024];
+                                while (fis.read(temp) != -1) {
+                                baos.write(temp);
+                                }*/
+
+                                try {
+
+                                    baos.close();
+                                    log.trace("ByteArrayOutputStream = " + baos.size());
+                                    byte[] data = baos.toByteArray();
+                                    byte[] compressed = gg.msn.core.commons.Util.compress(data);
+                                    log.debug("initial size = " + data.length);
+                                    log.debug("final size = " + compressed.length);
+                                    MessageManger.addContent(message, emotion.getShortcut(), compressed);
+
+                                } catch (IOException ex) {
+                                    log.error(ex);
+                                }
+
                             }
-                            //JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Il server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
-                            ccv.getHelper().showErrorDialog("Il server non risponde");
-                            ccv.getHelper().showLoginPanel();
-                        }
 
-                    } catch (Exception e) {
-                        log.error(e);
+                            try {
+                                //invio il messaggio
+                                MessageManger.directWriteMessage(message, outputStream);
+                            } catch (SocketException socketException) {
+                                // se il server nn risponde chiudo tutte le finestre
+                                log.warn("server not respond : " + socketException);
+                                List<ChatWindow> chatWindows = ccv.getHelper().getChatWindows();
+
+                                for (ChatWindow chatWindow : chatWindows) {
+                                    chatWindow.setVisible(false);
+                                }
+                                //JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Il server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+                                ccv.getHelper().showErrorDialog("Il server non risponde");
+                                ccv.getHelper().showLoginPanel();
+                            }
+
+                        } catch (Exception e) {
+                            log.error(e);
+                        }
                     }
                     return;
                 }
@@ -795,6 +802,14 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
      * @param sender - il nick cha ha inviato il messaggio
      * @param message
      */
+    public void writeMessage(String sender, String message){
+        writeMessage(sender, message,font,color);
+    }
+    /**
+     * scrive il messaggio nel testo della chat con tutta la formatttazione
+     * @param sender - il nick cha ha inviato il messaggio
+     * @param message
+     */
     public void writeMessage(String sender, String message, Font font, Color color) {
         writeMessage(sender, message, font, color, null);
         /*    try {
@@ -836,7 +851,6 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
         }
          */
     }
-
     /**
      * scrive il messaggio nel testo della chat con tutta la formatttazione
      * @param sender - il nick cha ha inviato il messaggio

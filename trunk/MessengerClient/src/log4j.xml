@@ -27,12 +27,12 @@
         <appender-ref ref="appender" />
         <appender-ref ref="console" />
     </logger>
-    <logger name="org.apache">
+      <!--  <logger name="org.apache">
         <level value="debug"/>
         <appender-ref ref="appender" />
         <appender-ref ref="console" />
     </logger>
-    <!--
+
     <root><appender-ref ref="console" />
         <appender-ref ref="appender"/>
     </root>
