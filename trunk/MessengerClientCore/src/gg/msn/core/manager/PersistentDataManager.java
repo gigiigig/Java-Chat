@@ -24,6 +24,7 @@ public class PersistentDataManager {
     private static int port;
     private static String ip;
     private static String nick;
+    private static String uid;
 
     static {
         if(clients == null){
@@ -94,6 +95,14 @@ public class PersistentDataManager {
 
     public static void setSocket(Socket socket) {
         PersistentDataManager.socket = socket;
+    }
+
+    public static String getUid() {
+        return uid;
+    }
+
+    public static void setUid(String uid) {
+        PersistentDataManager.uid = uid;
     }
 
 
