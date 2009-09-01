@@ -5,15 +5,9 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
-
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -140,7 +134,8 @@ public class FacebookManager {
 
         httpClient = createHttpClient();
 
-        /*
+        // <editor-fold defaultstate="collapsed" desc="Old Coded">
+/*
         HttpRequest req = createRequest();
         HttpEntity entity = null;
         try {
@@ -182,6 +177,7 @@ public class FacebookManager {
         }
         log.debug("------Constructor END-------");
          */
+        // </editor-fold>
     }
 
     private final HttpClient createHttpClient() {
@@ -633,7 +629,7 @@ public class FacebookManager {
         }
 
         int i = 1;
-        int tryCoun = 0;
+        int tryCoun = 1;
         while (true) {
             try {
                 String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(i, -1));
@@ -650,7 +646,8 @@ public class FacebookManager {
                 i++;
                 if (i == MAX_FACEBOOK_CHANNELS && tryCoun < 3) {
                     i = 0;
-                }else{
+                    tryCoun++;
+                } else if (i == MAX_FACEBOOK_CHANNELS && tryCoun == 3) {
                     return -1;
                 }
             } catch (JSONException e) {

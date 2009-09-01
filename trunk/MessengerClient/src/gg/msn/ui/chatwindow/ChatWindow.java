@@ -75,6 +75,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
@@ -106,8 +107,8 @@ public class ChatWindow extends javax.swing.JFrame {
         }
         // </editor-fold>
 
-        //traspÃ¨arenza testo chat
-        jScrollPane2.getViewport().setOpaque(false);
+        //trasparenza testo chat
+        chatTextScrollPane.getViewport().setOpaque(false);
         //trasparenza lista utenti
         jScrollPane3.getViewport().setOpaque(false);
 
@@ -132,6 +133,7 @@ public class ChatWindow extends javax.swing.JFrame {
         doc = chatText.getStyledDocument();
         addStylesToDocument(doc);
 
+        //carico le emoticons
         emoctionsManger = new EmoticonsManger();
         emoctionsManger.loadEmoticonsOnDocument(chatText.getStyledDocument());
         emoctionsManger.loadEmoticonsOnDocument(inputText.getStyledDocument());
@@ -154,7 +156,6 @@ public class ChatWindow extends javax.swing.JFrame {
                     log.warn(ex);
                 }
             }
-
             //icona aggiungi utente alla conferenza
             ImageIcon addUserIcon = ThemeManager.getTheme().get(ThemeManager.ADD_USER_ICON);
             if (addUserIcon != null) {
@@ -164,6 +165,14 @@ public class ChatWindow extends javax.swing.JFrame {
             log.warn(e);
         }
 
+        //elimino i bottoni per font e colore se sono su facebbok
+        if(StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)){
+            fontButton.setVisible(false);
+            colorButton.setVisible(false);
+            addChatButton.setVisible(false);
+        }
+
+        //carico font e colore
         Properties properties = gg.msn.core.commons.Util.readProperties();
         String fontSt = properties.getProperty(gg.msn.core.commons.Util.PROPERTY_FONT);
         if (fontSt != null && !fontSt.equals("")) {
@@ -210,7 +219,7 @@ public class ChatWindow extends javax.swing.JFrame {
         emotionsButton = new javax.swing.JButton();
         fontButton = new javax.swing.JButton();
         colorButton = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        chatTextScrollPane = new javax.swing.JScrollPane();
         chatText = new javax.swing.JTextPane();
 
         jScrollPane3.setBackground(new Color(0, 0, 0, 255));
@@ -317,10 +326,10 @@ public class ChatWindow extends javax.swing.JFrame {
         colorButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         chatToolbar.add(colorButton);
 
-        jScrollPane2.setBackground(new Color(255, 255, 255, 100));
-        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("jScrollPane2.border.titleColor"))); // NOI18N
-        jScrollPane2.setName("jScrollPane2"); // NOI18N
-        jScrollPane2.setOpaque(false);
+        chatTextScrollPane.setBackground(new Color(255, 255, 255, 100));
+        chatTextScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), resourceMap.getColor("chatTextScrollPane.border.titleColor"))); // NOI18N
+        chatTextScrollPane.setName("chatTextScrollPane"); // NOI18N
+        chatTextScrollPane.setOpaque(false);
 
         chatText.setBackground(new Color(0, 0, 0, 100));
         chatText.setBorder(null);
@@ -337,26 +346,26 @@ public class ChatWindow extends javax.swing.JFrame {
                 chatTextMouseReleased(evt);
             }
         });
-        jScrollPane2.setViewportView(chatText);
+        chatTextScrollPane.setViewportView(chatText);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(chatTextScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(userLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(nickLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 203, Short.MAX_VALUE)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(chatToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chatToolbar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4)))
@@ -374,18 +383,17 @@ public class ChatWindow extends javax.swing.JFrame {
                             .addComponent(nickLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chatTextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addComponent(chatToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))))
+                        .addGap(37, 37, 37))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -441,6 +449,7 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addChatButton;
     private javax.swing.JTextPane chatText;
+    private javax.swing.JScrollPane chatTextScrollPane;
     private javax.swing.JToolBar chatToolbar;
     private javax.swing.JList clientList;
     private javax.swing.JButton colorButton;
@@ -448,7 +457,6 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     private javax.swing.JButton fontButton;
     private javax.swing.JTextPane inputText;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPanel mainPanel;

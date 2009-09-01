@@ -29,6 +29,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -80,43 +81,44 @@ public class ChatClientViewListeners {
             JMenuItem startChat = new JMenuItem();
             startChat.setAction(ChatClientApp.getApplication().getContext().getActionMap(ccv).get("addChatWithSelected"));
             startChat.setText("Chiama in chat");
-            JMenuItem startDama = new JMenuItem();
-            startDama.setAction(new AbstractAction() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ChatClientView ccv = (ChatClientView) (ChatClientApp.getApplication().getMainView());
-                    ccv.getHelper().startGameWithSelected();
-                }
-            });
-            startDama.setText("Gioca a Dama (V. alpha)");
-            JMenuItem startSendFile = new JMenuItem();
-            startSendFile.setAction(new AbstractAction() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ChatClientView ccv = (ChatClientView) (ChatClientApp.getApplication().getMainView());
-                    Client selected = null;
-                    try {
-                        selected = (Client) ccv.getMainPanel().getClientsList().getSelectedValue();
-                        String nickSelected = selected.getNick();
-                        SendFileDialog sendFileDialog = new SendFileDialog(nickSelected, ccv);
-                        sendFileDialog.setLocationRelativeTo(ccv.getFrame());
-                        sendFileDialog.setVisible(true);
-                    } catch (Exception ex) {
-                        log.error(ex);
-                    }
-                }
-            });
-            startSendFile.setText("Invia un file");
-            startSendFile.setIcon(new ImageIcon(ChatClientView.class.getResource("resources/send_small.png")));
             jpm.add(startChat);
-            JMenu games = new JMenu("Giochi");
-            games.add(startDama);
-            jpm.add(games);
-            jpm.add(startSendFile);
+            if (StringUtils.equals(ChatClientView.protocol, ChatClientView.GIGIMSN_PROTOCOL)) {
+                JMenuItem startDama = new JMenuItem();
+                startDama.setAction(new AbstractAction() {
 
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        ChatClientView ccv = (ChatClientView) (ChatClientApp.getApplication().getMainView());
+                        ccv.getHelper().startGameWithSelected();
+                    }
+                });
+                startDama.setText("Gioca a Dama (V. alpha)");
+                JMenuItem startSendFile = new JMenuItem();
+                startSendFile.setAction(new AbstractAction() {
 
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        ChatClientView ccv = (ChatClientView) (ChatClientApp.getApplication().getMainView());
+                        Client selected = null;
+                        try {
+                            selected = (Client) ccv.getMainPanel().getClientsList().getSelectedValue();
+                            String nickSelected = selected.getNick();
+                            SendFileDialog sendFileDialog = new SendFileDialog(nickSelected, ccv);
+                            sendFileDialog.setLocationRelativeTo(ccv.getFrame());
+                            sendFileDialog.setVisible(true);
+                        } catch (Exception ex) {
+                            log.error(ex);
+                        }
+                    }
+                });
+                startSendFile.setText("Invia un file");
+                startSendFile.setIcon(new ImageIcon(ChatClientView.class.getResource("resources/send_small.png")));
+
+                JMenu games = new JMenu("Giochi");
+                games.add(startDama);
+                jpm.add(games);
+                jpm.add(startSendFile);
+            }
         }
 
         @Override
@@ -190,12 +192,12 @@ public class ChatClientViewListeners {
 
         @Override
         public void windowClosing(WindowEvent arg0) {
-            super.windowClosing(arg0);
+            super.windowIconified(arg0);
             log.info("window closing");
-            if (PersistentDataManager.getOutputStream() != null) {
-                log.info("nell'if");
-                ccv.getHelper().disconnetti();
-            }
+//            if (PersistentDataManager.getOutputStream() != null) {
+//                log.info("nell'if");
+//                ccv.getHelper().disconnetti();
+//            }
         }
 
         @Override
@@ -218,8 +220,8 @@ public class ChatClientViewListeners {
                     log.error(e);
                 }
             }
-            if (properties != null && !properties.getProperty("nick").equals("")) {
-                ccv.getNickText().setText(properties.getProperty("nick"));
+            if (properties != null && !StringUtils.equals(properties.getProperty("nick"),"")) {
+                ccv.getLoginPanel().getNickText().setText(properties.getProperty("nick"));
             }
             if (properties != null && !properties.getProperty(Util.PROPERTY_IP).equals("")) {
                 PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));

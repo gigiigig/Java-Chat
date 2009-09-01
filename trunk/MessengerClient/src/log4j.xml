@@ -27,6 +27,11 @@
         <appender-ref ref="appender" />
         <appender-ref ref="console" />
     </logger>
+    <logger name="facebookchat.common.FacebookBuddyList">
+        <level value="warn"/>
+        <appender-ref ref="appender" />
+        <appender-ref ref="console" />
+    </logger>
       <!--  <logger name="org.apache">
         <level value="debug"/>
         <appender-ref ref="appender" />

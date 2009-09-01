@@ -8,24 +8,16 @@ import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.listener.ChatClientViewListeners;
 import gg.msn.ui.form.OptionsDialog;
 import gg.msn.ui.helper.ChatClientViewHelper;
+import gg.msn.ui.panel.LoginPanel;
 import gg.msn.ui.panel.MainPanel;
-import gg.msn.ui.theme.ThemeManager;
 import java.awt.AWTException;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
-import java.awt.RenderingHints;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.WindowEvent;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
@@ -33,26 +25,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
-import javax.swing.ListCellRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jdesktop.application.Application;
 
 /**
  * The application's main frame.
  */
-public class ChatClientView extends FrameView {
+public class ChatClientView extends FrameView{
 
     /* varibili generali */
     private Log log = LogFactory.getLog(ChatClientView.class);
     private ChatClientViewHelper helper;// = new ChatClientViewHelper();
     private MainPanel mainPanel;
+    private LoginPanel loginPanel;
     public static String protocol;
     public static final String GIGIMSN_PROTOCOL = "ggmsn";
     public static final String FACEBOOK_PROTOCOL = "facebook";
@@ -77,7 +66,10 @@ public class ChatClientView extends FrameView {
 //        log.info("icon " + icon.getDescription() + " loaded!!! ");
 
         mainPanel = new MainPanel(this);
+        loginPanel = new LoginPanel(this);
+
         helper = new ChatClientViewHelper(this);
+        helper.initializeProperties();
         statusPanel.setVisible(false);
 
         //<editor-fold defaultstate="collapsed" desc="System tray control">             
@@ -152,21 +144,14 @@ public class ChatClientView extends FrameView {
 
         /*ipostazioni grafiche iniziali*/
 
-        //imposto il cursore nel inputText
-        nickText.selectAll();
 
-        //carico l'icona dell'utente
-        userLabel.setIcon(ThemeManager.getTheme().get(ThemeManager.USER_ICON));
 
         //setto visilbile il panello di login
-        helper.showLoginPanel();
+        helper.showFacebookLoginPanel();
 
         /*aggiungo agli oggetti i vari componenti personalizzati*/
 
-        //add nickText ENTER keystroke
-        nickText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
-        javax.swing.ActionMap actionMap = Application.getInstance(ChatClientApp.class).getContext().getActionMap(ChatClientView.class, this);
-        nickText.getActionMap().put("Enter", actionMap.get("connetti"));
+
 
         //aggiungo tutti i listeners dei vari componenti
         ChatClientViewListeners listeners = new ChatClientViewListeners(this);
@@ -219,12 +204,6 @@ public class ChatClientView extends FrameView {
         statusMessageLabel = new javax.swing.JLabel();
         statusAnimationLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
-        loginPanel = new LoginPanel();
-        nickText = new javax.swing.JTextField();
-        jToolBar2 = new javax.swing.JToolBar();
-        login = new javax.swing.JButton();
-        userLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(gg.msn.ui.ChatClientApp.class).getContext().getResourceMap(ChatClientView.class);
         menuBar.setBackground(resourceMap.getColor("menuBar.background")); // NOI18N
@@ -278,94 +257,20 @@ public class ChatClientView extends FrameView {
                     .addComponent(statusMessageLabel)))
         );
 
-        nickText.setText(resourceMap.getString("nickText.text")); // NOI18N
-
-        jToolBar2.setFloatable(false);
-        jToolBar2.setAutoscrolls(true);
-        jToolBar2.setBorderPainted(false);
-        jToolBar2.setOpaque(false);
-
-        login.setAction(actionMap.get("connetti")); // NOI18N
-        login.setIcon(resourceMap.getIcon("login.icon")); // NOI18N
-        login.setText(resourceMap.getString("login.text")); // NOI18N
-        login.setFocusable(false);
-        login.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        login.setOpaque(false);
-        login.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(login);
-
-        userLabel.setIcon(resourceMap.getIcon("userLabel.icon")); // NOI18N
-        userLabel.setText(resourceMap.getString("userLabel.text")); // NOI18N
-
-        jButton1.setAction(actionMap.get("showFacebookLogin")); // NOI18N
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-
-        javax.swing.GroupLayout loginPanelLayout = new javax.swing.GroupLayout(loginPanel);
-        loginPanel.setLayout(loginPanelLayout);
-        loginPanelLayout.setHorizontalGroup(
-            loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(loginPanelLayout.createSequentialGroup()
-                .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(loginPanelLayout.createSequentialGroup()
-                        .addGap(134, 134, 134)
-                        .addComponent(userLabel))
-                    .addGroup(loginPanelLayout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(nickText, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(loginPanelLayout.createSequentialGroup()
-                        .addGap(126, 126, 126)
-                        .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(105, Short.MAX_VALUE))
-        );
-        loginPanelLayout.setVerticalGroup(
-            loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(loginPanelLayout.createSequentialGroup()
-                .addGap(138, 138, 138)
-                .addComponent(userLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nickText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(jButton1)
-                .addContainerGap(59, Short.MAX_VALUE))
-        );
-
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JToolBar jToolBar2;
-    private javax.swing.JButton login;
-    private javax.swing.JPanel loginPanel;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JTextField nickText;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
-    private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
     private JDialog aboutBox;
     private TrayIcon tray;
 //    private int nextPort;
-
-    /**
-     * Connette al server principale 
-     */
-    @Action
-    public void connetti() {
-        if (!nickText.getText().equals("")) {
-            helper.connect();
-        } else {
-            JOptionPane.showMessageDialog(getFrame(), "<html><font color=red>Il nick non può essere vuoto<html>", "Errore", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-    }
 
     /**
      * Azione che lancia una chat con l'utente selezionato sulla tabella nick
@@ -379,30 +284,6 @@ public class ChatClientView extends FrameView {
 
     public void setHelper(ChatClientViewHelper helper) {
         this.helper = helper;
-    }
-
-    public JTextField getNickText() {
-        return nickText;
-    }
-
-    public void setNickText(JTextField nickText) {
-        this.nickText = nickText;
-    }
-
-    public JPanel getLoginPanel() {
-        return loginPanel;
-    }
-
-    public void setLoginPanel(JPanel loginPanel) {
-        this.loginPanel = loginPanel;
-    }
-
-    public JButton getLogin() {
-        return login;
-    }
-
-    public void setLogin(JButton login) {
-        this.login = login;
     }
 
     public JLabel getStatusMessageLabel() {
@@ -437,8 +318,15 @@ public class ChatClientView extends FrameView {
         this.mainPanel = mainPanel;
     }
 
-    //</editor-fold>
+    public LoginPanel getLoginPanel() {
+        return loginPanel;
+    }
 
+    public void setLoginPanel(LoginPanel loginPanel) {
+        this.loginPanel = loginPanel;
+    }
+
+    //</editor-fold>
     @Action
     public void showNewEmotionManage() {
         EmoticonsManageFrame manageFrame = new EmoticonsManageFrame();
@@ -449,33 +337,6 @@ public class ChatClientView extends FrameView {
     @Action
     public void showFacebookLogin() {
         helper.showFacebookLoginPanel();
-    }
-}
-
-class LoginPanel extends JPanel {
-
-    private static  Log log = LogFactory.getLog(LoginPanel.class);
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        super.paintComponent(g2d);
-        try {
-            g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR));
-//            log.debug("theme : " + ((ChatClientView) ChatClientApp.getApplication().getMainView()).getHelper().getTheme());
-            ImageIcon icon = ThemeManager.getTheme().get(ThemeManager.LOGIN_BACKGROUND);
-
-            if (icon != null) {
-                Image image = icon.getImage();
-                g2d.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-            } else {
-                log.warn("image " + icon.getDescription() + " not Found");
-            }
-
-        } catch (Exception e) {
-//            log.debug(e);
-        }
     }
 }
 // <editor-fold defaultstate="collapsed" desc="Old MainPanel">

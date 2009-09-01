@@ -6,13 +6,9 @@ package emoticon;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -99,7 +95,7 @@ public class Util {
 
     public String getPath() {
 
-        String fullPath = "";
+       /* String fullPath = "";
 
         fullPath = Emoticon.class.getResource("").toString();
         fullPath = fullPath.replace("%20", " ");
@@ -117,6 +113,8 @@ public class Util {
         }
         
         return path;
+        */
+         return System.getProperty("user.dir") + IOUtils.DIR_SEPARATOR;
     }//    public static void main(String[] args) {
 //        Util util = new Util();
 //        util.readProperties();

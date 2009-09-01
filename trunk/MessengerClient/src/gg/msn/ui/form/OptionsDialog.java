@@ -275,7 +275,7 @@ public class OptionsDialog extends javax.swing.JDialog {
         PersistentDataManager.setPort(Integer.parseInt(portaText.getText()));
         PersistentDataManager.setIp(ipText.getText());
         PersistentDataManager.setNick(nickText.getText());
-        ccv.getNickText().setText(nickText.getText());
+        ccv.getLoginPanel().getNickText().setText(nickText.getText());
         ThemeManager.loadTheme(properties.getProperty(Util.PROPERTY_THEME_FOLDER));
         log.info("property saved");
         ccv.getMainPanel().insertIcons();
@@ -283,7 +283,6 @@ public class OptionsDialog extends javax.swing.JDialog {
         ccv.getFrame().validate();
         ccv.getFrame().repaint();
        
-
     }
 
     @Action

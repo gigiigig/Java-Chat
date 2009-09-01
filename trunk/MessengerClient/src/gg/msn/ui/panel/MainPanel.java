@@ -14,6 +14,7 @@ import chatcommons.Client;
 import facebookchat.common.FacebookBuddyList;
 import facebookchat.common.FacebookUser;
 import gg.msn.ui.ChatClientView;
+import gg.msn.ui.facebook.form.OptionsDialog;
 import gg.msn.ui.listener.ChatClientViewListeners;
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.Color;
@@ -31,6 +32,7 @@ import javax.swing.ListCellRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
+
 
 /**
  *
@@ -73,6 +75,7 @@ public class MainPanel extends javax.swing.JPanel {
 
         nickLabel = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
+        selectThemeButton = new javax.swing.JButton();
         disconnect = new javax.swing.JButton();
         chat = new javax.swing.JButton();
         clientListScrollPane = new javax.swing.JScrollPane();
@@ -92,8 +95,20 @@ public class MainPanel extends javax.swing.JPanel {
         jToolBar1.setOpaque(false);
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(gg.msn.ui.ChatClientApp.class).getContext().getActionMap(MainPanel.class, this);
+        selectThemeButton.setAction(actionMap.get("showFacebookOptionsDialog")); // NOI18N
+        selectThemeButton.setIcon(resourceMap.getIcon("selectThemeButton.icon")); // NOI18N
+        selectThemeButton.setText(resourceMap.getString("selectThemeButton.text")); // NOI18N
+        selectThemeButton.setToolTipText(resourceMap.getString("selectThemeButton.toolTipText")); // NOI18N
+        selectThemeButton.setFocusable(false);
+        selectThemeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        selectThemeButton.setName("selectThemeButton"); // NOI18N
+        selectThemeButton.setOpaque(false);
+        selectThemeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(selectThemeButton);
+
         disconnect.setAction(actionMap.get("disconnetti")); // NOI18N
         disconnect.setIcon(resourceMap.getIcon("disconnect.icon")); // NOI18N
+        disconnect.setToolTipText(resourceMap.getString("disconnect.toolTipText")); // NOI18N
         disconnect.setFocusable(false);
         disconnect.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         disconnect.setName("disconnect"); // NOI18N
@@ -103,6 +118,7 @@ public class MainPanel extends javax.swing.JPanel {
 
         chat.setAction(actionMap.get("addChatWithSelected")); // NOI18N
         chat.setIcon(resourceMap.getIcon("chat.icon")); // NOI18N
+        chat.setToolTipText(resourceMap.getString("chat.toolTipText")); // NOI18N
         chat.setFocusable(false);
         chat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chat.setName("chat"); // NOI18N
@@ -142,23 +158,27 @@ public class MainPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(clientListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                    .addComponent(clientListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(nickIcon)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(nickLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(nickIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nickLabel)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(nickLabel)
+                            .addComponent(nickIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clientListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                 .addContainerGap())
@@ -172,6 +192,7 @@ public class MainPanel extends javax.swing.JPanel {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel nickIcon;
     private javax.swing.JLabel nickLabel;
+    private javax.swing.JButton selectThemeButton;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -272,8 +293,14 @@ public class MainPanel extends javax.swing.JPanel {
     public void addChatWithSelected() {
         ccv.getHelper().startChatWithSelected();
     }
-}
 
+    @Action
+    public void showFacebookOptionsDialog() {
+        OptionsDialog optionsDialog = new OptionsDialog(ccv.getFrame(), true);
+        optionsDialog.setLocationRelativeTo(this);
+        optionsDialog.setVisible(true);
+    }
+}
 class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
 
     Log log = LogFactory.getLog(this.getClass());

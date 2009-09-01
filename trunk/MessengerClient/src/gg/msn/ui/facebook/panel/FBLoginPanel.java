@@ -8,11 +8,12 @@
  *
  * Created on Aug 25, 2009, 11:37:42 PM
  */
-package gg.msn.ui.facebook;
+package gg.msn.ui.facebook.panel;
 
 import facebookchat.common.ErrorCode;
 import facebookchat.common.FacebookBuddyList;
 import facebookchat.common.FacebookManager;
+import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.thread.BuddyListRequester;
@@ -23,8 +24,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.lang.Runnable;
+import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
@@ -48,27 +51,24 @@ public class FBLoginPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        psswLabel = new javax.swing.JLabel();
         emailText = new javax.swing.JTextField();
-        passwText = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
         connectionStatusLabel = new javax.swing.JLabel();
+        passwText = new javax.swing.JPasswordField();
 
         setName("Form"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(gg.msn.ui.ChatClientApp.class).getContext().getResourceMap(FBLoginPanel.class);
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
+        emailLabel.setText(resourceMap.getString("emailLabel.text")); // NOI18N
+        emailLabel.setName("emailLabel"); // NOI18N
 
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
+        psswLabel.setText(resourceMap.getString("psswLabel.text")); // NOI18N
+        psswLabel.setName("psswLabel"); // NOI18N
 
         emailText.setText(resourceMap.getString("emailText.text")); // NOI18N
         emailText.setName("emailText"); // NOI18N
-
-        passwText.setText(resourceMap.getString("passwText.text")); // NOI18N
-        passwText.setName("passwText"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(gg.msn.ui.ChatClientApp.class).getContext().getActionMap(FBLoginPanel.class, this);
         loginButton.setAction(actionMap.get("connect")); // NOI18N
@@ -78,6 +78,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
         connectionStatusLabel.setText(resourceMap.getString("connectionStatusLabel.text")); // NOI18N
         connectionStatusLabel.setName("connectionStatusLabel"); // NOI18N
 
+        passwText.setText(resourceMap.getString("passwText.text")); // NOI18N
+        passwText.setName("passwText"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,15 +88,14 @@ public class FBLoginPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
+                    .addComponent(psswLabel)
+                    .addComponent(emailLabel))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(passwText, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(passwText)
+                    .addComponent(emailText, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                    .addComponent(connectionStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -101,37 +103,60 @@ public class FBLoginPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(147, 147, 147)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(emailLabel)
                     .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(psswLabel)
                     .addComponent(passwText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addComponent(loginButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loginButton)
+                .addContainerGap(112, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel connectionStatusLabel;
+    private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailText;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton loginButton;
-    private javax.swing.JTextField passwText;
+    private javax.swing.JPasswordField passwText;
+    private javax.swing.JLabel psswLabel;
     // End of variables declaration//GEN-END:variables
 
     public FBLoginPanel(ChatClientView ccv) {
+        super();
         initComponents();
         this.ccv = ccv;
+
+        //add nickText ENTER keystroke
+        emailText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
+        emailText.getActionMap().put("Enter", getActionMap().get("connect"));
+        passwText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
+        passwText.getActionMap().put("Enter", getActionMap().get("connect"));
+
+        //carico i valori salvati se ci sono
+        String email = Util.readProperties().getProperty(Util.PROPERTY_FACEBOOK_EMAIL);
+        if(email != null && !email.equals("")){
+            emailText.setText(email);
+        }
+        String psw = Util.readProperties().getProperty(Util.PROPERTY_FACEBOOK_PSW);
+        if(psw != null && !psw.equals("")){
+            passwText.setText(psw);
+        }
 
     }
 
     private void connectStart() {
         String email = emailText.getText().trim();
         String pass = passwText.getText().trim();
+
+        //salvo i valori inserioti su email e password
+        Properties prop = Util.readProperties();
+        prop.setProperty(Util.PROPERTY_FACEBOOK_EMAIL, email);
+        prop.setProperty(Util.PROPERTY_FACEBOOK_PSW, pass);
+        Util.writeProperties(prop);
 
         /*String email = "username@email.com.cn";
         String pass = "password";*/
@@ -170,16 +195,21 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 //必须在getbuddylist之后
 //                fbc = new Cheyenne();
 //                fbc.setVisible(true);
+            }else{
+                ccv.getHelper().showWarnDialog("Non è stato possibile effettuare il login.<br>" +
+                        "Ricontrolla email e password!");
+                connectionStatusLabel.setVisible(false);
+                loginButton.setVisible(true);
             }
         } else if (loginErrorCode == ErrorCode.kError_Async_NotLoggedIn) {
             //TODO handle the error derived from this login
             JOptionPane.showMessageDialog(
-                    null, "Not logged in, please check your input!",
+                    ccv.getFrame(), "Not logged in, please check your input!",
                     "Not Logged In",
                     JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(
-                    null, "Not logged in, please check your internet connection!",
+                    ccv.getFrame(), "Not logged in, please check your internet connection!",
                     "Not Logged In",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -188,10 +218,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
     @Action
     public void connect() {
         loginButton.setVisible(false);
-        connectionStatusLabel.setText("connessione in corso ...");
+        connectionStatusLabel.setText("Connessione...");
         connectionStatusLabel.validate();
       
-
         new Thread(new Runnable() {
 
             public void run() {

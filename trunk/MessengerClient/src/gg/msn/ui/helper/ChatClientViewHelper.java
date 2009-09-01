@@ -21,8 +21,10 @@ import facebookchat.common.FacebookManager;
 import facebookchat.common.FacebookUser;
 import gg.msn.core.manager.ConnectionManager;
 import gg.msn.core.manager.PersistentDataManager;
-import gg.msn.ui.facebook.FBLoginPanel;
+import gg.msn.ui.facebook.panel.FBLoginPanel;
+import gg.msn.ui.form.OptionsDialog;
 import gg.msn.ui.listener.MessageReceivedListener;
+import gg.msn.ui.theme.ThemeManager;
 import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -63,6 +65,9 @@ public class ChatClientViewHelper {
         fileDialogs = new ArrayList<JFrame>();
 
     }
+
+
+
 
     /**
      * rende visibile il MainPanel e nasconde loginPanel
@@ -124,11 +129,11 @@ public class ChatClientViewHelper {
             private void connects() throws SocketException, IOException, UnknownHostException, ConnectException {
 
                 //blocco input text e bottone
-                ccv.getNickText().setEnabled(false);
-                ccv.getLogin().setEnabled(false);
+                ccv.getLoginPanel().getNickText().setEnabled(false);
+                ccv.getLoginPanel().getLogin().setEnabled(false);
 
                 //leggo il nick
-                String nick = ccv.getNickText().getText().trim();
+                String nick = ccv.getLoginPanel().getNickText().getText().trim();
 
                 //connetto il socket
                 Socket socket = new Socket();
@@ -168,8 +173,8 @@ public class ChatClientViewHelper {
                 ccv.getMainPanel().getNickLabel().setText(PersistentDataManager.getNick());
                 showMainPanel();
                 //riattivo inputtext e bottone di login
-                ccv.getNickText().setEnabled(true);
-                ccv.getLogin().setEnabled(true);
+                ccv.getLoginPanel().getNickText().setEnabled(true);
+                ccv.getLoginPanel().getLogin().setEnabled(true);
                 //setMessage("Connected");
                 //aggiorno il messaggio nella systemtray
                 if (ccv.getTray() != null) {
@@ -189,8 +194,8 @@ public class ChatClientViewHelper {
             }
 
             private void resetLoginPanel() {
-                ccv.getNickText().setEnabled(true);
-                ccv.getLogin().setEnabled(true);
+                ccv.getLoginPanel().getNickText().setEnabled(true);
+                ccv.getLoginPanel().getLogin().setEnabled(true);
             }
         }).start();
 
@@ -200,6 +205,9 @@ public class ChatClientViewHelper {
     public void showErrorDialog(String message) throws HeadlessException {
         JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + message + "</html>", "Errore", JOptionPane.ERROR_MESSAGE);
     }
+    public void showWarnDialog(String message) throws HeadlessException {
+        JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + message + "</html>", "Attenzione", JOptionPane.WARNING_MESSAGE);
+    }
 
     /**
      * Disconnettte dal serever principale
@@ -207,6 +215,7 @@ public class ChatClientViewHelper {
     public void disconnetti() {
         if (StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)) {
             FacebookManager.shutdown();
+            showFacebookLoginPanel();
         } else {
             try {
                 //TODO metti nel finalli i comendi da eseguire per forza
@@ -229,8 +238,9 @@ public class ChatClientViewHelper {
             } catch (IOException ex) {
                 log.error(ex);
             }
+            showLoginPanel();
+
         }
-        showLoginPanel();
     }
 
     /**
@@ -442,6 +452,48 @@ public class ChatClientViewHelper {
         }
         client.setUid(fu.uid);
         return client;
+    }
+
+    public void initializeProperties() {
+        //Crea proprietà
+        Properties properties = Util.readProperties();
+
+        if (properties == null) {
+            try {
+                OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true);
+                optionsFrame.setLocationRelativeTo(ccv.getFrame());
+                optionsFrame.getPortaText().setText("3434");
+                optionsFrame.getIpText().setText("localhost");
+                optionsFrame.getThemeFolderText().setText(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
+                optionsFrame.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+                optionsFrame.getCancel().setVisible(false);
+                optionsFrame.setVisible(true);
+            } catch (Exception e) {
+                log.error(e);
+            }
+        }
+        if (properties != null && !properties.getProperty("nick").equals("")) {
+            ccv.getLoginPanel().getNickText().setText(properties.getProperty("nick"));
+        }
+        if (properties != null && !properties.getProperty(Util.PROPERTY_IP).equals("")) {
+            PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
+        }
+
+        try {
+            if (properties != null && !properties.getProperty(Util.PROPERTY_PORT).equals("")) {
+                PersistentDataManager.setPort(Integer.parseInt(properties.getProperty(Util.PROPERTY_PORT)));
+            }
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException);
+        }
+
+
+        if (properties != null && properties.getProperty(Util.PROPERTY_THEME_FOLDER).equals("")) {
+            ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
+            ccv.getFrame().repaint();
+        }
+
+
     }
     // <editor-fold defaultstate="collapsed" desc=" Getter and Setter ">
 
