@@ -155,6 +155,9 @@ public class ChatClientView extends FrameView {
         //imposto il cursore nel inputText
         nickText.selectAll();
 
+        //carico l'icona dell'utente
+        userLabel.setIcon(ThemeManager.getTheme().get(ThemeManager.USER_ICON));
+
         //setto visilbile il panello di login
         helper.showLoginPanel();
 

@@ -16,6 +16,8 @@ import gg.msn.ui.game.dama.DamaCanvas;
 import gg.msn.core.thread.ClientReader;
 import chatcommons.datamessage.MESSAGE;
 import chatcommons.datamessage.MessageManger;
+import emoticon.EmoticonsManger;
+import facebookchat.common.FacebookManager;
 import facebookchat.common.FacebookUser;
 import gg.msn.core.manager.ConnectionManager;
 import gg.msn.core.manager.PersistentDataManager;
@@ -39,6 +41,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.swing.JFrame;
+import org.apache.commons.lang.StringUtils;
 import static chatcommons.Commands.*;
 
 /**
@@ -202,29 +205,32 @@ public class ChatClientViewHelper {
      * Disconnettte dal serever principale
      */
     public void disconnetti() {
-        try {
-            //TODO metti nel finalli i comendi da eseguire per forza
+        if (StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)) {
+            FacebookManager.shutdown();
+        } else {
+            try {
+                //TODO metti nel finalli i comendi da eseguire per forza
 
-            new ConnectionManager().disconnect(PersistentDataManager.getSocket());
-            PersistentDataManager.setOutputStream(null);
-            PersistentDataManager.setClients(new Hashtable<String, Client>());
+                new ConnectionManager().disconnect(PersistentDataManager.getSocket());
+                PersistentDataManager.setOutputStream(null);
+                PersistentDataManager.setClients(new Hashtable<String, Client>());
 
-            ((DefaultListModel) ccv.getMainPanel().getClientsList().getModel()).removeAllElements();
+                ((DefaultListModel) ccv.getMainPanel().getClientsList().getModel()).removeAllElements();
 
-            chatWindows = new ArrayList<ChatWindow>();
-            canvases = new ArrayList<Canvas>();
-            fileDialogs = new ArrayList<JFrame>();
+                chatWindows = new ArrayList<ChatWindow>();
+                canvases = new ArrayList<Canvas>();
+                fileDialogs = new ArrayList<JFrame>();
 
-            showLoginPanel();
-        } catch (SocketException se) {
-            log.error(se);
+
+            } catch (SocketException se) {
+                log.error(se);
 //            ccv.ShowMessageFrame("Il server è disconnesso");
-            JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Il server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
-            showLoginPanel();
-
-        } catch (IOException ex) {
-            log.error(ex);
+                JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Il server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                log.error(ex);
+            }
         }
+        showLoginPanel();
     }
 
     /**
@@ -253,9 +259,9 @@ public class ChatClientViewHelper {
     private ChatWindow startChatWith(Client selected) {
 
         log.info("creo una nuova chat con [" + selected + "]");
-        ChatWindow cv = new ChatWindow(true, ccv);
+        ChatWindow cv = new ChatWindow(true, ccv, selected);
         cv.setLocationRelativeTo(ccv.getFrame());
-        cv.getClients().add(selected);
+        //cv.getClients().add(selected);
         cv.refreshTable();
         cv.setVisible(true);
         cv.toFront();
@@ -323,10 +329,13 @@ public class ChatClientViewHelper {
 
 
             //se nn trovo la conferenza ne creo una
-            ChatWindow cv = new ChatWindow(true, ccv);
+            ChatWindow cv = new ChatWindow(true, ccv, new Client(null, nicks[0]));
             cv.setLocationRelativeTo(ccv.getFrame());
-            for (String nick : nicks) {
+
+            for (int i = 1; i < nicks.length; i++) {
+                String nick = nicks[i];
                 cv.getClients().add(new Client(null, nick));
+
             }
 
             cv.refreshTable();
@@ -426,7 +435,8 @@ public class ChatClientViewHelper {
         client.setNick(fu.name);
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write((BufferedImage) fu.portrait.getImage(),"jpg",baos);
+            ImageIO.write(EmoticonsManger.toBufferedImage(fu.portrait.getImage()), "jpg", baos);
+            client.setImage(baos.toByteArray());
         } catch (Exception ex) {
             log.error(ex);
         }

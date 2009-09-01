@@ -1,6 +1,7 @@
 package facebookchat.common;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -48,10 +49,9 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import facebookchat.ui.chat.Chatroom;
-import facebookchat.ui.main.Cheyenne;
 import gg.msn.core.commons.Util;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,7 +62,6 @@ public class FacebookManager {
     public static final int MAX_FACEBOOK_CHANNELS = 99;
     private static Log log = LogFactory.getLog(FacebookManager.class);
     private static HttpClient httpClient;
-    public static Cheyenne fbc;
     public static String loginPageUrl = "http://www.facebook.com/login.php";
     public static String homePageUrl = "http://www.facebook.com/home.php";
     public static String uid = null;
@@ -70,7 +69,6 @@ public class FacebookManager {
     public static String post_form_id = null;
     public static long seq = -1;
     public static HashSet<String> msgIDCollection;
-    private static Map<String, Chatroom> chatroomCache;
     //public static Queue<Object> requestQ;
     private String Proxy_Host = "ISASRV";
     private int Proxy_Port = 80;
@@ -87,27 +85,29 @@ public class FacebookManager {
      */
     private static SchemeRegistry supportedSchemes;
 
-    public static Chatroom getChatroomAnyway(String uid) {
-        uid = uid.trim();
-        log.debug("%%%%%%>" + uid + "<%%%%%%");
-        if (chatroomCache.containsKey(uid)) {
-            log.debug("%%%%%%contains key:>" + uid + "<%%%%%%");
-            return chatroomCache.get(uid);
-        } else {
-            log.debug("%%%%%%new chatroom:>" + uid + "<%%%%%%");
-            Chatroom chatroom = new Chatroom(uid);
-            chatroomCache.put(uid, chatroom);
-            log.debug("registing chatroom...");
-            return chatroom;
-        }
+    // <editor-fold defaultstate="collapsed" desc="Old Code">
+
+    /*public static Chatroom getChatroomAnyway(String uid) {
+    uid = uid.trim();
+    log.debug("%%%%%%>" + uid + "<%%%%%%");
+    if (chatroomCache.containsKey(uid)) {
+    log.debug("%%%%%%contains key:>" + uid + "<%%%%%%");
+    return chatroomCache.get(uid);
+    } else {
+    log.debug("%%%%%%new chatroom:>" + uid + "<%%%%%%");
+    Chatroom chatroom = new Chatroom(uid);
+    chatroomCache.put(uid, chatroom);
+    log.debug("registing chatroom...");
+    return chatroom;
+    }
     }
 
     public static boolean isChatroomExist(String uid) {
-        uid = uid.trim();
-        if (chatroomCache.containsKey(uid)) {
-            return true;
-        }
-        return false;
+    uid = uid.trim();
+    if (chatroomCache.containsKey(uid)) {
+    return true;
+    }
+    return false;
     }
     /*public static boolean registerChatroom(String uid, Chatroom room){
     if(uid != null && room != null
@@ -125,13 +125,13 @@ public class FacebookManager {
 
     FacebookManager laucher = new FacebookManager();
     laucher.go();
-    }*/
+    }*/// </editor-fold>
     public FacebookManager() {
         msgIDCollection = new HashSet<String>();
         msgIDCollection.clear();
 
-        chatroomCache = new Hashtable<String, Chatroom>();
-        chatroomCache.clear();
+//        chatroomCache = new Hashtable<String, Chatroom>();
+//        chatroomCache.clear();
 
         // make sure to use a proxy that supports CONNECT
         final HttpHost target =
@@ -261,7 +261,8 @@ public class FacebookManager {
         return req;
     }
 
-    /* public void go() {
+    // <editor-fold defaultstate="collapsed" desc="Old Code">
+/* public void go() {
     LoginDialog login = new LoginDialog();
     String action = (String) login.showDialog();
     if (action.equals(LoginDialog.CANCELCMD)) {
@@ -342,7 +343,7 @@ public class FacebookManager {
     JOptionPane.ERROR_MESSAGE);
     }
     }
-     */
+     */// </editor-fold>
     public int doLogin(String email, String pass) {
 
         log.debug("Target URL: " + loginPageUrl);
@@ -487,10 +488,9 @@ public class FacebookManager {
         }
 
         //riempo i campi dell'utente
-        //cerco il mio nome utente
+
         FacebookBuddyList.me = new FacebookUser(uid);
-
-
+        //cerco il mio nome utente
         String userNameLiPrefix = "<li class=\"fb_menu\" id=\"fb_menu_account\">";
         int userNameLiPos = getMethodResponseBody.indexOf(userNameLiPrefix);
         String userNamePrefix = "class=\"fb_menu_link\">";
@@ -502,6 +502,24 @@ public class FacebookManager {
             FacebookBuddyList.me.name = getMethodResponseBody.substring(userNamePos,
                     getMethodResponseBody.indexOf("<", userNamePos));
             log.debug("user_name: " + FacebookBuddyList.me.name);
+        }
+
+        String userPhotoPrefix = "class=\"UIProfileImage UIProfileImage_LARGE\"  src=\"";
+        int userPhotoPos = getMethodResponseBody.indexOf(userPhotoPrefix) + userPhotoPrefix.length();
+        if (userPhotoPos == -1) {
+            log.debug("Error: Can't find photo user!");
+            // return ErrorCode.Error_System_UserNameNotFound;
+        } else {
+            FacebookBuddyList.me.thumbSrc = getMethodResponseBody.substring(userPhotoPos,
+                    getMethodResponseBody.indexOf("\"", userPhotoPos));
+            log.debug("photo uaser: " + FacebookBuddyList.me.thumbSrc);
+            if (FacebookBuddyList.me.thumbSrc != null && !FacebookBuddyList.me.thumbSrc.equals("")) {
+                try {
+                    FacebookBuddyList.me.portrait = new ImageIcon(new URL(FacebookBuddyList.me.thumbSrc));
+                } catch (MalformedURLException ex) {
+                    log.error(ex);
+                }
+            }
         }
 
         return ErrorCode.Error_Global_NoError;
@@ -545,7 +563,8 @@ public class FacebookManager {
         }
     }
 
-    /*public void keepRequesting() throws Exception {
+    // <editor-fold defaultstate="collapsed" desc="Old Code">
+/*public void keepRequesting() throws Exception {
     seq = getSeq();
 
     //go seq
@@ -574,9 +593,7 @@ public class FacebookManager {
     seq++;
     }
     }
-    }*/
-    
-
+    }*/// </editor-fold>
     public int getSeq() {
         //int tempSeq = -1;
         //for (;;);{"t":"refresh", "seq":0}
@@ -616,9 +633,9 @@ public class FacebookManager {
         }
 
         int i = 1;
+        int tryCoun = 0;
         while (true) {
             try {
-
                 String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(i, -1));
                 int tempSeq = parseSeq(seqResponseBody);
                 log.debug("Channel [ " + i + " ]  SEQ [ " + tempSeq + " ]");
@@ -631,8 +648,10 @@ public class FacebookManager {
                     return tempSeq;
                 }
                 i++;
-                if (i == MAX_FACEBOOK_CHANNELS) {
+                if (i == MAX_FACEBOOK_CHANNELS && tryCoun < 3) {
                     i = 0;
+                }else{
+                    return -1;
                 }
             } catch (JSONException e) {
                 log.error(e);
@@ -785,7 +804,7 @@ public class FacebookManager {
      * @return the response string
      */
     public static String facebookGetMethod(String url) {
-        log.debug("url [ " + url+" ]");
+        log.debug("url [ " + url + " ]");
 
         String responseStr = null;
 

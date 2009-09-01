@@ -25,6 +25,7 @@ import javax.swing.table.TableCellRenderer;
 
 import facebookchat.common.SystemPath;
 import facebookchat.ui.common.JImgPanel;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

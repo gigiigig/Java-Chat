@@ -206,13 +206,20 @@ public class MainPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Un renderer personalizzato per la jList di clients
-     */    //GRAPHICS METHODS
+     * Inserisce l'immagine dll'utente o l'icona User
+     */
     public void insertIcons() {
 
         try {
             //imposto le icone
-            ImageIcon userIcon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
+            ImageIcon userIcon = null;
+            if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
+                userIcon = FacebookBuddyList.me.portrait;
+                log.debug("user icon [ " + userIcon + " ]");
+            }
+            if (userIcon == null) {
+                userIcon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
+            }
             if (userIcon != null) {
                 nickIcon.setIcon(userIcon);
             }
