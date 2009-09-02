@@ -4,7 +4,7 @@
  */
 package gg.msn.ui.facebook.thread;
 
-import facebookchat.common.FacebookManager;
+import gg.msn.core.facebook.common.FacebookManager;
 import gg.msn.ui.ChatClientView;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

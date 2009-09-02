@@ -5,9 +5,9 @@
 package gg.msn.ui.facebook.thread;
 
 import chatcommons.Client;
-import facebookchat.common.FacebookManager;
-import facebookchat.common.FacebookMessage;
-import facebookchat.common.ResponseParser;
+import gg.msn.core.facebook.common.FacebookManager;
+import gg.msn.core.facebook.common.FacebookMessage;
+import gg.msn.core.facebook.common.ResponseParser;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.chatwindow.ChatWindow;
 import gg.msn.ui.helper.ChatClientViewHelper;

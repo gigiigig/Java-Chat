@@ -11,8 +11,8 @@
 package gg.msn.ui.panel;
 
 import chatcommons.Client;
-import facebookchat.common.FacebookBuddyList;
-import facebookchat.common.FacebookUser;
+import gg.msn.core.facebook.common.FacebookBuddyList;
+import gg.msn.core.facebook.common.FacebookUser;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.form.OptionsDialog;
 import gg.msn.ui.listener.ChatClientViewListeners;
@@ -300,7 +300,7 @@ public class MainPanel extends javax.swing.JPanel {
 }
 
 class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
-    public static final int IMAGE_LATE = 24;
+    public static final int IMAGE_LATE = 28;
 
     Log log = LogFactory.getLog(this.getClass());
     Object value;
@@ -369,13 +369,14 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
         try {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             //render per utenti Facebook
             if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
                 final FacebookUser user = (FacebookUser) value;
-                int textY = (getHeight() / 2) ;//- (g2.getFont().getSize() / 2);
                 g2.setFont(list.getFont());
+                int textY = (getHeight() / 2) + (g2.getFont().getSize() / 2);
+
                 g2.drawString(user.name, 3+IMAGE_LATE+3, textY);
                 ImageIcon icon = user.portrait;
                 //log.debug("icon [" + icon + "]");
