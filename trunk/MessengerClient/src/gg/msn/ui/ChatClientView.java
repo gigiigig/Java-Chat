@@ -11,6 +11,7 @@ import gg.msn.ui.helper.ChatClientViewHelper;
 import gg.msn.ui.panel.LoginPanel;
 import gg.msn.ui.panel.MainPanel;
 import java.awt.AWTException;
+import java.awt.HeadlessException;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -32,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * The application's main frame.
  */
-public class ChatClientView extends FrameView{
+public class ChatClientView extends FrameView {
 
     /* varibili generali */
     private Log log = LogFactory.getLog(ChatClientView.class);
@@ -62,78 +63,18 @@ public class ChatClientView extends FrameView{
 //        ImageIcon icon = new ImageIcon(getResourceMap().getIcon("mainBackground").getImage());
 //        log.info("icon " + icon.getDescription() + " loaded!!! ");
 
+
         mainPanel = new MainPanel(this);
         loginPanel = new LoginPanel(this);
 
         helper = new ChatClientViewHelper(this);
         helper.initializeProperties();
-       
+
         //<editor-fold defaultstate="collapsed" desc="System tray control">             
         //creo una system tray    
 
         if (SystemTray.isSupported()) {
-            try {
-                SystemTray systemTray = SystemTray.getSystemTray();
-                TrayIcon trayIcon = new TrayIcon(getResourceMap().getImageIcon("trayIcon").getImage());
-//            TrayIcon trayIcon = new TrayIcon(new ImageIcon("/entman/resources/tray.png").getImage());
-                trayIcon.addMouseListener(new MouseAdapter() {
-
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        if (e.getClickCount() == 2) {
-                            getFrame().setVisible(true);
-//                        getFrame().setState(JFrame.n;
-                            getFrame().setExtendedState(JFrame.NORMAL);
-                        }
-                    }
-                });
-                systemTray.add(trayIcon);
-                trayIcon.setToolTip("Gigi Messenger - non connesso");
-                trayIcon.setImageAutoSize(true);
-
-                getFrame().addWindowListener(new WindowAdapter() {
-
-                    @Override
-                    public void windowIconified(WindowEvent e) {
-//                super.windowIconified(e);
-                        getFrame().setVisible(false);
-                    }
-                });
-
-                PopupMenu trayPopupMenu = new PopupMenu();
-                MenuItem open = new MenuItem("Apri Gigi Messenger");
-                open.addActionListener(new AbstractAction() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        ChatClientApp.getApplication().getMainFrame().setVisible(true);
-                        getFrame().setVisible(true);
-                        getFrame().setState(JFrame.NORMAL);
-                    }
-                });
-
-                MenuItem close = new MenuItem("Chiudi Gigi Messenger");
-                close.addActionListener(new AbstractAction() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        if (PersistentDataManager.getOutputStream() != null) {
-                            log.info("nell'if");
-                            helper.disconnetti();
-                        }
-                        ChatClientApp.getApplication().exit();
-
-                    }
-                });
-
-
-                trayPopupMenu.add(open);
-                trayPopupMenu.add(close);
-                trayIcon.setPopupMenu(trayPopupMenu);
-
-                tray = trayIcon;
-
-            } catch (AWTException ex) {
-                log.debug(ex);
-            }
+            createSystemTray();
         }
 
         //</editor-fold> 
@@ -176,9 +117,66 @@ public class ChatClientView extends FrameView{
      */
     @Action
     public void showOptionFrame() {
-        OptionsDialog of = new OptionsDialog(this.getFrame(), true,loginPanel);
+        OptionsDialog of = new OptionsDialog(this.getFrame(), true, loginPanel);
         of.setLocationRelativeTo(this.getFrame());
         of.setVisible(true);
+    }
+
+    private void createSystemTray() throws HeadlessException {
+        try {
+            SystemTray systemTray = SystemTray.getSystemTray();
+            TrayIcon trayIcon = new TrayIcon(getResourceMap().getImageIcon("trayIcon").getImage());
+//            TrayIcon trayIcon = new TrayIcon(new ImageIcon("/entman/resources/tray.png").getImage());
+            trayIcon.addMouseListener(new MouseAdapter() {
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        getFrame().setVisible(true);
+//                        getFrame().setState(JFrame.n;
+                        getFrame().setExtendedState(JFrame.NORMAL);
+                    }
+                }
+            });
+            systemTray.add(trayIcon);
+            trayIcon.setToolTip("Gigi Messenger - non connesso");
+            trayIcon.setImageAutoSize(true);
+            getFrame().addWindowListener(new WindowAdapter() {
+
+                @Override
+                public void windowIconified(WindowEvent e) {
+//                super.windowIconified(e);
+                    getFrame().setVisible(false);
+                }
+            });
+            PopupMenu trayPopupMenu = new PopupMenu();
+            MenuItem open = new MenuItem("Apri Gigi Messenger");
+            open.addActionListener(new AbstractAction() {
+
+                public void actionPerformed(ActionEvent e) {
+                    ChatClientApp.getApplication().getMainFrame().setVisible(true);
+                    getFrame().setVisible(true);
+                    getFrame().setState(JFrame.NORMAL);
+                }
+            });
+            MenuItem close = new MenuItem("Chiudi Gigi Messenger");
+            close.addActionListener(new AbstractAction() {
+
+                public void actionPerformed(ActionEvent e) {
+                    if (PersistentDataManager.getOutputStream() != null) {
+                        log.info("nell'if");
+                        helper.disconnetti();
+                    }
+                    ChatClientApp.getApplication().realQuit();
+                }
+            });
+            trayPopupMenu.add(open);
+            trayPopupMenu.add(close);
+            trayIcon.setPopupMenu(trayPopupMenu);
+            tray = trayIcon;
+        } catch (AWTException ex) {
+            log.debug(ex);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -243,7 +241,6 @@ public class ChatClientView extends FrameView{
         this.helper = helper;
     }
 
-
     public TrayIcon getTray() {
         return tray;
     }
@@ -280,12 +277,11 @@ public class ChatClientView extends FrameView{
     public void showFacebookLogin() {
         helper.showFacebookLoginPanel();
     }
+
     @Action
     public void showLogin() {
         helper.showLoginPanel();
     }
-
-
 }
 // <editor-fold defaultstate="collapsed" desc="Old MainPanel">
 /*class MainPanel extends JPanel {

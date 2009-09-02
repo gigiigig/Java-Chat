@@ -192,7 +192,7 @@ public class ChatClientViewListeners {
 
         @Override
         public void windowClosing(WindowEvent arg0) {
-            super.windowIconified(arg0);
+            ccv.getFrame().setVisible(false);
             log.info("window closing");
 //            if (PersistentDataManager.getOutputStream() != null) {
 //                log.info("nell'if");

@@ -210,7 +210,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 PersistentDataManager.setNick(FacebookBuddyList.me.name);
 
                 //keep requesting message from the server
-                new Thread(new MessageRequester(ccv, fbManger)).start();
+                new Thread(new MessageRequester(ccv, fbManger,email,pass)).start();
 
                 //requests buddy list every 90 seconds
                 new Thread(new BuddyListRequester(ccv)).start();
@@ -222,7 +222,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 ccv.getMainPanel().getNickLabel().setText(FacebookBuddyList.me.name);
                 ccv.getMainPanel().insertIcons();
                 ccv.getHelper().showMainPanel();
-
+                ccv.getMenuBar().setVisible(false);
                 log.debug("showed main panel");
                 //必须在getbuddylist之后
 //                fbc = new Cheyenne();
@@ -254,7 +254,6 @@ public class FBLoginPanel extends javax.swing.JPanel {
         connectionStatusLabel.validate();
 
         new Thread(new Runnable() {
-
             public void run() {
                 connectStart();
             }

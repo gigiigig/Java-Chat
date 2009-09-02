@@ -60,7 +60,7 @@ public class FontChooser extends JDialog implements ActionListener {
     SimpleAttributeSet attributes;
     Font newFont;
     Color newColor;
-
+    
     public FontChooser(Frame parent) {
         super(parent, "Font Chooser", true);
         setSize(450, 450);

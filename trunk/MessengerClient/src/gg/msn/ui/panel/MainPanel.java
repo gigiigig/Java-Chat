@@ -28,11 +28,11 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
-
 
 /**
  *
@@ -298,16 +298,21 @@ public class MainPanel extends javax.swing.JPanel {
         optionsDialog.setVisible(true);
     }
 }
-class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
+
+class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
+    public static final int IMAGE_LATE = 24;
 
     Log log = LogFactory.getLog(this.getClass());
+    Object value;
+    JList list;
 
     public ClientsListCellRenderer() {
     }
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-
+        this.value = value;
+        this.list = list;
         /*se il valore non Ã¨ nullo impossto il renderig altrimenti lo lascio nascosto,
         questo impedisce che lo spazio bianco selweziona sempre l'utlimo elemento*/
 
@@ -322,21 +327,64 @@ class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
+        /*
 
         try {
+        //render per utenti Facebook
+        if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
+        final FacebookUser user = (FacebookUser) value;
+        setText(user.name);
+        ImageIcon icon = user.portrait;
+        //log.debug("icon [" + icon + "]");
+        ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
+        setFont(list.getFont());
+        setIcon(scaledIcon);
+        //render per utenti Client
+        } else {
+        Client client = (Client) value;
+        setText((client).getNick());
+        ImageIcon icon = null;
+        try {
+        new ImageIcon(client.getImage());
+        } catch (Exception e) {
+        //                    log.debug("immgine non presente");
+        icon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
+        }
+        ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
+        setFont(list.getFont());
+        setIcon(scaledIcon);
+        }
+        } catch (Exception e) {
+        log.warn(e);
+        }*/
+
+
+        return this;
+
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        try {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             //render per utenti Facebook
             if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
                 final FacebookUser user = (FacebookUser) value;
-                setText(user.name);
+                int textY = (getHeight() / 2) ;//- (g2.getFont().getSize() / 2);
+                g2.setFont(list.getFont());
+                g2.drawString(user.name, 3+IMAGE_LATE+3, textY);
                 ImageIcon icon = user.portrait;
                 //log.debug("icon [" + icon + "]");
-                ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
-                setFont(list.getFont());
-                setIcon(scaledIcon);
+                //ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
+                g2.drawImage(icon.getImage(),3,getHeight()/2-(IMAGE_LATE/2),IMAGE_LATE,IMAGE_LATE,null);
                 //render per utenti Client
             } else {
                 Client client = (Client) value;
-                setText((client).getNick());
+//                setText((client).getNick());
                 ImageIcon icon = null;
                 try {
                     new ImageIcon(client.getImage());
@@ -345,14 +393,12 @@ class ClientsListCellRenderer extends JLabel implements ListCellRenderer {
                     icon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
                 }
                 ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
-                setFont(list.getFont());
-                setIcon(scaledIcon);
+//                setFont(list.getFont());
+//                setIcon(scaledIcon);
             }
         } catch (Exception e) {
             log.warn(e);
         }
-
-        return this;
 
     }
 }

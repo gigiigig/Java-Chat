@@ -611,7 +611,17 @@ public class FacebookManager {
     }
 
     public int findChannel() {
+        List<Cookie> cookies = ((DefaultHttpClient) httpClient).getCookieStore().getCookies();
 
+        log.debug("Post logon cookies:");
+        cookies = ((DefaultHttpClient) httpClient).getCookieStore().getCookies();
+        if (cookies.isEmpty()) {
+            log.debug("None");
+        } else {
+            for (int i = 0; i < cookies.size(); i++) {
+                log.debug("- " + cookies.get(i).toString());
+            }
+        }
         String lastChannel = Util.readProperties().getProperty(FACEBOOK_LAST_CHANNEL);
         try {
             log.debug("last cannel [ " + lastChannel + " ]");

@@ -23,10 +23,14 @@ public class MessageRequester implements Runnable {
     private static Log log = LogFactory.getLog(MessageRequester.class);
     private ChatClientView ccv;
     private FacebookManager fbManger;
+    private String email;
+    private String pass;
 
-    public MessageRequester(ChatClientView ccv, FacebookManager facebookManager) {
+    public MessageRequester(ChatClientView ccv, FacebookManager facebookManager, String email, String pass) {
         this.ccv = ccv;
         this.fbManger = facebookManager;
+        this.email = email;
+        this.pass = pass;
     }
 
     public void run() {
@@ -43,7 +47,9 @@ public class MessageRequester implements Runnable {
     private void keepRequesting() throws Exception {
 
         FacebookManager.seq = fbManger.getSeq();
+
         while (FacebookManager.seq == -1) {
+            fbManger.doLogin(email, pass);
             fbManger.findChannel();
             FacebookManager.seq = fbManger.getSeq();
         }
@@ -72,13 +78,14 @@ public class MessageRequester implements Runnable {
                         ChatWindow chatWith = helper.getChatWith(client);
                         log.debug("chatWith [ " + chatWith + " ]");
                         chatWith.writeMessage(fm.fromName, fm.text);
+                        FacebookManager.seq++;
                     }
                 } catch (Exception e) {
                     log.error(e);
                     fbManger.findChannel();
-                    FacebookManager.seq = fbManger.getSeq();
+                    //FacebookManager.seq = fbManger.getSeq();
                 }
-                FacebookManager.seq++;
+                
             }
         }
     }
