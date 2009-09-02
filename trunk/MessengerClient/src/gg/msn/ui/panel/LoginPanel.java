@@ -105,6 +105,7 @@ public class LoginPanel extends javax.swing.JPanel {
         ggLoginButton.setFocusable(false);
         ggLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ggLoginButton.setName("ggLoginButton"); // NOI18N
+        ggLoginButton.setOpaque(false);
         ggLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         buttonsToolBar.add(ggLoginButton);
 
@@ -113,6 +114,7 @@ public class LoginPanel extends javax.swing.JPanel {
         fbLoginButton.setFocusable(false);
         fbLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         fbLoginButton.setName("fbLoginButton"); // NOI18N
+        fbLoginButton.setOpaque(false);
         fbLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         buttonsToolBar.add(fbLoginButton);
 

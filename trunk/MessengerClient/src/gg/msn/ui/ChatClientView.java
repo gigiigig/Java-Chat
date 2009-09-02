@@ -276,6 +276,16 @@ public class ChatClientView extends FrameView{
         manageFrame.setVisible(true);
     }
 
+    @Action
+    public void showFacebookLogin() {
+        helper.showFacebookLoginPanel();
+    }
+    @Action
+    public void showLogin() {
+        helper.showLoginPanel();
+    }
+
+
 }
 // <editor-fold defaultstate="collapsed" desc="Old MainPanel">
 /*class MainPanel extends JPanel {

@@ -84,7 +84,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         passwText.setText(resourceMap.getString("passwText.text")); // NOI18N
         passwText.setName("passwText"); // NOI18N
 
-        buttonsToolBar.setBackground(new Color(0,0,0,255));
+        buttonsToolBar.setBackground(resourceMap.getColor("buttonsToolBar.background")); // NOI18N
         buttonsToolBar.setBorder(null);
         buttonsToolBar.setRollover(true);
         buttonsToolBar.setName("buttonsToolBar"); // NOI18N
@@ -95,6 +95,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         ggLoginButton.setFocusable(false);
         ggLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ggLoginButton.setName("ggLoginButton"); // NOI18N
+        ggLoginButton.setOpaque(false);
         ggLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         buttonsToolBar.add(ggLoginButton);
 
@@ -103,6 +104,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         fbLoginButton.setFocusable(false);
         fbLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         fbLoginButton.setName("fbLoginButton"); // NOI18N
+        fbLoginButton.setOpaque(false);
         fbLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         buttonsToolBar.add(fbLoginButton);
 

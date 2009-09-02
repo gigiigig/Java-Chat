@@ -102,9 +102,7 @@
     </Component>
     <Container class="javax.swing.JToolBar" name="buttonsToolBar">
       <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new Color(0,0,0,255)" type="code"/>
-        </Property>
+        <Property name="background" type="java.awt.Color" resourceKey="buttonsToolBar.background"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="null"/>
         </Property>
@@ -124,6 +122,7 @@
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="name" type="java.lang.String" value="ggLoginButton" noResource="true"/>
+            <Property name="opaque" type="boolean" value="false"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
@@ -136,6 +135,7 @@
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="name" type="java.lang.String" value="fbLoginButton" noResource="true"/>
+            <Property name="opaque" type="boolean" value="false"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>

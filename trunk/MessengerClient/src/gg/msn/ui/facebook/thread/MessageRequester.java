@@ -23,11 +23,11 @@ public class MessageRequester implements Runnable {
     private static Log log = LogFactory.getLog(MessageRequester.class);
     private ChatClientView ccv;
     private FacebookManager fbManger;
-    public MessageRequester(ChatClientView ccv,FacebookManager facebookManager) {
+
+    public MessageRequester(ChatClientView ccv, FacebookManager facebookManager) {
         this.ccv = ccv;
         this.fbManger = facebookManager;
     }
-
 
     public void run() {
         log.debug("Keep requesting...");
@@ -41,19 +41,24 @@ public class MessageRequester implements Runnable {
     }
 
     private void keepRequesting() throws Exception {
-        
+
         FacebookManager.seq = fbManger.getSeq();
+        while (FacebookManager.seq == -1) {
+            fbManger.findChannel();
+            FacebookManager.seq = fbManger.getSeq();
+        }
 
         //go seq
         while (true) {
             //PostMessage("1190346972", "SEQ:"+seq);
-            int currentSeq = fbManger.getSeq();
-            log.debug("My seq:" + FacebookManager.seq + " | Current seq:" + currentSeq + '\n');
-            if (FacebookManager.seq > currentSeq) {
-                FacebookManager.seq = currentSeq;
-            }
+//            int currentSeq = fbManger.getSeq();
+//            log.debug("My seq:" + FacebookManager.seq + " | Current seq:" + currentSeq + '\n');
+//            if (FacebookManager.seq > currentSeq) {
+//                FacebookManager.seq = currentSeq;
+//            }
 
-            while (FacebookManager.seq <= currentSeq) {
+//            while (FacebookManager.seq <= currentSeq) {
+            while (true) {
                 //get the old message between oldseq and seq
                 String msgResponseBody = FacebookManager.facebookGetMethod(fbManger.getMessageRequestingUrl(Integer.parseInt(FacebookManager.channel), FacebookManager.seq));
 
@@ -70,6 +75,8 @@ public class MessageRequester implements Runnable {
                     }
                 } catch (Exception e) {
                     log.error(e);
+                    fbManger.findChannel();
+                    FacebookManager.seq = fbManger.getSeq();
                 }
                 FacebookManager.seq++;
             }
