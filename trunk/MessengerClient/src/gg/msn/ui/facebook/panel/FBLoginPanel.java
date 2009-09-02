@@ -19,11 +19,11 @@ import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.thread.BuddyListRequester;
 import gg.msn.ui.facebook.thread.MessageRequester;
 import gg.msn.ui.theme.ThemeManager;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.lang.Runnable;
 import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -57,6 +57,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
         loginButton = new javax.swing.JButton();
         connectionStatusLabel = new javax.swing.JLabel();
         passwText = new javax.swing.JPasswordField();
+        buttonsToolBar = new javax.swing.JToolBar();
+        ggLoginButton = new javax.swing.JButton();
+        fbLoginButton = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
 
@@ -81,6 +84,28 @@ public class FBLoginPanel extends javax.swing.JPanel {
         passwText.setText(resourceMap.getString("passwText.text")); // NOI18N
         passwText.setName("passwText"); // NOI18N
 
+        buttonsToolBar.setBackground(new Color(0,0,0,255));
+        buttonsToolBar.setBorder(null);
+        buttonsToolBar.setRollover(true);
+        buttonsToolBar.setName("buttonsToolBar"); // NOI18N
+        buttonsToolBar.setOpaque(false);
+
+        ggLoginButton.setAction(actionMap.get("showLogin")); // NOI18N
+        ggLoginButton.setIcon(resourceMap.getIcon("ggLoginButton.icon")); // NOI18N
+        ggLoginButton.setFocusable(false);
+        ggLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ggLoginButton.setName("ggLoginButton"); // NOI18N
+        ggLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonsToolBar.add(ggLoginButton);
+
+        fbLoginButton.setAction(actionMap.get("showFacebookLogin")); // NOI18N
+        fbLoginButton.setIcon(resourceMap.getIcon("fbLoginButton.icon")); // NOI18N
+        fbLoginButton.setFocusable(false);
+        fbLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        fbLoginButton.setName("fbLoginButton"); // NOI18N
+        fbLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonsToolBar.add(fbLoginButton);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,11 +122,13 @@ public class FBLoginPanel extends javax.swing.JPanel {
                     .addComponent(connectionStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(50, Short.MAX_VALUE))
+            .addComponent(buttonsToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(147, 147, 147)
+                .addComponent(buttonsToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(118, 118, 118)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(emailLabel)
                     .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -117,9 +144,12 @@ public class FBLoginPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToolBar buttonsToolBar;
     private javax.swing.JLabel connectionStatusLabel;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailText;
+    private javax.swing.JButton fbLoginButton;
+    private javax.swing.JButton ggLoginButton;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passwText;
     private javax.swing.JLabel psswLabel;
@@ -138,11 +168,11 @@ public class FBLoginPanel extends javax.swing.JPanel {
 
         //carico i valori salvati se ci sono
         String email = Util.readProperties().getProperty(Util.PROPERTY_FACEBOOK_EMAIL);
-        if(email != null && !email.equals("")){
+        if (email != null && !email.equals("")) {
             emailText.setText(email);
         }
         String psw = Util.readProperties().getProperty(Util.PROPERTY_FACEBOOK_PSW);
-        if(psw != null && !psw.equals("")){
+        if (psw != null && !psw.equals("")) {
             passwText.setText(psw);
         }
 
@@ -195,7 +225,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 //必须在getbuddylist之后
 //                fbc = new Cheyenne();
 //                fbc.setVisible(true);
-            }else{
+            } else {
                 ccv.getHelper().showWarnDialog("Non è stato possibile effettuare il login.<br>" +
                         "Ricontrolla email e password!");
                 connectionStatusLabel.setVisible(false);
@@ -220,7 +250,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         loginButton.setVisible(false);
         connectionStatusLabel.setText("Connessione...");
         connectionStatusLabel.validate();
-      
+
         new Thread(new Runnable() {
 
             public void run() {
@@ -249,6 +279,16 @@ public class FBLoginPanel extends javax.swing.JPanel {
         } catch (Exception e) {
 //            log.debug(e);
         }
+    }
+
+    @Action
+    public void showFacebookLogin() {
+        ccv.getHelper().showFacebookLoginPanel();
+    }
+
+    @Action
+    public void showLogin() {
+        ccv.getHelper().showLoginPanel();
     }
 
     public static void main(String[] args) {

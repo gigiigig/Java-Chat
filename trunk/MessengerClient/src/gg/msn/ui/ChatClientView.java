@@ -16,8 +16,6 @@ import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.WindowEvent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
@@ -25,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
-import java.awt.event.WindowListener;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -70,8 +67,7 @@ public class ChatClientView extends FrameView{
 
         helper = new ChatClientViewHelper(this);
         helper.initializeProperties();
-        statusPanel.setVisible(false);
-
+       
         //<editor-fold defaultstate="collapsed" desc="System tray control">             
         //creo una system tray    
 
@@ -180,7 +176,7 @@ public class ChatClientView extends FrameView{
      */
     @Action
     public void showOptionFrame() {
-        OptionsDialog of = new OptionsDialog(this.getFrame(), true);
+        OptionsDialog of = new OptionsDialog(this.getFrame(), true,loginPanel);
         of.setLocationRelativeTo(this.getFrame());
         of.setVisible(true);
     }
@@ -199,11 +195,6 @@ public class ChatClientView extends FrameView{
         jMenuItem1 = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
-        statusPanel = new javax.swing.JPanel();
-        javax.swing.JSeparator statusPanelSeparator = new javax.swing.JSeparator();
-        statusMessageLabel = new javax.swing.JLabel();
-        statusAnimationLabel = new javax.swing.JLabel();
-        progressBar = new javax.swing.JProgressBar();
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(gg.msn.ui.ChatClientApp.class).getContext().getResourceMap(ChatClientView.class);
         menuBar.setBackground(resourceMap.getColor("menuBar.background")); // NOI18N
@@ -228,45 +219,11 @@ public class ChatClientView extends FrameView{
 
         menuBar.add(helpMenu);
 
-        statusPanel.setBackground(resourceMap.getColor("statusPanel.background")); // NOI18N
-
-        statusAnimationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-
-        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
-        statusPanel.setLayout(statusPanelLayout);
-        statusPanelLayout.setHorizontalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
-                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(statusAnimationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4))
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
-        );
-        statusPanelLayout.setVerticalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addComponent(statusPanelSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(statusAnimationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(statusMessageLabel)))
-        );
-
         setMenuBar(menuBar);
-        setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JProgressBar progressBar;
-    private javax.swing.JLabel statusAnimationLabel;
-    private javax.swing.JLabel statusMessageLabel;
-    private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
     private JDialog aboutBox;
     private TrayIcon tray;
@@ -286,21 +243,6 @@ public class ChatClientView extends FrameView{
         this.helper = helper;
     }
 
-    public JLabel getStatusMessageLabel() {
-        return statusMessageLabel;
-    }
-
-    public JLabel getStatusAnimationLabel() {
-        return statusAnimationLabel;
-    }
-
-    public void setStatusAnimationLabel(JLabel statusAnimationLabel) {
-        this.statusAnimationLabel = statusAnimationLabel;
-    }
-
-    public JPanel getStatusPanel() {
-        return statusPanel;
-    }
 
     public TrayIcon getTray() {
         return tray;
@@ -334,10 +276,6 @@ public class ChatClientView extends FrameView{
         manageFrame.setVisible(true);
     }
 
-    @Action
-    public void showFacebookLogin() {
-        helper.showFacebookLoginPanel();
-    }
 }
 // <editor-fold defaultstate="collapsed" desc="Old MainPanel">
 /*class MainPanel extends JPanel {

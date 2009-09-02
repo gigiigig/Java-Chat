@@ -278,7 +278,7 @@ public class ReceiveFileDialog extends javax.swing.JFrame {
 
         if (!folder.isDirectory()) {
             JOptionPane.showMessageDialog(this, "La certella per il dowload non è vailda!", "Cartella non valida", JOptionPane.WARNING_MESSAGE);
-            OptionsDialog dialog = new OptionsDialog(ccv.getFrame(), false);
+            OptionsDialog dialog = new OptionsDialog(ccv.getFrame(), false,ccv.getLoginPanel());
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
 

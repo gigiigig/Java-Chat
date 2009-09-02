@@ -12,8 +12,8 @@ import org.json.JSONObject;
 public class FacebookBuddyList {
 
     private static Log log = LogFactory.getLog(FacebookBuddyList.class);
-    public static transient FacebookUser me;
-    public static transient Map<String, FacebookUser> buddies = new Hashtable<String, FacebookUser>();
+    public static  FacebookUser me;
+    public static  Map<String, FacebookUser> buddies = new Hashtable<String, FacebookUser>();
 
     static {
         buddies.clear();

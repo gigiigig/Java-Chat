@@ -275,7 +275,7 @@ public class ChatClientViewHelper {
         cv.refreshTable();
         cv.setVisible(true);
         cv.toFront();
-        cv.setTitle(selected + " - Conversazione");
+        cv.setTitle(selected.getNick() + " - Conversazione");
         chatWindows.add(cv);
 
         return cv;
@@ -460,7 +460,7 @@ public class ChatClientViewHelper {
 
         if (properties == null) {
             try {
-                OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true);
+                OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true,ccv.getLoginPanel());
                 optionsFrame.setLocationRelativeTo(ccv.getFrame());
                 optionsFrame.getPortaText().setText("3434");
                 optionsFrame.getIpText().setText("localhost");

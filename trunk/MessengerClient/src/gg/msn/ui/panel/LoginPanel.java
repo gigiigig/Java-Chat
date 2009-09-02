@@ -66,6 +66,9 @@ public class LoginPanel extends javax.swing.JPanel {
         jToolBar2 = new javax.swing.JToolBar();
         login = new javax.swing.JButton();
         userLabel = new javax.swing.JLabel();
+        buttonsToolBar = new javax.swing.JToolBar();
+        ggLoginButton = new javax.swing.JButton();
+        fbLoginButton = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
 
@@ -92,6 +95,27 @@ public class LoginPanel extends javax.swing.JPanel {
         userLabel.setIcon(resourceMap.getIcon("userLabel.icon")); // NOI18N
         userLabel.setName("userLabel"); // NOI18N
 
+        buttonsToolBar.setBorder(null);
+        buttonsToolBar.setRollover(true);
+        buttonsToolBar.setName("buttonsToolBar"); // NOI18N
+        buttonsToolBar.setOpaque(false);
+
+        ggLoginButton.setAction(actionMap.get("showLogin")); // NOI18N
+        ggLoginButton.setIcon(resourceMap.getIcon("ggLoginButton.icon")); // NOI18N
+        ggLoginButton.setFocusable(false);
+        ggLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ggLoginButton.setName("ggLoginButton"); // NOI18N
+        ggLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonsToolBar.add(ggLoginButton);
+
+        fbLoginButton.setAction(actionMap.get("showFacebookLogin")); // NOI18N
+        fbLoginButton.setIcon(resourceMap.getIcon("fbLoginButton.icon")); // NOI18N
+        fbLoginButton.setFocusable(false);
+        fbLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        fbLoginButton.setName("fbLoginButton"); // NOI18N
+        fbLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonsToolBar.add(fbLoginButton);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,12 +131,14 @@ public class LoginPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(126, 126, 126)
                         .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
+            .addComponent(buttonsToolBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(138, 138, 138)
+                .addComponent(buttonsToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(109, 109, 109)
                 .addComponent(userLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nickText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -122,6 +148,9 @@ public class LoginPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToolBar buttonsToolBar;
+    private javax.swing.JButton fbLoginButton;
+    private javax.swing.JButton ggLoginButton;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JButton login;
     private javax.swing.JTextField nickText;
@@ -140,6 +169,16 @@ public class LoginPanel extends javax.swing.JPanel {
             return;
         }
     }
+
+    @Action
+    public void showFacebookLogin() {
+        ccv.getHelper().showFacebookLoginPanel();
+    }
+    @Action
+    public void showLogin() {
+        ccv.getHelper().showLoginPanel();
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -186,6 +225,11 @@ public class LoginPanel extends javax.swing.JPanel {
     public void setLogin(JButton login) {
         this.login = login;
     }
+
+    public ChatClientView getCcv() {
+        return ccv;
+    }
+    
     
     // </editor-fold>
 

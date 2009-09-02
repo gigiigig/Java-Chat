@@ -11,6 +11,7 @@ import gg.msn.ui.theme.ThemeManager;
 import emoticon.EmoticonsManageFrame;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientApp;
+import gg.msn.ui.panel.LoginPanel;
 import java.io.File;
 import java.util.Properties;
 import javax.swing.JButton;
@@ -30,12 +31,12 @@ import org.jdesktop.application.Action;
 public class OptionsDialog extends javax.swing.JDialog {
 
     private Log log = LogFactory.getLog(this.getClass());
-
+    private LoginPanel loginPanel;
     /** Creates new form OptionsFrame */
-    public OptionsDialog(java.awt.Frame parent, boolean modal) {
+    public OptionsDialog(java.awt.Frame parent, boolean modal,LoginPanel loginPanel) {
         super(parent, modal);
         initComponents();
-
+        this.loginPanel = loginPanel;
         Properties properties = Util.readProperties();
         if (properties != null) {
 
@@ -271,17 +272,18 @@ public class OptionsDialog extends javax.swing.JDialog {
         
         Util.writeProperties(properties);
 
-        ChatClientView ccv = (ChatClientView) ChatClientApp.getApplication().getMainView();
+//        ChatClientView ccv = (ChatClientView) ChatClientApp.getApplication().getMainView();
+
         PersistentDataManager.setPort(Integer.parseInt(portaText.getText()));
         PersistentDataManager.setIp(ipText.getText());
         PersistentDataManager.setNick(nickText.getText());
-        ccv.getLoginPanel().getNickText().setText(nickText.getText());
+        loginPanel.getNickText().setText(nickText.getText());
         ThemeManager.loadTheme(properties.getProperty(Util.PROPERTY_THEME_FOLDER));
         log.info("property saved");
-        ccv.getMainPanel().insertIcons();
+        loginPanel.getCcv().getMainPanel().insertIcons();;
         setVisible(false);
-        ccv.getFrame().validate();
-        ccv.getFrame().repaint();
+        loginPanel.getCcv().getFrame().validate();
+        loginPanel.getCcv().getFrame().repaint();
        
     }
 

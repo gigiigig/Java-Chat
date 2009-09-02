@@ -208,7 +208,7 @@ public class ChatClientViewListeners {
 
             if (properties == null) {
                 try {
-                    OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true);
+                    OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true,ccv.getLoginPanel());
                     optionsFrame.setLocationRelativeTo(ccv.getFrame());
                     optionsFrame.getPortaText().setText("3434");
                     optionsFrame.getIpText().setText("localhost");
