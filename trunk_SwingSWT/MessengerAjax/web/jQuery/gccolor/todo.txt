@@ -1,0 +1,2 @@
+Add flat mode
+Add option for other elements, for example if gccolor is applied on other element than input, it will change background-color, or inner text
