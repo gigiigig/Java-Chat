@@ -21,7 +21,7 @@ import emoticon.Emoticon;
 import emoticon.EmoticonAddDialog;
 import emoticon.EmoticonsManger;
 import emoticon.Util;
-import gg.msn.core.facebook.common.FacebookManager;
+import gg.msn.facebook.core.FacebookManager;
 import gg.msn.core.manager.PersistentDataManager;
 import java.awt.Color;
 import java.awt.Component;

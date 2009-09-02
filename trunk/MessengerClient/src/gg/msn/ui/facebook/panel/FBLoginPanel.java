@@ -10,9 +10,9 @@
  */
 package gg.msn.ui.facebook.panel;
 
-import gg.msn.core.facebook.common.ErrorCode;
-import gg.msn.core.facebook.common.FacebookBuddyList;
-import gg.msn.core.facebook.common.FacebookManager;
+import gg.msn.facebook.core.ErrorCode;
+import gg.msn.facebook.core.FacebookBuddyList;
+import gg.msn.facebook.core.FacebookManager;
 import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientView;

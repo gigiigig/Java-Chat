@@ -11,8 +11,8 @@
 package gg.msn.ui.panel;
 
 import chatcommons.Client;
-import gg.msn.core.facebook.common.FacebookBuddyList;
-import gg.msn.core.facebook.common.FacebookUser;
+import gg.msn.facebook.core.FacebookBuddyList;
+import gg.msn.facebook.core.FacebookUser;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.form.OptionsDialog;
 import gg.msn.ui.listener.ChatClientViewListeners;
