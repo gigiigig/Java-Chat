@@ -396,8 +396,8 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
                 //ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
                 g2.drawImage(icon.getImage(), WHITE_SPACE, getHeight() / 2 - (IMAGE_LATE / 2), IMAGE_LATE, IMAGE_LATE, null);
                 //render per utenti Client
-                log.debug("user status [" + user.status + "]");
-                log.debug("user online status [" + user.onlineStatus + "]");
+//                log.debug("user status [" + user.status + "]");
+//                log.debug("user online status [" + user.onlineStatus + "]");
                 if (user.onlineStatus==OnlineStatus.ONLINE) {
                     g2.setColor(Color.GREEN);
                     g2.fillOval(getWidth() - STATUS_ICON_OFFSET, (getHeight()/2)-(STATUS_ICON_WIDTH/2), STATUS_ICON_WIDTH, STATUS_ICON_WIDTH);

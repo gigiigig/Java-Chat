@@ -237,9 +237,9 @@ public class ResponseParser {
                 }
             } else if (((String) respObjs.get("t")).equals("refresh")) {
                 log.debug("Refresh");//do nothing
-                if (((String) respObjs.get("seq")) != null) {
-                    log.debug("refresh seq: " + (String) respObjs.get("seq"));
-                }
+//                if (((String) respObjs.get("seq")) != null) {
+//                    log.debug("refresh seq: " + (String) respObjs.get("seq"));
+//                }
             } else if (((String) respObjs.get("t")).equals("continue")) {
                 log.debug("Time out? reconcect...");//do nothing
             } else {

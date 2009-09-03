@@ -194,9 +194,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
         String pass = "password";*/
 
         log.debug(email + ":" + pass);
-        final FacebookManager fbManger = new FacebookManager();
+        final FacebookManager fbManger = new FacebookManager(email,pass);
 
-        int loginErrorCode = fbManger.doLogin(email, pass);
+        int loginErrorCode = fbManger.doLogin();
         if (loginErrorCode == ErrorCode.Error_Global_NoError) {
             if (fbManger.doParseHomePage() == ErrorCode.Error_Global_NoError) {
                 int channel = fbManger.findChannel();
@@ -293,9 +293,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
     }
 
     public static void main(String[] args) {
-        FacebookManager facebookManager = new FacebookManager();
-        facebookManager.doLogin("luigi.ant@email.it", "03021984");
-        System.out.println(FacebookManager.facebookGetMethod("http://0.channel35.facebook.com/x/0/false/p_1567835536=-1"));
-        System.out.println(FacebookManager.facebookGetMethod("http://www.google.com"));
+//        FacebookManager facebookManager = new FacebookManager();
+//        facebookManager.doLogin("luigi.ant@email.it", "03021984");
+//        System.out.println(FacebookManager.facebookGetMethod("http://0.channel35.facebook.com/x/0/false/p_1567835536=-1"));
+//        System.out.println(FacebookManager.facebookGetMethod("http://www.google.com"));
     }
 }

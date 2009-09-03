@@ -68,6 +68,8 @@ public class FacebookManager {
     private int Proxy_Port = 80;
     private String Proxy_Username = "daizw";
     private String Proxy_Password = "xxxxxx";
+    private  String email;
+    private  String passw;
     /**
      * The default parameters.
      * Instantiated in {@link #setup setup}.
@@ -120,7 +122,9 @@ public class FacebookManager {
     FacebookManager laucher = new FacebookManager();
     laucher.go();
     }*/// </editor-fold>
-    public FacebookManager() {
+    public FacebookManager(String email,String passw) {
+        this.email = email;
+        this.passw = passw;
         msgIDCollection = new HashSet<String>();
         msgIDCollection.clear();
 
@@ -340,7 +344,7 @@ public class FacebookManager {
     }
     }
      */// </editor-fold>
-    public int doLogin(String email, String pass) {
+    public int doLogin() {
 
         log.debug("Target URL: " + loginPageUrl);
         try {
@@ -367,7 +371,7 @@ public class FacebookManager {
 
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             nvps.add(new BasicNameValuePair("email", email));
-            nvps.add(new BasicNameValuePair("pass", pass));
+            nvps.add(new BasicNameValuePair("pass", passw));
 
             httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
@@ -658,7 +662,7 @@ public class FacebookManager {
                     i = 0;
                     tryCoun++;
                     //riprovo il login
-                    //doLogin(uid, uid)
+                    doLogin();
 
                 } else if (i == MAX_FACEBOOK_CHANNELS && tryCoun == 3) {
                     return -1;
@@ -850,9 +854,9 @@ public class FacebookManager {
     }
 
     public static void main(String[] args) {
-        new FacebookManager();
+//        new FacebookManager();
+////        System.out.println(facebookGetMethod("http://0.channel35.facebook.com/x/0/false/p_1567835536=-1"));
 //        System.out.println(facebookGetMethod("http://0.channel35.facebook.com/x/0/false/p_1567835536=-1"));
-        System.out.println(facebookGetMethod("http://0.channel35.facebook.com/x/0/false/p_1567835536=-1"));
     }
 }
 
