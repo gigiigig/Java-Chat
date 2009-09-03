@@ -49,7 +49,7 @@ public class MessageRequester implements Runnable {
         FacebookManager.seq = fbManger.getSeq();
 
         while (FacebookManager.seq == -1) {
-            fbManger.doLogin(email, pass);
+            fbManger.doLogin();
             fbManger.findChannel();
             FacebookManager.seq = fbManger.getSeq();
         }
