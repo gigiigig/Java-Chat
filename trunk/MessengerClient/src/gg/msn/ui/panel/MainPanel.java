@@ -13,6 +13,7 @@ package gg.msn.ui.panel;
 import chatcommons.Client;
 import gg.msn.facebook.core.FacebookBuddyList;
 import gg.msn.facebook.core.FacebookUser;
+import gg.msn.facebook.core.OnlineStatus;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.form.OptionsDialog;
 import gg.msn.ui.listener.ChatClientViewListeners;
@@ -300,8 +301,12 @@ public class MainPanel extends javax.swing.JPanel {
 }
 
 class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
-    public static final int IMAGE_LATE = 28;
 
+    public static final int IMAGE_LATE = 28;
+    public static final String ONLINE_STATUS = "ONLINE";
+    public static final int STATUS_ICON_OFFSET = 15;
+    public static final int STATUS_ICON_WIDTH = 6;
+    public static final int WHITE_SPACE = 3;
     Log log = LogFactory.getLog(this.getClass());
     Object value;
     JList list;
@@ -327,7 +332,9 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
-        /*
+        
+        // <editor-fold defaultstate="collapsed" desc="Old Code">
+/*
 
         try {
         //render per utenti Facebook
@@ -356,8 +363,7 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
         }
         } catch (Exception e) {
         log.warn(e);
-        }*/
-
+        }*/// </editor-fold>
 
         return this;
 
@@ -374,16 +380,36 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
             //render per utenti Facebook
             if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
                 final FacebookUser user = (FacebookUser) value;
-                g2.setFont(list.getFont());
                 int textY = (getHeight() / 2) + (g2.getFont().getSize() / 2);
 
-                g2.drawString(user.name, 3+IMAGE_LATE+3, textY);
+                //name string
+                g2.setFont(list.getFont());
+                g2.drawString(user.name, WHITE_SPACE + IMAGE_LATE + 3, textY);
+
+                //status string
+                g2.setFont(list.getFont());
+                g2.drawString(user.status, WHITE_SPACE + IMAGE_LATE + 3, textY);
+
+                //icon
                 ImageIcon icon = user.portrait;
                 //log.debug("icon [" + icon + "]");
                 //ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
-                g2.drawImage(icon.getImage(),3,getHeight()/2-(IMAGE_LATE/2),IMAGE_LATE,IMAGE_LATE,null);
+                g2.drawImage(icon.getImage(), WHITE_SPACE, getHeight() / 2 - (IMAGE_LATE / 2), IMAGE_LATE, IMAGE_LATE, null);
                 //render per utenti Client
+                log.debug("user status [" + user.status + "]");
+                log.debug("user online status [" + user.onlineStatus + "]");
+                if (user.onlineStatus==OnlineStatus.ONLINE) {
+                    g2.setColor(Color.GREEN);
+                    g2.fillOval(getWidth() - STATUS_ICON_OFFSET, (getHeight()/2)-(STATUS_ICON_WIDTH/2), STATUS_ICON_WIDTH, STATUS_ICON_WIDTH);
+                } else {
+                    g2.setColor(Color.GRAY);
+                    g2.fillOval(getWidth() - STATUS_ICON_OFFSET, (getHeight()/2)-(STATUS_ICON_WIDTH/2), STATUS_ICON_WIDTH, STATUS_ICON_WIDTH);
+                }
+
             } else {
+                g2.setFont(list.getFont());
+                int textY = (getHeight() / 2) + (g2.getFont().getSize() / 2);
+
                 Client client = (Client) value;
 //                setText((client).getNick());
                 ImageIcon icon = null;
@@ -393,7 +419,11 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
 //                    log.debug("immgine non presente");
                     icon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
                 }
-                ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
+                g2.drawString(client.getNick(), WHITE_SPACE + IMAGE_LATE + 3, textY);
+                //log.debug("icon [" + icon + "]");
+                //ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
+                g2.drawImage(icon.getImage(), WHITE_SPACE, getHeight() / 2 - (IMAGE_LATE / 2), IMAGE_LATE, IMAGE_LATE, null);
+
 //                setFont(list.getFont());
 //                setIcon(scaledIcon);
             }

@@ -657,6 +657,9 @@ public class FacebookManager {
                 if (i == MAX_FACEBOOK_CHANNELS && tryCoun < 3) {
                     i = 0;
                     tryCoun++;
+                    //riprovo il login
+                    //doLogin(uid, uid)
+
                 } else if (i == MAX_FACEBOOK_CHANNELS && tryCoun == 3) {
                     return -1;
                 }
