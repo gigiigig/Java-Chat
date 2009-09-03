@@ -51,51 +51,59 @@ public class FacebookUser {
     "forcedRender":true,
     "flMode":false,
     "flData":{}}*/
+
+    public static String STATUS_ONLINE = "online";
+    public static String STATUS_OFFLINE = "offline";
     public String uid;
     public String name;
     public String firstName;
     public String thumbSrc;
     public String status;
-    public Number statusTime;
-    public String statusTimeRel;
     public ImageIcon portrait;
     public long lastSeen;
-    public OnlineStatus onlineStatus;
+   
 
     public FacebookUser(String uid) {
         this.uid = uid;
     }
 
     
-    public FacebookUser(String id, JSONObject user) throws JSONException {
+    public FacebookUser(String id, JSONObject user, JSONObject statusObj) throws JSONException {
 
+        log.debug("status obj [ " + statusObj+" ]");
         uid = id;
         if (user == null) {
             throw new JSONException("Param user is null when init FacebookUser");
         }
-        name = (String) user.get("name");
-        firstName = (String) user.get("firstName");
-        thumbSrc = (String) user.get("thumbSrc");
-        //Object temp = user.get("status");
-        //log.debug(temp.toString());
-        //log.debug(temp.getClass());
-//        if (!temp.equals(org.json.JSONObject.NULL)) {
-//            status = (String) temp;
-//        } else {
-            status = "";
-//        }
-        //statusTime = (Number) user.get("statusTime");
-        //statusTimeRel = (String) user.get("statusTimeRel");
 
+        //nome completo
+        name = (String) user.get("name");
+        //nome
+        firstName = (String) user.get("firstName");
+        //link immmagine
+        thumbSrc = (String) user.get("thumbSrc");
+    
         try {
             portrait = new ImageIcon(new URL(thumbSrc));
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-            portrait = new ImageIcon(SystemPath.PORTRAIT_RESOURCE_PATH + "q_silhouette.gif");
+            log.error(e);
+            //cobtrollare nel renderer che non sia null
+            portrait = null;
         }
 
         lastSeen = new Date().getTime();
-        onlineStatus = OnlineStatus.ONLINE;
+        //{"i" = "false"} significa che è verde
+       try {
+            boolean aBoolean = statusObj.getBoolean("i");
+            log.debug(" status  boolean [ " + aBoolean+" ]");
+            if (!aBoolean) {
+                status = STATUS_ONLINE;
+            } else {
+                status = STATUS_OFFLINE;
+            }
+        } catch (JSONException jSONException) {
+            status = STATUS_OFFLINE;
+        }
     }
 
     public void copy(FacebookUser fub) {
@@ -107,10 +115,8 @@ public class FacebookUser {
         this.firstName = fub.firstName;
         this.thumbSrc = fub.thumbSrc;
         this.status = fub.status;
-        this.statusTime = fub.statusTime;
-        this.statusTimeRel = fub.statusTimeRel;
         this.portrait = fub.portrait;
         this.lastSeen = fub.lastSeen;
-        this.onlineStatus = fub.onlineStatus;
+      
     }
 }

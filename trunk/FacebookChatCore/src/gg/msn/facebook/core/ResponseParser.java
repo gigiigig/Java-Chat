@@ -69,29 +69,7 @@ public class ResponseParser {
                 //not "{}"
                 //we do nothing
                 }
-            /*else if((Number)respObjs.get("error") == 1346001){
-            ;
-            } else if((Number)respObjs.get("error") == 1348009){
-            ;
-            } else if((Number)respObjs.get("error") == 1356002){
-            ;
-            } else if((Number)respObjs.get("error") == 1356003){
-            ;
-            } else if((Number)respObjs.get("error") == 1357001){
-            ;
-            } else if((Number)respObjs.get("error") == 1357003){
-            ;
-            } else if((Number)respObjs.get("error") == 1357004){
-            ;
-            } else if((Number)respObjs.get("error") == 1356008){
-            ;
-            } else if((Number)respObjs.get("error") == 1349007){
-            ;
-            } else if((Number)respObjs.get("error") == 1349008){
-            ;
-            } else {
-            log.debug("Error(" + (Long) respObjs.get("error") + "): " + (String) respObjs.get("errorSummary") + ";" + (String) respObjs.get("errorDescription"));
-            }*/
+          
         }
     }
 
@@ -263,72 +241,4 @@ public class ResponseParser {
         log.debug("to_first_name:\t" + msg.toFirstName);
     }
 
-    public static void promoteMessage(FacebookMessage msg) {
-
-        /* final Chatroom room = Launcher.getChatroomAnyway(msg.from.toString());
-        room.incomingMsgProcessor(msg.fromFirstName, new Date((Long) msg.time).toString(), msg.text);
-        if (!room.isVisible()) {
-        log.debug("The window is null or not visible , I make it be!");
-        Icon infoIcon = UIManager.getIcon("OptionPane.informationIcon");
-        //JLabel label = new JLabel ("New message from " + this.getRoomName(), infoIcon, SwingConstants.LEFT);
-        JPanel notif = new JPanel();
-        JLabel label = new JLabel("<html>New message from:  <br><Font color=red><center>" + msg.fromFirstName + "</center></Font>",
-        infoIcon, SwingConstants.LEFT);
-        label.setBackground(Color.WHITE);
-        label.setForeground(Color.BLACK);
-        JButton showMeIt = new JButton("Show Me");
-        showMeIt.setMargin(new Insets(0, 0, 0, 0));
-
-        JButton ignoreIt = new JButton("Check it later");
-        ignoreIt.setMargin(new Insets(0, 0, 0, 0));
-
-        notif.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
-        notif.setLayout(new BoxLayout(notif, BoxLayout.X_AXIS));
-        notif.add(label);
-        notif.add(showMeIt);
-        notif.add(ignoreIt);
-
-        final SlideInNotification slider = new SlideInNotification(notif);
-        slider.showAt(450); */
-
-        Thread playThd = new Thread(new Runnable() {
-
-            public void run() {
-                playAudio();
-            }
-
-            /**
-             * 接收消息时播放提示音
-             */
-            private void playAudio() {
-
-                final AudioClip msgBeep;
-                try {
-                    URL url = new URL("file:/" + System.getProperty("user.dir") + System.getProperty("file.separator") + SystemPath.AUDIO_RESOURCE_PATH + "upwpcm.wav");
-                    msgBeep = Applet.newAudioClip(url);
-                    msgBeep.play();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                    log.debug(e.toString());
-                }
-            }
-        }, "Beeper");
-        playThd.start();
-
-        /*
-        showMeIt.addActionListener(new ActionListener() {
-
-        public void actionPerformed(ActionEvent arg0) {
-        room.setVisible(true);
-        slider.Dispose();
-        }
-        });
-        ignoreIt.addActionListener(new ActionListener() {
-
-        public void actionPerformed(ActionEvent arg0) {
-        slider.Dispose();
-        }
-        });
-         * */
-    }
 }

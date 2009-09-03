@@ -13,7 +13,6 @@ package gg.msn.ui.panel;
 import chatcommons.Client;
 import gg.msn.facebook.core.FacebookBuddyList;
 import gg.msn.facebook.core.FacebookUser;
-import gg.msn.facebook.core.OnlineStatus;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.form.OptionsDialog;
 import gg.msn.ui.listener.ChatClientViewListeners;
@@ -31,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
@@ -255,7 +255,7 @@ public class MainPanel extends javax.swing.JPanel {
             String key = it.next();
             log.debug("userID: " + key);
             FacebookUser fu = FacebookBuddyList.buddies.get(key);
-            log.debug("status: " + fu.onlineStatus.toString());
+            log.debug("status: " + fu.status);
             ((DefaultListModel) clientsList.getModel()).addElement(fu);
         }
         //clientsList.repaint();
@@ -332,7 +332,7 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
-        
+
         // <editor-fold defaultstate="collapsed" desc="Old Code">
 /*
 
@@ -387,8 +387,8 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
                 g2.drawString(user.name, WHITE_SPACE + IMAGE_LATE + 3, textY);
 
                 //status string
-                g2.setFont(list.getFont());
-                g2.drawString(user.status, WHITE_SPACE + IMAGE_LATE + 3, textY);
+//                g2.setFont(list.getFont());
+//                g2.drawString(user.status, WHITE_SPACE + IMAGE_LATE + 3, textY);
 
                 //icon
                 ImageIcon icon = user.portrait;
@@ -398,12 +398,12 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
                 //render per utenti Client
 //                log.debug("user status [" + user.status + "]");
 //                log.debug("user online status [" + user.onlineStatus + "]");
-                if (user.onlineStatus==OnlineStatus.ONLINE) {
+                if (StringUtils.equals(user.status, FacebookUser.STATUS_ONLINE)) {
                     g2.setColor(Color.GREEN);
-                    g2.fillOval(getWidth() - STATUS_ICON_OFFSET, (getHeight()/2)-(STATUS_ICON_WIDTH/2), STATUS_ICON_WIDTH, STATUS_ICON_WIDTH);
+                    g2.fillOval(getWidth() - STATUS_ICON_OFFSET, (getHeight() / 2) - (STATUS_ICON_WIDTH / 2), STATUS_ICON_WIDTH, STATUS_ICON_WIDTH);
                 } else {
                     g2.setColor(Color.GRAY);
-                    g2.fillOval(getWidth() - STATUS_ICON_OFFSET, (getHeight()/2)-(STATUS_ICON_WIDTH/2), STATUS_ICON_WIDTH, STATUS_ICON_WIDTH);
+                    g2.fillOval(getWidth() - STATUS_ICON_OFFSET, (getHeight() / 2) - (STATUS_ICON_WIDTH / 2), STATUS_ICON_WIDTH, STATUS_ICON_WIDTH);
                 }
 
             } else {

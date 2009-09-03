@@ -23,6 +23,9 @@ public class FacebookBuddyList {
 
     public static void updateBuddyList(JSONObject buddyList) throws JSONException {
         //JSONObject buddyList = (JSONObject) payload.get("buddy_list");
+
+        log.debug("full JSON objec [ " + buddyList+" ]t");
+
         listChanged = (Boolean) buddyList.get("listChanged");
         availableCount = (Number) buddyList.get("availableCount");
 
@@ -46,12 +49,12 @@ public class FacebookBuddyList {
 //        }
 
         //tag all the buddies as offline
-        Iterator<String> oldIt = buddies.keySet().iterator();
-        while (oldIt.hasNext()) {
-            String key = oldIt.next();
-            log.debug("userID: " + key);
-            buddies.get(key).onlineStatus = OnlineStatus.OFFLINE;
-        }
+//        Iterator<String> oldIt = buddies.keySet().iterator();
+//        while (oldIt.hasNext()) {
+//            String key = oldIt.next();
+//            log.debug("userID: " + key);
+//            buddies.get(key).onlineStatus = OnlineStatus.OFFLINE;
+//        }
 
         Iterator<String> it = nowAvailableList.keys();
         //log.debug("first element :" +it.next());
@@ -62,12 +65,11 @@ public class FacebookBuddyList {
             log.debug("user : " + user);
             FacebookUser fu = null;
             try {
-                fu = new FacebookUser(key, user);
+                fu = new FacebookUser(key, user, (JSONObject) nowAvailableList.get(key));
                 buddies.put(key, fu);
             //Launcher.getChatroomAnyway(key).setRoomName(fu.name);
-            printUserInfo(fu);
+            //printUserInfo(fu);
             } catch (JSONException jSONException) {
-                
                 log.error("error parsing user : "+jSONException);
             }
             
@@ -79,8 +81,6 @@ public class FacebookBuddyList {
         log.debug("firstName:\t" + user.firstName);
         log.debug("thumbSrc:\t" + user.thumbSrc);
         log.debug("status:\t" + user.status);
-        log.debug("statusTime:\t" + user.statusTime);
-        log.debug("statusTimeRel:\t" + user.statusTimeRel);
-        log.debug("OnlineStatus:\t" + user.onlineStatus);
+       
     }
 }
