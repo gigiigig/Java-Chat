@@ -5,12 +5,18 @@
 package gg.msn.ui.facebook.thread;
 
 import chatcommons.Client;
+import emoticon.EmoticonsManger;
 import gg.msn.facebook.core.FacebookManager;
 import gg.msn.facebook.core.FacebookMessage;
+import gg.msn.facebook.core.FacebookUserList;
 import gg.msn.facebook.core.ResponseParser;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.chatwindow.ChatWindow;
 import gg.msn.ui.helper.ChatClientViewHelper;
+import java.awt.Image;
+import java.io.ByteArrayOutputStream;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -69,23 +75,37 @@ public class MessageRequester implements Runnable {
                 String msgResponseBody = FacebookManager.facebookGetMethod(fbManger.getMessageRequestingUrl(Integer.parseInt(FacebookManager.channel), FacebookManager.seq));
 
                 try {
-                    FacebookMessage fm = ResponseParser.messageRequestResultParser(msgResponseBody);
+                    FacebookMessage fm = ResponseParser.messageRequestResultParser(msgResponseBody, fbManger);
                     if (fm != null) {
                         ChatClientViewHelper helper = ccv.getHelper();
                         log.debug("helper [ " + helper + " ]");
                         Client client = new Client(fm.fromName);
                         client.setUid(fm.from + "");
+                        try {
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            ImageIcon imageIcon = FacebookUserList.buddies.get(client.getUid()).portrait;
+                            ImageIO.write(EmoticonsManger.toBufferedImage(imageIcon.getImage()), "jpg", baos);
+                            client.setImage(baos.toByteArray());
+                        } catch (Exception ex) {
+                            log.error(ex);
+                        }
                         ChatWindow chatWith = helper.getChatWith(client);
                         log.debug("chatWith [ " + chatWith + " ]");
                         chatWith.writeMessage(fm.fromName, fm.text);
-                        FacebookManager.seq++;
+                        FacebookManager.incrementMessage();
+                        log.debug("senquenz number [" + FacebookManager.seq + "]");
                     }
                 } catch (Exception e) {
                     log.error(e);
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException interruptedException) {
+                    }
+                    fbManger.doLogin();
                     fbManger.findChannel();
-                    //FacebookManager.seq = fbManger.getSeq();
+                    FacebookManager.seq = fbManger.getSeq();
                 }
-                
+
             }
         }
     }

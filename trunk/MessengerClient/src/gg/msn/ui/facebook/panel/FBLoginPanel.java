@@ -11,7 +11,7 @@
 package gg.msn.ui.facebook.panel;
 
 import gg.msn.facebook.core.ErrorCode;
-import gg.msn.facebook.core.FacebookBuddyList;
+import gg.msn.facebook.core.FacebookUserList;
 import gg.msn.facebook.core.FacebookManager;
 import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
@@ -199,15 +199,15 @@ public class FBLoginPanel extends javax.swing.JPanel {
         int loginErrorCode = fbManger.doLogin();
         if (loginErrorCode == ErrorCode.Error_Global_NoError) {
             if (fbManger.doParseHomePage() == ErrorCode.Error_Global_NoError) {
-                int channel = fbManger.findChannel();
-                if (channel < 0) {
+                int seqNumber = fbManger.findChannel();
+                if (seqNumber < 0) {
                     ccv.getHelper().showErrorDialog("Impossibile connettersi, provare più tardi!");
                     return;
                 }
                 PersistentDataManager.setUid(FacebookManager.uid);
                 FacebookManager.getBuddyList();
                 ChatClientView.protocol = ChatClientView.FACEBOOK_PROTOCOL;
-                PersistentDataManager.setNick(FacebookBuddyList.me.name);
+                PersistentDataManager.setNick(FacebookUserList.me.name);
 
                 //keep requesting message from the server
                 new Thread(new MessageRequester(ccv, fbManger,email,pass)).start();
@@ -219,7 +219,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 //Init GUI
                 log.debug("Init GUI...");
 
-                ccv.getMainPanel().getNickLabel().setText(FacebookBuddyList.me.name);
+                ccv.getMainPanel().getNickLabel().setText(FacebookUserList.me.name);
                 ccv.getMainPanel().insertIcons();
                 ccv.getHelper().showMainPanel();
                 ccv.getMenuBar().setVisible(false);

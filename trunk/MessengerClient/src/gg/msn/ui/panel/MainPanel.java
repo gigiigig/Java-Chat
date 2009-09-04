@@ -11,7 +11,7 @@
 package gg.msn.ui.panel;
 
 import chatcommons.Client;
-import gg.msn.facebook.core.FacebookBuddyList;
+import gg.msn.facebook.core.FacebookUserList;
 import gg.msn.facebook.core.FacebookUser;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.form.OptionsDialog;
@@ -23,6 +23,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -232,31 +233,43 @@ public class MainPanel extends javax.swing.JPanel {
         try {
             //imposto le icone
             ImageIcon userIcon = null;
-            if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
-                userIcon = FacebookBuddyList.me.portrait;
+            if (StringUtils.equals(ChatClientView.protocol,ChatClientView.FACEBOOK_PROTOCOL)) {
+                userIcon = FacebookUserList.me.portrait;
                 log.debug("user icon [ " + userIcon + " ]");
-            }
-            if (userIcon == null) {
+            } else {
                 userIcon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
-            }
-            if (userIcon != null) {
                 nickIcon.setIcon(userIcon);
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
+            log.warn("nessuna icona trovata");
         }
     }
 
     public void updateListWithFACEBOOKContacts() {
         //fmod.removeAll();
         ((DefaultListModel) clientsList.getModel()).removeAllElements();
-        log.debug("utenti presenti [" + FacebookBuddyList.buddies.size() + "]");
-        Iterator<String> it = FacebookBuddyList.buddies.keySet().iterator();
+        log.debug("utenti presenti [" + FacebookUserList.buddies.size() + "]");
+        Iterator<String> it = FacebookUserList.buddies.keySet().iterator();
+
+        ArrayList<FacebookUser> offlineUsers = new ArrayList<FacebookUser>();
+        DefaultListModel listModel = (DefaultListModel) clientsList.getModel();
+
+        //prima inserisco nella lista gli elementi online
+        //po tutti quelli offline
         while (it.hasNext()) {
             String key = it.next();
             log.debug("userID: " + key);
-            FacebookUser fu = FacebookBuddyList.buddies.get(key);
+            FacebookUser fu = FacebookUserList.buddies.get(key);
             log.debug("status: " + fu.status);
-            ((DefaultListModel) clientsList.getModel()).addElement(fu);
+            if (StringUtils.equals(fu.status, FacebookUser.STATUS_ONLINE)) {
+                listModel.addElement(fu);
+            } else {
+                offlineUsers.add(fu);
+            }
+
+        }
+        for (FacebookUser facebookUser : offlineUsers) {
+            listModel.addElement(facebookUser);
         }
         //clientsList.repaint();
         clientsList.validate();
@@ -335,7 +348,7 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
 
         // <editor-fold defaultstate="collapsed" desc="Old Code">
 /*
-
+        
         try {
         //render per utenti Facebook
         if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {

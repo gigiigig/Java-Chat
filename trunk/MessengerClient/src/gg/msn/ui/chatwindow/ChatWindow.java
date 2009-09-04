@@ -109,6 +109,7 @@ public class ChatWindow extends javax.swing.JFrame {
 
         //trasparenza testo chat
         chatTextScrollPane.getViewport().setOpaque(false);
+        chatTextScrollPane.setAutoscrolls(true);
         //trasparenza lista utenti
         jScrollPane3.getViewport().setOpaque(false);
 
@@ -166,7 +167,7 @@ public class ChatWindow extends javax.swing.JFrame {
         }
 
         //elimino i bottoni per font e colore se sono su facebbok
-        if(StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)){
+        if (StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)) {
             fontButton.setVisible(false);
             colorButton.setVisible(false);
             addChatButton.setVisible(false);
@@ -194,6 +195,7 @@ public class ChatWindow extends javax.swing.JFrame {
         receivedEmoticons = new LinkedList<Emoticon>();
 
         chatText.addMouseListener(new ChatTextListener(this));
+
 
     }
 
@@ -383,12 +385,12 @@ public class ChatWindow extends javax.swing.JFrame {
                             .addComponent(nickLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chatTextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(chatTextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addComponent(chatToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
@@ -905,13 +907,16 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
             }
             //scrivo il nuovo testo con le emoticon e il suo stile
             emoctionsManger.insertChatTextWithEmoticons(doc, message, styleName, emoticons);
-            doc.insertString(doc.getLength(), "\n", doc.getStyle("regular"));
-
+            doc.insertString(doc.getLength(), "  \n", doc.getStyle("regular"));
 
             //aggiorno la posizione dello scroll
-            chatText.setCaretPosition(chatText.getStyledDocument().getLength());
+            chatText.setCaretPosition(chatText.getDocument().getLength());
+
             this.toFront();
             inputText.requestFocus();
+            inputText.repaint();
+            inputText.validate();
+
         } catch (BadLocationException ex) {
             log.error(ex);
         }

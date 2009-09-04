@@ -2,18 +2,17 @@ package gg.msn.facebook.core;
 
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class FacebookBuddyList {
+public class FacebookUserList {
 
-    private static Log log = LogFactory.getLog(FacebookBuddyList.class);
-    public static  FacebookUser me;
-    public static  Map<String, FacebookUser> buddies = new Hashtable<String, FacebookUser>();
+    private static Log log = LogFactory.getLog(FacebookUserList.class);
+    public static FacebookUser me;
+    public static Hashtable<String, FacebookUser> buddies = new Hashtable<String, FacebookUser>();
 
     static {
         buddies.clear();
@@ -24,7 +23,7 @@ public class FacebookBuddyList {
     public static void updateBuddyList(JSONObject buddyList) throws JSONException {
         //JSONObject buddyList = (JSONObject) payload.get("buddy_list");
 
-        log.debug("full JSON objec [ " + buddyList+" ]t");
+        log.debug("full JSON objec [ " + buddyList + " ]t");
 
         listChanged = (Boolean) buddyList.get("listChanged");
         availableCount = (Number) buddyList.get("availableCount");
@@ -58,6 +57,7 @@ public class FacebookBuddyList {
 
         Iterator<String> it = nowAvailableList.keys();
         //log.debug("first element :" +it.next());
+        buddies.clear();
         while (it.hasNext()) {
             String key = it.next();
             log.debug("userID: " + key);
@@ -65,14 +65,26 @@ public class FacebookBuddyList {
             log.debug("user : " + user);
             FacebookUser fu = null;
             try {
+
                 fu = new FacebookUser(key, user, (JSONObject) nowAvailableList.get(key));
+                /*
+                if(StringUtils.equals(fu.status, FacebookUser.STATUS_ONLINE)){
+                onlines.put(key, fu);
+                }else{
+                offlines.put(key, fu);
+                }
+
+                buddies.putAll(onlines);
+                buddies.putAll(offlines);
+                 */
                 buddies.put(key, fu);
-            //Launcher.getChatroomAnyway(key).setRoomName(fu.name);
-            //printUserInfo(fu);
+
+                //Launcher.getChatroomAnyway(key).setRoomName(fu.name);
+                //printUserInfo(fu);
             } catch (JSONException jSONException) {
-                log.error("error parsing user : "+jSONException);
+                log.error("error parsing user : " + jSONException);
             }
-            
+
         }
     }
 
@@ -81,6 +93,6 @@ public class FacebookBuddyList {
         log.debug("firstName:\t" + user.firstName);
         log.debug("thumbSrc:\t" + user.thumbSrc);
         log.debug("status:\t" + user.status);
-       
+
     }
 }

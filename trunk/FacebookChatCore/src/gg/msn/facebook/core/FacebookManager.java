@@ -53,6 +53,7 @@ import org.apache.commons.logging.LogFactory;
 public class FacebookManager {
 
     public static final String FACEBOOK_LAST_CHANNEL = "facebookLastChannel";
+    public static final int MAX_CONNECTION_TRY = 3;
     public static final int MAX_FACEBOOK_CHANNELS = 99;
     private static Log log = LogFactory.getLog(FacebookManager.class);
     private static HttpClient httpClient;
@@ -68,8 +69,8 @@ public class FacebookManager {
     private int Proxy_Port = 80;
     private String Proxy_Username = "daizw";
     private String Proxy_Password = "xxxxxx";
-    private  String email;
-    private  String passw;
+    private String email;
+    private String passw;
     /**
      * The default parameters.
      * Instantiated in {@link #setup setup}.
@@ -122,7 +123,7 @@ public class FacebookManager {
     FacebookManager laucher = new FacebookManager();
     laucher.go();
     }*/// </editor-fold>
-    public FacebookManager(String email,String passw) {
+    public FacebookManager(String email, String passw) {
         this.email = email;
         this.passw = passw;
         msgIDCollection = new HashSet<String>();
@@ -136,7 +137,7 @@ public class FacebookManager {
                 new HttpHost("www.google.com", 80, "http");
         setup(); // some general setup
 
-        httpClient = createHttpClient();
+        //httpClient = createHttpClient();
 
         // <editor-fold defaultstate="collapsed" desc="Old Coded">
 /*
@@ -344,8 +345,13 @@ public class FacebookManager {
     }
     }
      */// </editor-fold>
+    /**
+     * Effettua il login
+     * @return
+     */
     public int doLogin() {
-
+        //creo il client ad ogni login
+        httpClient = createHttpClient();
         log.debug("Target URL: " + loginPageUrl);
         try {
             HttpGet loginGet = new HttpGet(loginPageUrl);
@@ -403,6 +409,10 @@ public class FacebookManager {
         return ErrorCode.Error_Global_NoError;
     }
 
+    /**
+     * Parsa l'home page e imposta l'uid,l'url della foto e il nome utente
+     * @return un numero corrispondete a un errore o a successo
+     */
     public int doParseHomePage() {
 
 
@@ -489,7 +499,7 @@ public class FacebookManager {
 
         //riempo i campi dell'utente
 
-        FacebookBuddyList.me = new FacebookUser(uid);
+        FacebookUserList.me = new FacebookUser(uid);
         //cerco il mio nome utente
         String userNameLiPrefix = "<li class=\"fb_menu\" id=\"fb_menu_account\">";
         int userNameLiPos = getMethodResponseBody.indexOf(userNameLiPrefix);
@@ -499,23 +509,24 @@ public class FacebookManager {
             log.debug("Error: Can't find user name!");
             return ErrorCode.Error_System_UserNameNotFound;
         } else {
-            FacebookBuddyList.me.name = getMethodResponseBody.substring(userNamePos,
+            FacebookUserList.me.name = getMethodResponseBody.substring(userNamePos,
                     getMethodResponseBody.indexOf("<", userNamePos));
-            log.debug("user_name: " + FacebookBuddyList.me.name);
+            log.debug("user_name: " + FacebookUserList.me.name);
         }
 
+        //ulr. della foto
         String userPhotoPrefix = "class=\"UIProfileImage UIProfileImage_LARGE\"  src=\"";
         int userPhotoPos = getMethodResponseBody.indexOf(userPhotoPrefix) + userPhotoPrefix.length();
         if (userPhotoPos == -1) {
             log.debug("Error: Can't find photo user!");
             // return ErrorCode.Error_System_UserNameNotFound;
         } else {
-            FacebookBuddyList.me.thumbSrc = getMethodResponseBody.substring(userPhotoPos,
+            FacebookUserList.me.thumbSrc = getMethodResponseBody.substring(userPhotoPos,
                     getMethodResponseBody.indexOf("\"", userPhotoPos));
-            log.debug("photo uaser: " + FacebookBuddyList.me.thumbSrc);
-            if (FacebookBuddyList.me.thumbSrc != null && !FacebookBuddyList.me.thumbSrc.equals("")) {
+            log.debug("photo uaser: " + FacebookUserList.me.thumbSrc);
+            if (FacebookUserList.me.thumbSrc != null && !FacebookUserList.me.thumbSrc.equals("")) {
                 try {
-                    FacebookBuddyList.me.portrait = new ImageIcon(new URL(FacebookBuddyList.me.thumbSrc));
+                    FacebookUserList.me.portrait = new ImageIcon(new URL(FacebookUserList.me.thumbSrc));
                 } catch (MalformedURLException ex) {
                     log.error(ex);
                 }
@@ -525,6 +536,11 @@ public class FacebookManager {
         return ErrorCode.Error_Global_NoError;
     }
 
+    /**
+     * Invia il messaggio all'utente con l'id passsato
+     * @param uid
+     * @param msg
+     */
     public static void PostMessage(String uid, String msg) {
 //        if (uid.equals(Launcher.uid)) {
 //            return;
@@ -537,7 +553,7 @@ public class FacebookManager {
 
         String url = "http://www.facebook.com/ajax/chat/send.php";
 
-        // 填入各个表单域的值
+        // 
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
         nvps.add(new BasicNameValuePair("msg_text", (msg == null) ? "" : msg));
         nvps.add(new BasicNameValuePair("msg_id", new Random().nextInt(999999999) + ""));
@@ -547,7 +563,7 @@ public class FacebookManager {
 
         log.debug("executeMethod ing...");
         try {
-            // 执行postMethod
+            // postMethod
             String responseStr = facebookPostMethod("http://www.facebook.com", "/ajax/chat/send.php", nvps);
             //for (;;);{"t":"continue"}
             //for (;;);{"t":"refresh"}
@@ -557,10 +573,16 @@ public class FacebookManager {
             log.debug("+++++++++ PostMessage end +++++++++");
             // testHttpClient("http://www.facebook.com/home.php?");
 
+            //incremento il messaggio
+            incrementMessage();
             ResponseParser.messagePostingResultParser(uid, msg, responseStr);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void incrementMessage() {
+        FacebookManager.seq++;
     }
 
     // <editor-fold defaultstate="collapsed" desc="Old Code">
@@ -594,6 +616,10 @@ public class FacebookManager {
     }
     }
     }*/// </editor-fold>
+    /**
+     * Resituitsce il sequenz number dei messaggi
+     * @return
+     */
     public int getSeq() {
         //int tempSeq = -1;
         //for (;;);{"t":"refresh", "seq":0}
@@ -614,6 +640,10 @@ public class FacebookManager {
 
     }
 
+    /**
+     * Setta il canale sulla variabile channel e restituisce il sequenz number
+     * @return il sequenz number trovato -1 se non è stato trovato un canale
+     */
     public int findChannel() {
         List<Cookie> cookies = ((DefaultHttpClient) httpClient).getCookieStore().getCookies();
 
@@ -658,10 +688,15 @@ public class FacebookManager {
                     return tempSeq;
                 }
                 i++;
-                if (i == MAX_FACEBOOK_CHANNELS && tryCoun < 3) {
+                if (i == MAX_FACEBOOK_CHANNELS && tryCoun < MAX_CONNECTION_TRY) {
                     i = 0;
                     tryCoun++;
+
                     //riprovo il login
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException interruptedException) {
+                    }
                     doLogin();
 
                 } else if (i == MAX_FACEBOOK_CHANNELS && tryCoun == 3) {
@@ -716,8 +751,6 @@ public class FacebookManager {
      * store them in the BuddyList object
      */
     public static void getBuddyList() {
-        log.debug("====== getBuddyList begin======");
-
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
         nvps.add(new BasicNameValuePair("buddy_list", "1"));
         nvps.add(new BasicNameValuePair("notifications", "1"));
@@ -731,10 +764,11 @@ public class FacebookManager {
             log.debug(responseStr);
             //for (;;);{"error":0,"errorSummary":"","errorDescription":"No error.","payload":{"buddy_list":{"listChanged":true,"availableCount":1,"nowAvailableList":{"UID1":{"i":false}},"wasAvailableIDs":[],"userInfos":{"UID1":{"name":"Buddy 1","firstName":"Buddy","thumbSrc":"http:\/\/static.ak.fbcdn.net\/pics\/q_default.gif","status":null,"statusTime":0,"statusTimeRel":""},"UID2":{"name":"Buddi 2","firstName":"Buddi","thumbSrc":"http:\/\/static.ak.fbcdn.net\/pics\/q_default.gif","status":null,"statusTime":0,"statusTimeRel":""}},"forcedRender":true},"time":1209560380000}}  
             //for (;;);{"error":0,"errorSummary":"","errorDescription":"No error.","payload":{"time":1214626375000,"buddy_list":{"listChanged":true,"availableCount":1,"nowAvailableList":{},"wasAvailableIDs":[],"userInfos":{"1386786477":{"name":"\u5341\u4e00","firstName":"\u4e00","thumbSrc":"http:\/\/static.ak.fbcdn.net\/pics\/q_silhouette.gif","status":null,"statusTime":0,"statusTimeRel":""}},"forcedRender":null,"flMode":false,"flData":{}},"notifications":{"countNew":0,"count":1,"app_names":{"2356318349":"\u670b\u53cb"},"latest_notif":1214502420,"latest_read_notif":1214502420,"markup":"<div id=\"presence_no_notifications\" style=\"display:none\" class=\"no_notifications\">\u65e0\u65b0\u901a\u77e5\u3002<\/div><div class=\"notification clearfix notif_2356318349\" onmouseover=\"CSS.addClass(this, 'hover');\" onmouseout=\"CSS.removeClass(this, 'hover');\"><div class=\"icon\"><img src=\"http:\/\/static.ak.fbcdn.net\/images\/icons\/friend.gif?0:41046\" alt=\"\" \/><\/div><div class=\"notif_del\" onclick=\"return presenceNotifications.showHideDialog(this, 2356318349)\"><\/div><div class=\"body\"><a href=\"http:\/\/www.facebook.com\/profile.php?id=1190346972\"   >David Willer<\/a>\u63a5\u53d7\u4e86\u60a8\u7684\u670b\u53cb\u8bf7\u6c42\u3002 <span class=\"time\">\u661f\u671f\u56db<\/span><\/div><\/div>","inboxCount":"0"}},"bootload":[{"name":"js\/common.js.pkg.php","type":"js","src":"http:\/\/static.ak.fbcdn.net\/rsrc.php\/pkg\/60\/106715\/js\/common.js.pkg.php"}]}
-            log.debug("+++++++++ getBuddyList end +++++++++");
             // testHttpClient("http://www.facebook.com/home.php?");
             ResponseParser.buddylistParser(responseStr);
         } catch (JSONException e) {
+            log.error(e.getMessage());
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
     }

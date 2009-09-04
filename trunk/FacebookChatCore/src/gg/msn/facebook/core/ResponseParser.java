@@ -56,7 +56,7 @@ public class ResponseParser {
                     if (payload != null) {
                         JSONObject buddyList = (JSONObject) payload.get("buddy_list");
                         if (buddyList != null) {
-                            FacebookBuddyList.updateBuddyList(buddyList);
+                            FacebookUserList.updateBuddyList(buddyList);
                             log.debug("buddy lisst updated");
                         }
                     }
@@ -69,7 +69,7 @@ public class ResponseParser {
                 //not "{}"
                 //we do nothing
                 }
-          
+
         }
     }
 
@@ -146,7 +146,7 @@ public class ResponseParser {
      * @param response
      * @throws JSONException
      */
-    public static FacebookMessage messageRequestResultParser(String response) throws JSONException {
+    public static FacebookMessage messageRequestResultParser(String response,FacebookManager manager) throws Exception {
         FacebookMessage toReturn = null;
 
 
@@ -201,6 +201,7 @@ public class ResponseParser {
 
                         if (FacebookManager.msgIDCollection.contains(fm.msgID)) {
                             log.debug("Omitting a already handled message: msgIDCollection.contains(msgID)");
+                            FacebookManager.seq =  manager.getSeq();
                             continue;
                         }
                         FacebookManager.msgIDCollection.add(fm.msgID);
@@ -214,12 +215,14 @@ public class ResponseParser {
                     }
                 }
             } else if (((String) respObjs.get("t")).equals("refresh")) {
-                log.debug("Refresh");//do nothing
+                log.debug("t : refresh  , esco e rifaccio il login");//do nothing
 //                if (((String) respObjs.get("seq")) != null) {
 //                    log.debug("refresh seq: " + (String) respObjs.get("seq"));
 //                }
+                //riprovo il login
+                throw new Exception("t : refresh  , esco e rifaccio il login");
             } else if (((String) respObjs.get("t")).equals("continue")) {
-                log.debug("Time out? reconcect...");//do nothing
+                log.debug("Time out, reconcect...");//do nothing
             } else {
                 log.debug("Unrecognized response type: " + (String) respObjs.get("t"));
             }
@@ -240,5 +243,4 @@ public class ResponseParser {
         log.debug("from_first_name:\t" + msg.fromFirstName);
         log.debug("to_first_name:\t" + msg.toFirstName);
     }
-
 }
