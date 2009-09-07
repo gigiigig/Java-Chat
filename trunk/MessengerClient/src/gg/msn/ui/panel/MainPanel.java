@@ -236,6 +236,7 @@ public class MainPanel extends javax.swing.JPanel {
             if (StringUtils.equals(ChatClientView.protocol,ChatClientView.FACEBOOK_PROTOCOL)) {
                 userIcon = FacebookUserList.me.portrait;
                 log.debug("user icon [ " + userIcon + " ]");
+				nickIcon.setIcon(userIcon);
             } else {
                 userIcon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
                 nickIcon.setIcon(userIcon);
