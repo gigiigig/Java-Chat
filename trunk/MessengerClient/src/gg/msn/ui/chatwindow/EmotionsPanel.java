@@ -132,13 +132,13 @@ public class EmotionsPanel extends javax.swing.JPanel {
                 g.drawRect(LATOCASELLA * j, LATOCASELLA * i, LATOCASELLA, LATOCASELLA);
                 if (cont < emotions.size() && cont < lastPosition) {
                     g.drawImage(emotions.get(cont).getImageIcon().getImage(), LATOCASELLA * j + TRASLAZIONEIMG, LATOCASELLA * i + TRASLAZIONEIMG, IMGSIZE, IMGSIZE, this);
-                } else if (cont == lastPosition && !fullView) {
+                }/* else if (cont == lastPosition && !fullView) {
                     g.drawImage(plus.getImage(), LATOCASELLA * j + TRASLAZIONEIMG, LATOCASELLA * i + TRASLAZIONEIMG, IMGSIZE, IMGSIZE, this);
                 } else if (cont == lastPosition && fullView) {
                     g.drawImage(remove.getImage(), LATOCASELLA * j + TRASLAZIONEIMG, LATOCASELLA * i + TRASLAZIONEIMG, IMGSIZE, IMGSIZE, this);
                 } else if (cont == lastPosition + 1) {
                     g.drawImage(manage.getImage(), LATOCASELLA * j + TRASLAZIONEIMG, LATOCASELLA * i + TRASLAZIONEIMG, IMGSIZE, IMGSIZE, this);
-                }
+                }*/
                 cont++;
                 if (!fullView && cont == (NUMIMGX * NUMIMGX)) {
                     break;

@@ -82,9 +82,10 @@ public class ChatClientView extends FrameView {
         /*ipostazioni grafiche iniziali*/
 
 
-
+        /*facebook commands*/
         //setto visilbile il panello di login
         helper.showFacebookLoginPanel();
+        menuBar.setVisible(false);
 
         /*aggiungo agli oggetti i vari componenti personalizzati*/
 

@@ -146,7 +146,7 @@ public class ResponseParser {
      * @param response
      * @throws JSONException
      */
-    public static FacebookMessage messageRequestResultParser(String response,FacebookManager manager) throws Exception {
+    public static FacebookMessage messageRequestResultParser(String response, FacebookManager manager) throws Exception {
         FacebookMessage toReturn = null;
 
 
@@ -170,6 +170,11 @@ public class ResponseParser {
                     if (msg.get("type").equals("typ")) {
                         //do nothing
                         log.debug("typing message");
+                        FacebookManager.incrementMessage();
+                    } else if (!msg.get("type").equals("msg")) {
+                        //do nothing
+                        log.debug("type [" + msg.get("type")+"]");
+                        FacebookManager.incrementMessage();
                     } else if (msg.get("type").equals("msg")) {
                         //the message itself
                         JSONObject realmsg = (JSONObject) msg.get("msg");
@@ -201,7 +206,7 @@ public class ResponseParser {
 
                         if (FacebookManager.msgIDCollection.contains(fm.msgID)) {
                             log.debug("Omitting a already handled message: msgIDCollection.contains(msgID)");
-                            FacebookManager.seq =  manager.getSeq();
+                            FacebookManager.seq = manager.getSeq();
                             continue;
                         }
                         FacebookManager.msgIDCollection.add(fm.msgID);
