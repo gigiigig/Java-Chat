@@ -279,7 +279,7 @@ class ClickListener extends MouseInputAdapter implements MouseMotionListener {
             } finally {
                 chatWindow.getEmotionsPanel().setVisible(false);
             }
-        } else if (positionOnList == lastPosition) {
+        } /*else if (positionOnList == lastPosition) {
             panel.setFullView(!panel.isFullView());
             panel.refreshNUMIMGY();
             Dimension old = panel.getSize();
@@ -302,6 +302,6 @@ class ClickListener extends MouseInputAdapter implements MouseMotionListener {
         } else if (positionOnList == lastPosition + 1) {
             chatWindow.getCcv().showNewEmotionManage();
             chatWindow.getEmotionsPanel().setVisible(false);
-        }
+        }*/
     }
 }

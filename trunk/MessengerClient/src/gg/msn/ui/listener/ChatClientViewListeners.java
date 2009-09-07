@@ -208,7 +208,7 @@ public class ChatClientViewListeners {
 
             if (properties == null) {
                 try {
-                    OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true,ccv.getLoginPanel());
+                    OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true, ccv.getLoginPanel());
                     optionsFrame.setLocationRelativeTo(ccv.getFrame());
                     optionsFrame.getPortaText().setText("3434");
                     optionsFrame.getIpText().setText("localhost");
@@ -220,15 +220,15 @@ public class ChatClientViewListeners {
                     log.error(e);
                 }
             }
-            if (properties != null && !StringUtils.equals(properties.getProperty("nick"),"")) {
+            if (properties != null && !StringUtils.equals(properties.getProperty("nick"), "")) {
                 ccv.getLoginPanel().getNickText().setText(properties.getProperty("nick"));
             }
-            if (properties != null && !properties.getProperty(Util.PROPERTY_IP).equals("")) {
+            if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_IP), "")) {
                 PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
             }
 
             try {
-                if (properties != null && !properties.getProperty(Util.PROPERTY_PORT).equals("")) {
+                if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_PORT), "")) {
                     PersistentDataManager.setPort(Integer.parseInt(properties.getProperty(Util.PROPERTY_PORT)));
                 }
             } catch (NumberFormatException numberFormatException) {
@@ -236,7 +236,7 @@ public class ChatClientViewListeners {
             }
 
 
-            if (properties != null && properties.getProperty(Util.PROPERTY_THEME_FOLDER).equals("")) {
+            if (properties != null && StringUtils.equals(properties.getProperty(Util.PROPERTY_THEME_FOLDER), "")) {
                 ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
                 ccv.getFrame().repaint();
             }
