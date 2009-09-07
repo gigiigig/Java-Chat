@@ -1,0 +1,8 @@
+1.0.3 - release date 2009-03-05
+* Fixed position bug of button - added wrapper element around input field.
+* Fixed Hue slider bug - color selection goes acording to GUI.
+* No-button mode on initialization would return target element NOT wrapped in jQuery object.
+* Removed sliding/value change animations so that IE would not lag so mutch (update on IE is performed after endDrag event)
+
+1.0 - release date 2009-02-25
+Initial public release
