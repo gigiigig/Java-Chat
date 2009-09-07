@@ -472,15 +472,15 @@ public class ChatClientViewHelper {
                 log.error(e);
             }
         }
-        if (properties != null && !properties.getProperty("nick").equals("")) {
+        if (properties != null && !StringUtils.equals(properties.getProperty("nick"),"")) {
             ccv.getLoginPanel().getNickText().setText(properties.getProperty("nick"));
         }
-        if (properties != null && !properties.getProperty(Util.PROPERTY_IP).equals("")) {
+        if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_IP),"")) {
             PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
         }
 
         try {
-            if (properties != null && !properties.getProperty(Util.PROPERTY_PORT).equals("")) {
+            if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_PORT),"")) {
                 PersistentDataManager.setPort(Integer.parseInt(properties.getProperty(Util.PROPERTY_PORT)));
             }
         } catch (NumberFormatException numberFormatException) {

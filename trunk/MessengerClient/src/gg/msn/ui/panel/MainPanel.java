@@ -315,6 +315,7 @@ public class MainPanel extends javax.swing.JPanel {
 }
 
 class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
+    public static final int ARC_SIZE = 5;
 
     public static final int IMAGE_LATE = 28;
     public static final String ONLINE_STATUS = "ONLINE";
@@ -409,6 +410,10 @@ class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
                 //log.debug("icon [" + icon + "]");
                 //ImageIcon scaledIcon = new ImageIcon(icon.getImage().getScaledInstance(24, 24, Image.SCALE_AREA_AVERAGING));
                 g2.drawImage(icon.getImage(), WHITE_SPACE, getHeight() / 2 - (IMAGE_LATE / 2), IMAGE_LATE, IMAGE_LATE, null);
+//                 g2.setColor(Color.WHITE);
+//                g2.drawRoundRect(WHITE_SPACE, getHeight() / 2 - (IMAGE_LATE / 2), IMAGE_LATE, IMAGE_LATE, ARC_SIZE, ARC_SIZE);
+//                g2.drawRoundRect(WHITE_SPACE, getHeight() / 2 - ((IMAGE_LATE+1) / 2), IMAGE_LATE+1, IMAGE_LATE+1, ARC_SIZE, ARC_SIZE);
+//                g2.drawRoundRect(WHITE_SPACE, getHeight() / 2 - ((IMAGE_LATE+2) / 2), IMAGE_LATE+2, IMAGE_LATE+2, ARC_SIZE, ARC_SIZE);
                 //render per utenti Client
 //                log.debug("user status [" + user.status + "]");
 //                log.debug("user online status [" + user.onlineStatus + "]");
