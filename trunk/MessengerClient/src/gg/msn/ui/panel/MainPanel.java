@@ -13,8 +13,10 @@ package gg.msn.ui.panel;
 import chatcommons.Client;
 import gg.msn.facebook.core.FacebookUserList;
 import gg.msn.facebook.core.FacebookUser;
+import gg.msn.ui.ChatClientAboutBox;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.form.OptionsDialog;
+import gg.msn.ui.form.LicenseDialog;
 import gg.msn.ui.listener.ChatClientViewListeners;
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.Color;
@@ -35,6 +37,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
+
 
 /**
  *
@@ -80,6 +83,7 @@ public class MainPanel extends javax.swing.JPanel {
         selectThemeButton = new javax.swing.JButton();
         disconnect = new javax.swing.JButton();
         chat = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         clientListScrollPane = new javax.swing.JScrollPane();
         clientsList = new javax.swing.JList();
         nickIcon = new javax.swing.JLabel();
@@ -129,6 +133,14 @@ public class MainPanel extends javax.swing.JPanel {
         chat.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(chat);
 
+        jButton1.setAction(actionMap.get("showAboutBox")); // NOI18N
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton1);
+
         clientListScrollPane.setBackground(new Color(255,255,255,100)
         );
         clientListScrollPane.setBorder(null);
@@ -168,7 +180,7 @@ public class MainPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(nickLabel)))
                         .addContainerGap())
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,6 +200,7 @@ public class MainPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane clientListScrollPane;
     private javax.swing.JList clientsList;
     private javax.swing.JButton disconnect;
+    private javax.swing.JButton jButton1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel nickIcon;
     private javax.swing.JLabel nickLabel;
@@ -312,8 +325,14 @@ public class MainPanel extends javax.swing.JPanel {
         optionsDialog.setLocationRelativeTo(this);
         optionsDialog.setVisible(true);
     }
-}
 
+    @Action
+    public void showAboutBox() {
+        ChatClientAboutBox chatClientAboutBox = new ChatClientAboutBox(ccv.getFrame());
+        chatClientAboutBox.setLocationRelativeTo(this);
+        chatClientAboutBox.setVisible(true);
+    }
+}
 class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
     public static final int ARC_SIZE = 5;
 

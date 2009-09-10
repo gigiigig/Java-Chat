@@ -66,9 +66,6 @@ public class ChatClientViewHelper {
 
     }
 
-
-
-
     /**
      * rende visibile il MainPanel e nasconde loginPanel
      */
@@ -205,6 +202,7 @@ public class ChatClientViewHelper {
     public void showErrorDialog(String message) throws HeadlessException {
         JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + message + "</html>", "Errore", JOptionPane.ERROR_MESSAGE);
     }
+
     public void showWarnDialog(String message) throws HeadlessException {
         JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + message + "</html>", "Attenzione", JOptionPane.WARNING_MESSAGE);
     }
@@ -290,6 +288,38 @@ public class ChatClientViewHelper {
     public ChatWindow getChatWith(Client selected) {
 //        ChatClientApp.getApplication().show(new ChatView(true, getNick(), "localhost", 3636));
 
+        ChatWindow toReturn = getChatWithNullable(selected);
+
+
+        if (toReturn != null) {
+            //se c'è già una chat con l'utente scelto la apro
+            toReturn.setVisible(true);
+            toReturn.toFront();
+            return toReturn;
+        } else {
+            //altrimenti ne creo una nuova
+            log.info("nessuna chat già aperta con [" + selected + "]");
+            return startChatWith(selected);
+        }
+    }
+
+    public ChatWindow getChatFromUid(String toFind) {
+        ChatWindow toReturn = null;
+        for (ChatWindow chatWindow : chatWindows) {
+            //se c'è un sollo utente è una chat
+            //altrimenti nn va bemne perchè è una conferenza
+            if (chatWindow.getClients().size() == 1 && chatWindow.getClients().get(0).getUid().equals(toFind)) {
+                toReturn = chatWindow;
+                log.info("trovata chat già aperta con [" + toReturn + "]");
+                break;
+            }
+        }
+        return toReturn;
+    }
+
+    public ChatWindow getChatWithNullable(Client selected) {
+//        ChatClientApp.getApplication().show(new ChatView(true, getNick(), "localhost", 3636));
+
         ChatWindow toReturn = null;
 
         //cerco una chat con l'uetente selezionato
@@ -303,16 +333,7 @@ public class ChatClientViewHelper {
             }
         }
 
-        if (toReturn != null) {
-            //se c'è già una chat con l'utente scelto la apro
-            toReturn.setVisible(true);
-            toReturn.toFront();
-            return toReturn;
-        } else {
-            //altrimenti ne creo una nuova
-            log.info("nessuna chat già aperta con [" + selected + "]");
-            return startChatWith(selected);
-        }
+        return toReturn;
     }
 
     public ChatWindow getConferenceWith(String[] nicks) {
@@ -460,7 +481,7 @@ public class ChatClientViewHelper {
 
         if (properties == null) {
             try {
-                OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true,ccv.getLoginPanel());
+                OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true, ccv.getLoginPanel());
                 optionsFrame.setLocationRelativeTo(ccv.getFrame());
                 optionsFrame.getPortaText().setText("3434");
                 optionsFrame.getIpText().setText("localhost");
@@ -472,15 +493,15 @@ public class ChatClientViewHelper {
                 log.error(e);
             }
         }
-        if (properties != null && !StringUtils.equals(properties.getProperty("nick"),"")) {
+        if (properties != null && !StringUtils.equals(properties.getProperty("nick"), "")) {
             ccv.getLoginPanel().getNickText().setText(properties.getProperty("nick"));
         }
-        if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_IP),"")) {
+        if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_IP), "")) {
             PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
         }
 
         try {
-            if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_PORT),"")) {
+            if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_PORT), "")) {
                 PersistentDataManager.setPort(Integer.parseInt(properties.getProperty(Util.PROPERTY_PORT)));
             }
         } catch (NumberFormatException numberFormatException) {

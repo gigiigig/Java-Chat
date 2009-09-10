@@ -15,8 +15,12 @@ import gg.msn.ui.chatwindow.ChatWindow;
 import gg.msn.ui.helper.ChatClientViewHelper;
 import java.awt.Image;
 import java.io.ByteArrayOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -78,22 +82,47 @@ public class MessageRequester implements Runnable {
                     FacebookMessage fm = ResponseParser.messageRequestResultParser(msgResponseBody, fbManger);
                     if (fm != null) {
                         ChatClientViewHelper helper = ccv.getHelper();
-                        log.debug("helper [ " + helper + " ]");
-                        Client client = new Client(fm.fromName);
-                        client.setUid(fm.from + "");
-                        try {
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            ImageIcon imageIcon = FacebookUserList.buddies.get(client.getUid()).portrait;
-                            ImageIO.write(EmoticonsManger.toBufferedImage(imageIcon.getImage()), "jpg", baos);
-                            client.setImage(baos.toByteArray());
-                        } catch (Exception ex) {
-                            log.error(ex);
+
+                        if (StringUtils.equals(fm.type, "typ")) {
+                            log.debug("received typing message");
+                        
+                            final ChatWindow chat = helper.getChatFromUid(fm.from+"");
+                            log.debug("finded chat [" + chat+"]");
+                            if (chat != null) {
+                                Runnable runnable = new Runnable() {
+                                    public void run() {
+                                        try {
+                                            JLabel nickLabel = chat.getNickLabel();
+                                            String nickText = nickLabel.getText();
+                                            nickLabel.setText("...");
+                                            Thread.sleep(1000);
+                                            nickLabel.setText(nickText);
+                                        } catch (InterruptedException ex) {
+                                            log.error(ex);
+                                        }
+                                    }
+                                };
+                                new Thread(runnable).start();
+                            }
+
+                        } else {
+                            log.debug("helper [ " + helper + " ]");
+                            Client client = new Client(fm.fromName);
+                            client.setUid(fm.from + "");
+                            try {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                ImageIcon imageIcon = FacebookUserList.buddies.get(client.getUid()).portrait;
+                                ImageIO.write(EmoticonsManger.toBufferedImage(imageIcon.getImage()), "jpg", baos);
+                                client.setImage(baos.toByteArray());
+                            } catch (Exception ex) {
+                                log.error(ex);
+                            }
+                            ChatWindow chatWith = helper.getChatWith(client);
+                            log.debug("chatWith [ " + chatWith + " ]");
+                            chatWith.writeMessage(fm.fromName, fm.text);
+                            FacebookManager.incrementMessage();
+                            log.debug("senquenz number [" + FacebookManager.seq + "]");
                         }
-                        ChatWindow chatWith = helper.getChatWith(client);
-                        log.debug("chatWith [ " + chatWith + " ]");
-                        chatWith.writeMessage(fm.fromName, fm.text);
-                        FacebookManager.incrementMessage();
-                        log.debug("senquenz number [" + FacebookManager.seq + "]");
                     }
                 } catch (Exception e) {
                     log.error(e);

@@ -24,6 +24,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
 import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -113,20 +114,21 @@ public class FBLoginPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(buttonsToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(115, 115, 115)
+                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(psswLabel)
                     .addComponent(emailLabel))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(connectionStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(passwText, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(emailText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(passwText, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(emailText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -141,14 +143,13 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(psswLabel)
                     .addComponent(passwText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(connectionStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(loginButton, javax.swing.GroupLayout.Alignment.LEADING))
-                .addGap(103, 103, 103))
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(connectionStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar buttonsToolBar;
     private javax.swing.JLabel connectionStatusLabel;
@@ -168,7 +169,10 @@ public class FBLoginPanel extends javax.swing.JPanel {
         buttonsToolBar.setVisible(false);
 
         //add nickText ENTER keystroke
-        emailText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
+//        emailText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
+//        emailText.getActionMap().put("Enter", getActionMap().get("connect"));
+        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true);
+        emailText.getInputMap().put(enter, "Enter");
         emailText.getActionMap().put("Enter", getActionMap().get("connect"));
         passwText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
         passwText.getActionMap().put("Enter", getActionMap().get("connect"));
@@ -199,7 +203,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         String pass = "password";*/
 
         log.debug(email + ":" + pass);
-        final FacebookManager fbManger = new FacebookManager(email,pass);
+        final FacebookManager fbManger = new FacebookManager(email, pass);
 
         int loginErrorCode = fbManger.doLogin();
         if (loginErrorCode == ErrorCode.Error_Global_NoError) {
@@ -215,7 +219,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 PersistentDataManager.setNick(FacebookUserList.me.name);
 
                 //keep requesting message from the server
-                new Thread(new MessageRequester(ccv, fbManger,email,pass)).start();
+                new Thread(new MessageRequester(ccv, fbManger, email, pass)).start();
 
                 //requests buddy list every 90 seconds
                 new Thread(new BuddyListRequester(ccv)).start();
@@ -262,6 +266,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         connectionStatusLabel.validate();
 
         new Thread(new Runnable() {
+
             public void run() {
                 connectStart();
             }

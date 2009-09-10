@@ -30,6 +30,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -220,27 +221,27 @@ public class ChatClientViewListeners {
                     log.error(e);
                 }
             }
-            if (properties != null && !StringUtils.equals(properties.getProperty("nick"), "")) {
-                ccv.getLoginPanel().getNickText().setText(properties.getProperty("nick"));
-            }
-            if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_IP), "")) {
-                PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
-            }
-
-            try {
-                if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_PORT), "")) {
-                    PersistentDataManager.setPort(Integer.parseInt(properties.getProperty(Util.PROPERTY_PORT)));
+            if (properties != null) {
+                if (!StringUtils.equals(properties.getProperty("nick"), "")) {
+                    ccv.getLoginPanel().getNickText().setText(properties.getProperty("nick"));
                 }
-            } catch (NumberFormatException numberFormatException) {
-                log.error(numberFormatException);
+                if (!StringUtils.equals(properties.getProperty(Util.PROPERTY_IP), "")) {
+                    PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
+                }
+
+                try {
+                    if (properties.getProperty(Util.PROPERTY_PORT) != null) {
+                        PersistentDataManager.setPort(NumberUtils.toInt(properties.getProperty(Util.PROPERTY_PORT), 3434));
+                    }
+                } catch (NumberFormatException numberFormatException) {
+                    log.error(numberFormatException);
+                }
+
+                if (StringUtils.equals(properties.getProperty(Util.PROPERTY_THEME_FOLDER), "")) {
+                    ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
+                    ccv.getFrame().repaint();
+                }
             }
-
-
-            if (properties != null && StringUtils.equals(properties.getProperty(Util.PROPERTY_THEME_FOLDER), "")) {
-                ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
-                ccv.getFrame().repaint();
-            }
-
         }
     }
 

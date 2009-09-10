@@ -601,8 +601,16 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     public void setReceivedEmoticons(List<Emoticon> emoticons) {
         this.receivedEmoticons = emoticons;
     }
-    //</editor-fold>
 
+    public JLabel getNickLabel() {
+        return nickLabel;
+    }
+
+    public void setNickLabel(JLabel nickLabel) {
+        this.nickLabel = nickLabel;
+    }
+
+    //</editor-fold>
     /**
      * invia il messaggio scritto nell'inputText
      */
@@ -1079,9 +1087,15 @@ class MainPanel extends JPanel {
 class InputTextListener extends KeyAdapter {
 
     ChatWindow chatWindow;
+    int typCount = 0;
+    final Object locker = new Object();
+    Client client = null;
+    String Uid;
 
     public InputTextListener(ChatWindow chatWindow) {
         this.chatWindow = chatWindow;
+        client = chatWindow.getClients().get(0);
+        Uid = client.getUid();
     }
     private Log log = LogFactory.getLog(this.getClass());
 
@@ -1107,6 +1121,31 @@ class InputTextListener extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent arg0) {
         chatWindow.refreshInputTextFont();
+        if (typCount < 5) {
+            typCount++;
+
+        }
+        //ogni 5 letterscrittte invio un messaggio di tipo typ
+        if (typCount >= 5 && StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)) {
+            Runnable runnable = new Runnable() {
+
+                public void run() {
+                    log.debug("send typ message");
+                    try {
+                        FacebookManager.PostTypMessage(Uid, 1);
+                        Thread.sleep(1000);
+                        FacebookManager.PostTypMessage(Uid, 0);
+                    } catch (Exception e) {
+                        log.error(e);
+                    }
+
+                }
+            };
+            new Thread(runnable).start();
+
+            typCount = 0;
+
+        }
     }
 }
 
