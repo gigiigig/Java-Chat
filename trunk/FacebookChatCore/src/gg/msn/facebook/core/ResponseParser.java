@@ -171,10 +171,26 @@ public class ResponseParser {
                         //do nothing
                         log.debug("typing message");
                         FacebookManager.incrementMessage();
+
+                        FacebookMessage fm = new FacebookMessage();
+                        fm.type = "typ";
+                        fm.from = (Number) msg.get("from");
+
+                        if (!fm.from.toString().equals(FacebookManager.uid)) {
+                            toReturn = fm;
+                        }
+
                     } else if (!msg.get("type").equals("msg")) {
                         //do nothing
-                        log.debug("type [" + msg.get("type")+"]");
+                        /*
+                        {"t":"msg",
+                        "c":"p_100000191774044",
+                        "ms":[{"type":"typ","st":0,"from":1567835536,"to":100000191774044}]}
+                         */
+                        log.debug("type [" + msg.get("type") + "]");
                         FacebookManager.incrementMessage();
+
+
                     } else if (msg.get("type").equals("msg")) {
                         //the message itself
                         JSONObject realmsg = (JSONObject) msg.get("msg");
@@ -189,7 +205,25 @@ public class ResponseParser {
                         "from_name":"David Willer",
                         "to_name":"\u5341\u4e00",
                         "from_first_name":"David",
-                        "to_first_name":"\u4e00"}*/
+                        "to_first_name":"\u4e00"}
+
+                        {"t":"msg",
+                        "c":"p_100000191774044",
+                        "ms":[{
+                        "type":"msg",
+                        "msg":{
+                        "text":"erge8i",
+                        "time":1252585945364,
+                        "clientTime":1252585943938,
+                        "msgID":"2771645192"},
+                        "from":1567835536,
+                        "to":100000191774044,
+                        "from_name":"Luigi Antonini",
+                        "to_name":"Gigi Antonini",
+                        "from_first_name":"Luigi",
+                        "to_first_name":"Gigi"}]}
+
+                         */
                         FacebookMessage fm = new FacebookMessage();
                         fm.text = (String) realmsg.get("text");
                         fm.time = (Number) realmsg.get("time");

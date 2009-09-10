@@ -581,6 +581,54 @@ public class FacebookManager {
         }
     }
 
+    public static void PostTypMessage(String uid,int value) {
+
+        /*
+        Url : http://www.facebook.com/ajax/chat/typ.php
+        Parameters :
+        __a  =	1
+        fb_dtsg =	0V0hE
+        post_form_id =	cb22b6deb9bbdb5adc03f9898345ee89
+        post_form_id_source =	AsyncRequest
+        to = 	1567835536
+        typ =	1
+
+         typ = 1 scrive
+         typ = 0 stop
+
+         */
+
+        log.debug("====== PostMessage begin======");
+
+        log.debug("to:" + uid);
+
+        String url = "http://www.facebook.com/ajax/chat/typ.php";
+
+        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+
+        nvps.add(new BasicNameValuePair("__a", "1"));
+        nvps.add(new BasicNameValuePair("typ", ""+value));
+        nvps.add(new BasicNameValuePair("to", uid));
+        nvps.add(new BasicNameValuePair("post_form_id", post_form_id));
+
+        log.debug("executeMethod ing...");
+
+        // postMethod
+        String responseStr = facebookPostMethod("http://www.facebook.com", "/ajax/chat/typ.php", nvps);
+        //for (;;);{"t":"continue"}
+        //for (;;);{"t":"refresh"}
+        //for (;;);{"t":"refresh", "seq":0}
+        //for (;;);{"error":0,"errorSummary":"","errorDescription":"No error.","payload":[],"bootload":[{"name":"js\/common.js.pkg.php","type":"js","src":"http:\/\/static.ak.fbcdn.net\/rsrc.php\/pkg\/60\/106715\/js\/common.js.pkg.php"}]}
+        //for (;;);{"error":1356003,"errorSummary":"Send destination not online","errorDescription":"This person is no longer online.","payload":null,"bootload":[{"name":"js\/common.js.pkg.php","type":"js","src":"http:\/\/static.ak.fbcdn.net\/rsrc.php\/pkg\/60\/106715\/js\/common.js.pkg.php"}]}
+        log.debug("+++++++++ PostMessage end +++++++++");
+        // testHttpClient("http://www.facebook.com/home.php?");
+
+        //incremento il messaggio
+        //incrementMessage();
+
+
+    }
+
     public static void incrementMessage() {
         FacebookManager.seq++;
     }

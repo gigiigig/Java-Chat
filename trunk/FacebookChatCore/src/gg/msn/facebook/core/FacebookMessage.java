@@ -22,6 +22,7 @@ public class FacebookMessage {
 	public String toName;
 	public String fromFirstName;
 	public String toFirstName;
+	public String type;
 	
 	public FacebookMessage(){}
 	
