@@ -75,7 +75,10 @@
        x="34.10817"
        y="32.719906"
        rx="27.980957"
-       ry="27.980957" />
+       ry="27.980957"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\themeIcon.png"
+       inkscape:export-xdpi="10.352058"
+       inkscape:export-ydpi="10.352058" />
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#6e6e6e;stroke-width:9;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect6728"
@@ -84,7 +87,10 @@
        x="36.90181"
        y="28.672073"
        rx="27.470636"
-       ry="27.714821" />
+       ry="27.714821"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\themeIcon.png"
+       inkscape:export-xdpi="10.352058"
+       inkscape:export-ydpi="10.352058" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-width:0.98695153;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0"
@@ -96,7 +102,10 @@
        d="M 206.34614,515.158 A 25.450638,32.106956 0 0 1 231.79657,547.26495 L 206.34593,547.26495 z"
        sodipodi:start="4.712397"
        sodipodi:end="6.2831853"
-       transform="matrix(3.7439664,0,0,2.9681286,-617.86364,-1478.244)" />
+       transform="matrix(3.7439664,0,0,2.9681286,-617.86364,-1478.244)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\themeIcon.png"
+       inkscape:export-xdpi="10.352058"
+       inkscape:export-ydpi="10.352058" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:0.98769182;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0"
@@ -108,7 +117,10 @@
        d="M 206.34614,515.158 A 25.450638,32.106956 0 0 1 231.79657,547.26495 L 206.34593,547.26495 z"
        sodipodi:start="4.712397"
        sodipodi:end="6.2831853"
-       transform="matrix(5.7214738e-3,3.7387939,-2.9677748,4.474121e-3,1777.5624,-627.56698)" />
+       transform="matrix(5.7214738e-3,3.7387939,-2.9677748,4.474121e-3,1777.5624,-627.56698)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\themeIcon.png"
+       inkscape:export-xdpi="10.352058"
+       inkscape:export-ydpi="10.352058" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.98997009;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0"
@@ -120,7 +132,10 @@
        d="M 206.34614,515.158 A 25.450638,32.106956 0 0 1 231.79657,547.26495 L 206.34593,547.26495 z"
        sodipodi:start="4.712397"
        sodipodi:end="6.2831853"
-       transform="matrix(-3.7436042,-1.5601408e-3,1.2220625e-3,-2.9666051,926.35538,1770.0753)" />
+       transform="matrix(-3.7436042,-1.5601408e-3,1.2220625e-3,-2.9666051,926.35538,1770.0753)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\themeIcon.png"
+       inkscape:export-xdpi="10.352058"
+       inkscape:export-ydpi="10.352058" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#00ff00;fill-opacity:1;stroke:#000000;stroke-width:0.98842782;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0"
@@ -132,7 +147,10 @@
        d="M 206.34614,515.158 A 25.450638,32.106956 0 0 1 231.79657,547.26495 L 206.34593,547.26495 z"
        sodipodi:start="4.712397"
        sodipodi:end="6.2831853"
-       transform="matrix(6.1083409e-3,-3.744317,2.9628682,4.791623e-3,-1468.0496,916.19056)" />
+       transform="matrix(6.1083409e-3,-3.744317,2.9628682,4.791623e-3,-1468.0496,916.19056)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\themeIcon.png"
+       inkscape:export-xdpi="10.352058"
+       inkscape:export-ydpi="10.352058" />
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:0;stroke:none;stroke-width:1.47268188;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect6762"
@@ -181,7 +199,10 @@
        x="34.243824"
        y="311.78482"
        rx="27.980957"
-       ry="27.980957" />
+       ry="27.980957"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
+       inkscape:export-xdpi="10.276682"
+       inkscape:export-ydpi="10.276682" />
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#00d455;stroke-width:8.973;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect6776"
@@ -190,7 +211,10 @@
        x="37.037464"
        y="307.73697"
        rx="27.470636"
-       ry="27.714821" />
+       ry="27.714821"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
+       inkscape:export-xdpi="10.276682"
+       inkscape:export-ydpi="10.276682" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#00d455;fill-opacity:1;stroke:none;stroke-width:0.97799999;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.15228427"
@@ -200,11 +224,17 @@
        sodipodi:rx="72.436432"
        sodipodi:ry="73.219528"
        d="M 375.88632,426.27652 A 72.436432,73.219528 0 1 1 231.01346,426.27652 A 72.436432,73.219528 0 1 1 375.88632,426.27652 z"
-       transform="matrix(1.3391052,0,0,1.3247832,-252.79514,-138.53682)" />
+       transform="matrix(1.3391052,0,0,1.3247832,-252.79514,-138.53682)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
+       inkscape:export-xdpi="10.276682"
+       inkscape:export-ydpi="10.276682" />
     <a
        id="a2465"
        style="fill:#ffffff"
-       transform="matrix(0.4257433,0,0,0.4156347,-5.3752104,298.61569)">
+       transform="matrix(0.4257433,0,0,0.4156347,-5.3752104,298.61569)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
+       inkscape:export-xdpi="10.276682"
+       inkscape:export-ydpi="10.276682">
       <path
          sodipodi:nodetypes="ccc"
          id="path2417"
@@ -250,7 +280,10 @@
        x="317.72476"
        y="314.91721"
        rx="27.980957"
-       ry="27.980957" />
+       ry="27.980957"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\exitIcon.png"
+       inkscape:export-xdpi="10.276116"
+       inkscape:export-ydpi="10.276116" />
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#ff0b0b;stroke-width:9;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect6928"
@@ -259,7 +292,10 @@
        x="320.5184"
        y="310.86935"
        rx="27.470636"
-       ry="27.714821" />
+       ry="27.714821"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\exitIcon.png"
+       inkscape:export-xdpi="10.276116"
+       inkscape:export-ydpi="10.276116" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.97799999;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.15228427"
@@ -269,7 +305,10 @@
        sodipodi:rx="72.436432"
        sodipodi:ry="73.219528"
        d="M 375.88632,426.27652 A 72.436432,73.219528 0 1 1 231.01346,426.27652 A 72.436432,73.219528 0 1 1 375.88632,426.27652 z"
-       transform="matrix(1.3391052,0,0,1.3247832,32.252,-136.9706)" />
+       transform="matrix(1.3391052,0,0,1.3247832,32.252,-136.9706)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\exitIcon.png"
+       inkscape:export-xdpi="10.276116"
+       inkscape:export-ydpi="10.276116" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.97799999;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.15228427"
@@ -279,7 +318,10 @@
        sodipodi:rx="72.436432"
        sodipodi:ry="73.219528"
        d="M 375.88632,426.27652 A 72.436432,73.219528 0 1 1 231.01346,426.27652 A 72.436432,73.219528 0 1 1 375.88632,426.27652 z"
-       transform="matrix(0.9684427,0,0,0.9510083,143.99845,22.222739)" />
+       transform="matrix(0.9684427,0,0,0.9510083,143.99845,22.222739)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\exitIcon.png"
+       inkscape:export-xdpi="10.276116"
+       inkscape:export-ydpi="10.276116" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.97799999;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.15228427"
@@ -289,7 +331,10 @@
        sodipodi:rx="72.436432"
        sodipodi:ry="73.219528"
        d="M 375.88632,426.27652 A 72.436432,73.219528 0 1 1 231.01346,426.27652 A 72.436432,73.219528 0 1 1 375.88632,426.27652 z"
-       transform="matrix(0.6794077,0,0,0.6721413,231.93568,141.27802)" />
+       transform="matrix(0.6794077,0,0,0.6721413,231.93568,141.27802)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\exitIcon.png"
+       inkscape:export-xdpi="10.276116"
+       inkscape:export-ydpi="10.276116" />
     <rect
        style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.97799999;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.15228427"
        id="rect6952"
@@ -298,7 +343,10 @@
        x="420.27252"
        y="334.06262"
        rx="0"
-       ry="27.714821" />
+       ry="27.714821"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\exitIcon.png"
+       inkscape:export-xdpi="10.276116"
+       inkscape:export-ydpi="10.276116" />
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.97799999;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.15228427"
        id="rect6958"
@@ -306,7 +354,10 @@
        height="50.30114"
        x="427.12625"
        y="343.22504"
-       ry="0" />
+       ry="0"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\exitIcon.png"
+       inkscape:export-xdpi="10.276116"
+       inkscape:export-ydpi="10.276116" />
     <rect
        style="opacity:1;fill:#949494;fill-opacity:0.55329949;stroke:none;stroke-width:1.47268188;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.15228427;filter:url(#filter6724)"
        id="rect6962"
