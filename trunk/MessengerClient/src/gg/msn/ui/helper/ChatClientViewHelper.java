@@ -461,7 +461,7 @@ public class ChatClientViewHelper {
         }
     }
 
-    private Client clientFromFacebookUser(FacebookUser fu) {
+    public  Client clientFromFacebookUser(FacebookUser fu) {
         Client client = new Client();
         client.setNick(fu.name);
         try {

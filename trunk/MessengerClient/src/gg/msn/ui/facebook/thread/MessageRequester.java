@@ -35,6 +35,7 @@ public class MessageRequester implements Runnable {
     private FacebookManager fbManger;
     private String email;
     private String pass;
+    public static final int TYPING_TIME = 3000;
 
     public MessageRequester(ChatClientView ccv, FacebookManager facebookManager, String email, String pass) {
         this.ccv = ccv;
@@ -85,17 +86,18 @@ public class MessageRequester implements Runnable {
 
                         if (StringUtils.equals(fm.type, "typ")) {
                             log.debug("received typing message");
-                        
-                            final ChatWindow chat = helper.getChatFromUid(fm.from+"");
-                            log.debug("finded chat [" + chat+"]");
+
+                            final ChatWindow chat = helper.getChatFromUid(fm.from + "");
+                            log.debug("finded chat [" + chat + "]");
                             if (chat != null) {
                                 Runnable runnable = new Runnable() {
+
                                     public void run() {
                                         try {
                                             JLabel nickLabel = chat.getNickLabel();
                                             String nickText = nickLabel.getText();
                                             nickLabel.setText("...");
-                                            Thread.sleep(1000);
+                                            Thread.sleep(TYPING_TIME);
                                             nickLabel.setText(nickText);
                                         } catch (InterruptedException ex) {
                                             log.error(ex);

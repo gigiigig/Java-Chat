@@ -33,7 +33,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jToolBar1" alignment="1" min="-2" pref="145" max="-2" attributes="1"/>
+                  <Component id="jToolBar1" alignment="1" min="-2" pref="140" max="-2" attributes="1"/>
               </Group>
           </Group>
       </Group>
@@ -123,6 +123,7 @@
             <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
               <action class="gg.msn.ui.panel.MainPanel" id="showAboutBox" methodName="showAboutBox"/>
             </Property>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="jButton1.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
