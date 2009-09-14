@@ -581,7 +581,7 @@ public class FacebookManager {
         }
     }
 
-    public static void PostTypMessage(String uid,int value) {
+    public static void PostTypMessage(String uid, int value) {
 
         /*
         Url : http://www.facebook.com/ajax/chat/typ.php
@@ -593,8 +593,8 @@ public class FacebookManager {
         to = 	1567835536
         typ =	1
 
-         typ = 1 scrive
-         typ = 0 stop
+        typ = 1 scrive
+        typ = 0 stop
 
          */
 
@@ -607,7 +607,7 @@ public class FacebookManager {
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 
         nvps.add(new BasicNameValuePair("__a", "1"));
-        nvps.add(new BasicNameValuePair("typ", ""+value));
+        nvps.add(new BasicNameValuePair("typ", "" + value));
         nvps.add(new BasicNameValuePair("to", uid));
         nvps.add(new BasicNameValuePair("post_form_id", post_form_id));
 
@@ -870,23 +870,27 @@ public class FacebookManager {
     private static String facebookPostMethod(String host, String urlPostfix, List<NameValuePair> nvps) {
         log.debug(host + urlPostfix);
         String responseStr = null;
-        try {
-            HttpPost httpost = new HttpPost(host + urlPostfix);
-            httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+        synchronized (httpClient) {
+            try {
+                HttpPost httpost = new HttpPost(host + urlPostfix);
+                httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
-            // execute postMethod
-            HttpResponse postResponse = httpClient.execute(httpost);
-            HttpEntity entity = postResponse.getEntity();
+                // execute postMethod
 
-            log.debug("facebookPostMethod: " + postResponse.getStatusLine());
-            if (entity != null) {
-                responseStr = EntityUtils.toString(entity);
-                //log.debug(responseStr);
-                entity.consumeContent();
+                HttpResponse postResponse = httpClient.execute(httpost);
+                HttpEntity entity = postResponse.getEntity();
+
+                log.debug("facebookPostMethod: " + postResponse.getStatusLine());
+                if (entity != null) {
+                    responseStr = EntityUtils.toString(entity);
+                    //log.debug(responseStr);
+                    entity.consumeContent();
+                }
+
+                log.debug("Post Method done(" + postResponse.getStatusLine().getStatusCode() + "), response string length: " + (responseStr == null ? 0 : responseStr.length()));
+            } catch (IOException e) {
+                log.debug(e.getMessage());
             }
-            log.debug("Post Method done(" + postResponse.getStatusLine().getStatusCode() + "), response string length: " + (responseStr == null ? 0 : responseStr.length()));
-        } catch (IOException e) {
-            log.debug(e.getMessage());
         }
         //TODO process the respons string
         //if statusCode == 200: no error;(responsStr contains "errorDescription":"No error.")
@@ -903,35 +907,36 @@ public class FacebookManager {
         log.debug("url [ " + url + " ]");
 
         String responseStr = null;
+        synchronized (httpClient) {
 
-        try {
-            HttpGet loginGet = new HttpGet(url);
-            HttpResponse response = httpClient.execute(loginGet);
-            HttpEntity entity = response.getEntity();
+            try {
+                HttpGet loginGet = new HttpGet(url);
+                HttpResponse response = httpClient.execute(loginGet);
+                HttpEntity entity = response.getEntity();
 
-            log.debug("response status [ " + response.getStatusLine() + " ]");
-            if (entity != null) {
-                responseStr = EntityUtils.toString(entity);
-                entity.consumeContent();
+                log.debug("response status [ " + response.getStatusLine() + " ]");
+                if (entity != null) {
+                    responseStr = EntityUtils.toString(entity);
+                    entity.consumeContent();
+                }
+
+                int statusCode = response.getStatusLine().getStatusCode();
+
+                /**
+                 * @fixme I am not sure if 200 is the only code that
+                 *  means "success"
+                 */
+                if (statusCode != 200) {
+                    //error occured
+                    log.debug("Error Occured! Status Code = " + statusCode);
+                    log.debug("response [ " + statusCode + " ]");
+                    responseStr = null;
+                }
+                log.debug("Get Method done(" + statusCode + "), response string length: " + (responseStr == null ? 0 : responseStr.length()));
+            } catch (IOException e) {
+                log.debug(e.getMessage());
             }
-
-            int statusCode = response.getStatusLine().getStatusCode();
-
-            /**
-             * @fixme I am not sure if 200 is the only code that 
-             *  means "success"
-             */
-            if (statusCode != 200) {
-                //error occured
-                log.debug("Error Occured! Status Code = " + statusCode);
-                log.debug("response [ " + statusCode + " ]");
-                responseStr = null;
-            }
-            log.debug("Get Method done(" + statusCode + "), response string length: " + (responseStr == null ? 0 : responseStr.length()));
-        } catch (IOException e) {
-            log.debug(e.getMessage());
         }
-
         return responseStr;
     }
 

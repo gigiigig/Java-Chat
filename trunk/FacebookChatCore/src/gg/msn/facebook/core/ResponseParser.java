@@ -146,7 +146,7 @@ public class ResponseParser {
      * @param response
      * @throws JSONException
      */
-    public static FacebookMessage messageRequestResultParser(String response, FacebookManager manager) throws Exception {
+    public synchronized static FacebookMessage messageRequestResultParser(String response, FacebookManager manager) throws Exception {
         FacebookMessage toReturn = null;
 
 
@@ -171,7 +171,6 @@ public class ResponseParser {
                         //do nothing
                         log.debug("typing message");
                         FacebookManager.incrementMessage();
-
                         FacebookMessage fm = new FacebookMessage();
                         fm.type = "typ";
                         fm.from = (Number) msg.get("from");
