@@ -6,6 +6,8 @@ package gg.msn.ui.facebook.thread;
 
 import gg.msn.facebook.core.FacebookManager;
 import gg.msn.ui.ChatClientView;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -29,7 +31,12 @@ public class BuddyListRequester implements Runnable {
             try {
                 FacebookManager.getBuddyList();
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                log.error(ex);
             }
 
             ccv.getMainPanel().updateListWithFACEBOOKContacts();
@@ -39,7 +46,7 @@ public class BuddyListRequester implements Runnable {
             try {
                 Thread.sleep(60 * 1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
     }

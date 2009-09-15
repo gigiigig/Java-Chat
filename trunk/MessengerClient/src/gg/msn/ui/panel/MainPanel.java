@@ -81,9 +81,9 @@ public class MainPanel extends javax.swing.JPanel {
         nickLabel = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
         selectThemeButton = new javax.swing.JButton();
-        disconnect = new javax.swing.JButton();
         chat = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        disconnect = new javax.swing.JButton();
         clientListScrollPane = new javax.swing.JScrollPane();
         clientsList = new javax.swing.JList();
         nickIcon = new javax.swing.JLabel();
@@ -112,16 +112,6 @@ public class MainPanel extends javax.swing.JPanel {
         selectThemeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(selectThemeButton);
 
-        disconnect.setAction(actionMap.get("disconnetti")); // NOI18N
-        disconnect.setIcon(resourceMap.getIcon("disconnect.icon")); // NOI18N
-        disconnect.setToolTipText(resourceMap.getString("disconnect.toolTipText")); // NOI18N
-        disconnect.setFocusable(false);
-        disconnect.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        disconnect.setName("disconnect"); // NOI18N
-        disconnect.setOpaque(false);
-        disconnect.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(disconnect);
-
         chat.setAction(actionMap.get("addChatWithSelected")); // NOI18N
         chat.setIcon(resourceMap.getIcon("chat.icon")); // NOI18N
         chat.setToolTipText(resourceMap.getString("chat.toolTipText")); // NOI18N
@@ -141,6 +131,16 @@ public class MainPanel extends javax.swing.JPanel {
         jButton1.setName("jButton1"); // NOI18N
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton1);
+
+        disconnect.setAction(actionMap.get("disconnetti")); // NOI18N
+        disconnect.setIcon(resourceMap.getIcon("disconnect.icon")); // NOI18N
+        disconnect.setToolTipText(resourceMap.getString("disconnect.toolTipText")); // NOI18N
+        disconnect.setFocusable(false);
+        disconnect.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        disconnect.setName("disconnect"); // NOI18N
+        disconnect.setOpaque(false);
+        disconnect.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(disconnect);
 
         clientListScrollPane.setBackground(new Color(255,255,255,100)
         );
@@ -260,7 +260,7 @@ public class MainPanel extends javax.swing.JPanel {
         }
     }
 
-    public void updateListWithFACEBOOKContacts() {
+    public synchronized  void updateListWithFACEBOOKContacts() {
         //fmod.removeAll();
         ((DefaultListModel) clientsList.getModel()).removeAllElements();
         log.debug("utenti presenti [" + FacebookUserList.buddies.size() + "]");
@@ -288,6 +288,8 @@ public class MainPanel extends javax.swing.JPanel {
         }
         //clientsList.repaint();
         clientsList.validate();
+        clientsList.repaint();
+        
 
     }
 

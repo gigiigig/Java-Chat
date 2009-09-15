@@ -10,6 +10,7 @@
  */
 package gg.msn.ui.facebook.panel;
 
+import gg.msn.core.commons.DesEncrypter;
 import gg.msn.facebook.core.ErrorCode;
 import gg.msn.facebook.core.FacebookUserList;
 import gg.msn.facebook.core.FacebookManager;
@@ -19,16 +20,23 @@ import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.thread.BuddyListRequester;
 import gg.msn.ui.facebook.thread.MessageRequester;
 import gg.msn.ui.theme.ThemeManager;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Properties;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
@@ -61,6 +69,8 @@ public class FBLoginPanel extends javax.swing.JPanel {
         buttonsToolBar = new javax.swing.JToolBar();
         ggLoginButton = new javax.swing.JButton();
         fbLoginButton = new javax.swing.JButton();
+        saveMailCheck = new javax.swing.JCheckBox();
+        savePswCheck = new javax.swing.JCheckBox();
 
         setName("Form"); // NOI18N
 
@@ -109,27 +119,38 @@ public class FBLoginPanel extends javax.swing.JPanel {
         fbLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         buttonsToolBar.add(fbLoginButton);
 
+        saveMailCheck.setText(resourceMap.getString("saveMailCheck.text")); // NOI18N
+        saveMailCheck.setName("saveMailCheck"); // NOI18N
+        saveMailCheck.setOpaque(false);
+
+        savePswCheck.setText(resourceMap.getString("savePswCheck.text")); // NOI18N
+        savePswCheck.setName("savePswCheck"); // NOI18N
+        savePswCheck.setOpaque(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(buttonsToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(115, 115, 115)
+                .addGap(112, 112, 112)
                 .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(psswLabel)
                     .addComponent(emailLabel))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(passwText, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(emailText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(saveMailCheck)
+                    .addComponent(savePswCheck)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(passwText, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(emailText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))
+                .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,11 +164,15 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(psswLabel)
                     .addComponent(passwText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
+                .addGap(10, 10, 10)
+                .addComponent(saveMailCheck)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(savePswCheck)
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(connectionStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(93, Short.MAX_VALUE))
+                    .addComponent(loginButton))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -160,6 +185,8 @@ public class FBLoginPanel extends javax.swing.JPanel {
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passwText;
     private javax.swing.JLabel psswLabel;
+    private javax.swing.JCheckBox saveMailCheck;
+    private javax.swing.JCheckBox savePswCheck;
     // End of variables declaration//GEN-END:variables
 
     public FBLoginPanel(ChatClientView ccv) {
@@ -183,22 +210,72 @@ public class FBLoginPanel extends javax.swing.JPanel {
             emailText.setText(email);
         }
         String psw = Util.readProperties().getProperty(Util.PROPERTY_FACEBOOK_PSW);
+        log.debug("crypted passworda [" + psw + "]");
+        psw = decryptPass(psw);
+        log.debug("decrypted psw [" + psw + "]");
         if (psw != null && !psw.equals("")) {
             passwText.setText(psw);
         }
+
+        //quando dechekko l'email dechekko anche la password
+        saveMailCheck.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                if (!saveMailCheck.isSelected()) {
+                    savePswCheck.setSelected(saveMailCheck.isSelected());
+//                }            }
+//            public void stateChanged(ChangeEvent e) {
+//
+//            }
+                }
+            }
+        });
+
+        //quando chekko l'email chekko anche la password
+        savePswCheck.addChangeListener(new ChangeListener() {
+
+            public void stateChanged(ChangeEvent e) {
+                if (savePswCheck.isSelected()) {
+                    saveMailCheck.setSelected(savePswCheck.isSelected());
+                }
+            }
+        });
+        String propertySaveEmail = Util.readProperties().getProperty(Util.PROPERTY_SAVE_FACEBOOK_EMAIL);
+        log.debug("property saveEmail [" + propertySaveEmail + "]");
+        boolean saveEmail = BooleanUtils.toBoolean(propertySaveEmail);
+        log.debug("saveEmail [" + saveEmail + "]");
+        saveMailCheck.setSelected(saveEmail);
+        boolean savePsw = BooleanUtils.toBoolean(Util.readProperties().getProperty(Util.PROPERTY_SAVE_FACEBOOK_PSW));
+        log.debug("savePsw [" + savePsw + "]");
+        savePswCheck.setSelected(savePsw);
 
     }
 
     private void connectStart() {
         String email = emailText.getText().trim();
-        String pass = passwText.getText().trim();
-
+        char[] passArr = passwText.getPassword();
+        String pass = new String(passArr);
         //salvo i valori inserioti su email e password
         Properties prop = Util.readProperties();
-        prop.setProperty(Util.PROPERTY_FACEBOOK_EMAIL, email);
-        prop.setProperty(Util.PROPERTY_FACEBOOK_PSW, pass);
-        Util.writeProperties(prop);
+        boolean saveEmail = saveMailCheck.isSelected();
+        boolean savePsw = savePswCheck.isSelected();
 
+        if (saveEmail) {
+            prop.setProperty(Util.PROPERTY_FACEBOOK_EMAIL, email);
+        } else {
+            prop.setProperty(Util.PROPERTY_FACEBOOK_EMAIL, "");
+        }
+        if (savePsw) {
+            prop.setProperty(Util.PROPERTY_FACEBOOK_PSW, encryptPass(passArr));
+        } else {
+            prop.setProperty(Util.PROPERTY_FACEBOOK_PSW, "");
+        }
+
+        prop.setProperty(Util.PROPERTY_SAVE_FACEBOOK_EMAIL, saveMailCheck.isSelected() + "");
+        prop.setProperty(Util.PROPERTY_SAVE_FACEBOOK_PSW, savePswCheck.isSelected() + "");
+
+
+        Util.writeProperties(prop);
         /*String email = "username@email.com.cn";
         String pass = "password";*/
 
@@ -310,5 +387,39 @@ public class FBLoginPanel extends javax.swing.JPanel {
 //        facebookManager.doLogin("luigi.ant@email.it", "03021984");
 //        System.out.println(FacebookManager.facebookGetMethod("http://0.channel35.facebook.com/x/0/false/p_1567835536=-1"));
 //        System.out.println(FacebookManager.facebookGetMethod("http://www.google.com"));
+    }
+
+    private String encryptPass(char[] passArr) {
+        String pass = "";
+        try {
+            // Generate a temporary key. In practice, you would save this key.
+            // See also e464 Encrypting with DES Using a Pass Phrase.
+            SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+            // Create encrypter/decrypter class
+            DesEncrypter encrypter = new DesEncrypter("flac");
+            // Encrypt
+            pass = encrypter.encrypt(new String(passArr));
+            // Decrypt
+        } catch (Exception e) {
+            log.error(e);
+        }
+        return pass;
+    }
+
+    private String decryptPass(String pass) {
+
+        try {
+            // Generate a temporary key. In practice, you would save this key.
+            // See also e464 Encrypting with DES Using a Pass Phrase.
+            SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+            // Create encrypter/decrypter class
+            DesEncrypter encrypter = new DesEncrypter("flac");
+            // Encrypt
+            pass = encrypter.decrypt(pass);
+            // Decrypt
+        } catch (Exception e) {
+            log.error(e);
+        }
+        return pass;
     }
 }

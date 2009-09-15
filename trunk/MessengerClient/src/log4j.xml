@@ -17,6 +17,14 @@
             <param name="ConversionPattern" value="%d [%t] [%C.%M] [%L] %p - %m%n"/>
         </layout>
     </appender>
+    <appender name="homeAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value=".yyyy-MM-dd"/>
+        <param name="File" value="log/home.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] [%C.%M] [%L] %p - %m%n"/>
+        </layout>
+    </appender>
     <logger name="gg.msn">
         <level value="debug"/>
         <appender-ref ref="appender" />
@@ -31,6 +39,10 @@
         <level value="warn"/>
         <appender-ref ref="appender" />
         <appender-ref ref="console" />
+    </logger>
+    <logger name="gg.msn.facebook.core.FacebookManager.doParseHomePage">
+        <level value="debug"/>
+        <appender-ref ref="homeAppender" />
     </logger>
       <!--  <logger name="org.apache">
         <level value="debug"/>

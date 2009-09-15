@@ -21,11 +21,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="buttonsToolBar" alignment="0" pref="300" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
               <Component id="loginButton" min="-2" pref="75" max="-2" attributes="1"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="connectionStatusLabel" min="-2" pref="77" max="-2" attributes="1"/>
-              <EmptySpace pref="29" max="32767" attributes="0"/>
+              <EmptySpace pref="32" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
@@ -34,11 +34,15 @@
                   <Component id="emailLabel" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="passwText" alignment="0" max="32767" attributes="1"/>
-                  <Component id="emailText" alignment="0" pref="148" max="32767" attributes="1"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="saveMailCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="savePswCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="passwText" alignment="0" max="32767" attributes="1"/>
+                      <Component id="emailText" alignment="0" pref="148" max="32767" attributes="1"/>
+                  </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -56,12 +60,16 @@
                   <Component id="psswLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="passwText" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Component id="saveMailCheck" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="savePswCheck" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                   <Component id="connectionStatusLabel" max="32767" attributes="1"/>
-                  <Component id="loginButton" alignment="1" max="32767" attributes="1"/>
+                  <Component id="loginButton" alignment="1" min="-2" max="-2" attributes="1"/>
               </Group>
-              <EmptySpace pref="93" max="32767" attributes="0"/>
+              <EmptySpace pref="75" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -147,5 +155,19 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JCheckBox" name="saveMailCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="saveMailCheck.text"/>
+        <Property name="name" type="java.lang.String" value="saveMailCheck" noResource="true"/>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="savePswCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="savePswCheck.text"/>
+        <Property name="name" type="java.lang.String" value="savePswCheck" noResource="true"/>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

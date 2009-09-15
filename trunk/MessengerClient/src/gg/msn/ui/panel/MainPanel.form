@@ -87,20 +87,6 @@
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="disconnect">
-          <Properties>
-            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-              <action class="gg.msn.ui.panel.MainPanel" id="disconnetti" methodName="disconnetti"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="disconnect.icon"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="disconnect.toolTipText"/>
-            <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="name" type="java.lang.String" value="disconnect" noResource="true"/>
-            <Property name="opaque" type="boolean" value="false"/>
-            <Property name="verticalTextPosition" type="int" value="3"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JButton" name="chat">
           <Properties>
             <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
@@ -128,6 +114,20 @@
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="disconnect">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="gg.msn.ui.panel.MainPanel" id="disconnetti" methodName="disconnetti"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="disconnect.icon"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="disconnect.toolTipText"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="name" type="java.lang.String" value="disconnect" noResource="true"/>
+            <Property name="opaque" type="boolean" value="false"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
