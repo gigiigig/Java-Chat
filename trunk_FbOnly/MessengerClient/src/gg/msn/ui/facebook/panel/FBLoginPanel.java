@@ -17,6 +17,8 @@ import gg.msn.facebook.core.FacebookManager;
 import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientView;
+import gg.msn.ui.AnotherLinkButton;
+import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.facebook.thread.BuddyListRequester;
 import gg.msn.ui.facebook.thread.MessageRequester;
 import gg.msn.ui.theme.ThemeManager;
@@ -30,13 +32,13 @@ import java.awt.event.KeyEvent;
 import java.util.Properties;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
@@ -68,6 +70,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         passwText = new javax.swing.JPasswordField();
         saveMailCheck = new javax.swing.JCheckBox();
         savePswCheck = new javax.swing.JCheckBox();
+        siteLinkButton = new AnotherLinkButton("gigi")  ;
 
         setName("Form"); // NOI18N
 
@@ -100,29 +103,36 @@ public class FBLoginPanel extends javax.swing.JPanel {
         savePswCheck.setName("savePswCheck"); // NOI18N
         savePswCheck.setOpaque(false);
 
+        siteLinkButton.setText(resourceMap.getString("siteLinkButton.text")); // NOI18N
+        siteLinkButton.setName("siteLinkButton"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(112, 112, 112)
-                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(psswLabel)
-                    .addComponent(emailLabel))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(saveMailCheck)
-                    .addComponent(savePswCheck)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(passwText, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(emailText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))
-                .addGap(51, 51, 51))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(psswLabel)
+                            .addComponent(emailLabel))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(saveMailCheck)
+                            .addComponent(savePswCheck)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(passwText, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(emailText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(siteLinkButton)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,7 +153,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(connectionStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(loginButton))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(siteLinkButton)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -155,6 +167,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel psswLabel;
     private javax.swing.JCheckBox saveMailCheck;
     private javax.swing.JCheckBox savePswCheck;
+    private javax.swing.JButton siteLinkButton;
     // End of variables declaration//GEN-END:variables
 
     public FBLoginPanel(ChatClientView ccv) {
@@ -162,12 +175,15 @@ public class FBLoginPanel extends javax.swing.JPanel {
         initComponents();
         this.ccv = ccv;
 
+
         //add nickText ENTER keystroke
 //        emailText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
 //        emailText.getActionMap().put("Enter", getActionMap().get("connect"));
-        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true);
+        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
         emailText.getInputMap().put(enter, "Enter");
-        emailText.getActionMap().put("Enter", getActionMap().get("connect"));
+        javax.swing.Action action = getActionMap().get("connect");
+        log.debug("action "+action);
+        passwText.getActionMap().put("Enter",action);
         passwText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
         passwText.getActionMap().put("Enter", getActionMap().get("connect"));
 
@@ -344,7 +360,6 @@ public class FBLoginPanel extends javax.swing.JPanel {
         ccv.getHelper().showFacebookLoginPanel();
     }
 
-    
     public static void main(String[] args) {
 //        FacebookManager facebookManager = new FacebookManager();
 //        facebookManager.doLogin("luigi.ant@email.it", "03021984");
@@ -352,7 +367,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
 //        System.out.println(FacebookManager.facebookGetMethod("http://www.google.com"));
     }
 
-     String encryptPass(char[] passArr) {
+    String encryptPass(char[] passArr) {
         String pass = "";
         try {
             // Generate a temporary key. In practice, you would save this key.
