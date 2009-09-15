@@ -129,6 +129,7 @@ public class FacebookManager {
         msgIDCollection = new HashSet<String>();
         msgIDCollection.clear();
 
+
 //        chatroomCache = new Hashtable<String, Chatroom>();
 //        chatroomCache.clear();
 
@@ -136,6 +137,7 @@ public class FacebookManager {
         final HttpHost target =
                 new HttpHost("www.google.com", 80, "http");
         setup(); // some general setup
+        httpClient = createHttpClient();
 
         //httpClient = createHttpClient();
 
@@ -351,7 +353,6 @@ public class FacebookManager {
      */
     public int doLogin() {
         //creo il client ad ogni login
-        httpClient = createHttpClient();
         log.debug("Target URL: " + loginPageUrl);
         try {
             HttpGet loginGet = new HttpGet(loginPageUrl);
@@ -418,7 +419,7 @@ public class FacebookManager {
 
         String getMethodResponseBody = facebookGetMethod(homePageUrl);
         log.debug("=========HomePage: getMethodResponseBody begin=========");
-        log.debug(getMethodResponseBody);
+        LogFactory.getLog("login.page").debug(getMethodResponseBody);
         log.debug("+++++++++HomePage: getMethodResponseBody end+++++++++");
 
         //deal with the cookies
@@ -704,16 +705,27 @@ public class FacebookManager {
                 log.debug("- " + cookies.get(i).toString());
             }
         }
+
+        //provo la connessione sull'ultimo canale salvato ...
+        //se nn funziona qui provo a ricercare il canale ma nn dovrebbe servire
         String lastChannel = Util.readProperties().getProperty(FACEBOOK_LAST_CHANNEL);
         try {
             log.debug("last cannel [ " + lastChannel + " ]");
             if (lastChannel != null && !lastChannel.equals("")) {
-                String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(Integer.parseInt(lastChannel), -1));
-                int tempSeq = parseSeq(seqResponseBody);
-                log.debug("Last Channel [ " + lastChannel + " ]  SEQ [ " + tempSeq + " ]");
-                if (tempSeq >= 0) {
-                    channel = lastChannel;
-                    return tempSeq;
+                for (int i = 0; i < 3; i++) {
+                    String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(Integer.parseInt(lastChannel), -1));
+                    int tempSeq = parseSeq(seqResponseBody);
+                    log.debug("Last Channel [ " + lastChannel + " ]  SEQ [ " + tempSeq + " ]");
+                    if (tempSeq >= 0) {
+                        channel = lastChannel;
+                        return tempSeq;
+                    } else {
+                        try {
+                            Thread.sleep(2000);
+                            log.debug("tentivo " + 1 + "sul canale salvato .... riprovo tra 2 secondi");
+                        } catch (InterruptedException interruptedException) {
+                        }
+                    }
                 }
             }
         } catch (JSONException ex) {
@@ -722,21 +734,31 @@ public class FacebookManager {
 
         int i = 1;
         int tryCoun = 1;
+
         while (true) {
             try {
                 String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(i, -1));
-                int tempSeq = parseSeq(seqResponseBody);
-                log.debug("Channel [ " + i + " ]  SEQ [ " + tempSeq + " ]");
-                if (tempSeq >= 0) {
-                    channel = "" + i;
-                    //aggiorno la prprioetà last channel
-                    Properties properties = Util.readProperties();
-                    properties.setProperty(FACEBOOK_LAST_CHANNEL, i + "");
-                    Util.writeProperties(properties);
-                    return tempSeq;
-                }
-                i++;
-                if (i == MAX_FACEBOOK_CHANNELS && tryCoun < MAX_CONNECTION_TRY) {
+
+//                if (seqResponseBody == null && i > 0) {
+//                    log.info("non c'è riposta per questo canale quindi i canali sono finiti, riazzero il contatore");
+//                    i = 0;
+//                    tryCoun++;
+//                    continue;
+//                }
+
+                if (seqResponseBody != null) {
+                    int tempSeq = parseSeq(seqResponseBody);
+                    log.debug("Channel [ " + i + " ]  SEQ [ " + tempSeq + " ]");
+                    if (tempSeq >= 0) {
+                        channel = "" + i;
+                        //aggiorno la prprioetà last channel
+                        Properties properties = Util.readProperties();
+                        properties.setProperty(FACEBOOK_LAST_CHANNEL, i + "");
+                        Util.writeProperties(properties);
+                        return tempSeq;
+                    }
+                    i++;
+                }else if (seqResponseBody == null && i > 0 && tryCoun < MAX_CONNECTION_TRY) {
                     i = 0;
                     tryCoun++;
 
@@ -747,7 +769,7 @@ public class FacebookManager {
                     }
                     doLogin();
 
-                } else if (i == MAX_FACEBOOK_CHANNELS && tryCoun == 3) {
+                } else if (seqResponseBody == null && i > 0 && tryCoun == 3) {
                     return -1;
                 }
             } catch (JSONException e) {
@@ -870,28 +892,27 @@ public class FacebookManager {
     private static String facebookPostMethod(String host, String urlPostfix, List<NameValuePair> nvps) {
         log.debug(host + urlPostfix);
         String responseStr = null;
-        synchronized (httpClient) {
-            try {
-                HttpPost httpost = new HttpPost(host + urlPostfix);
-                httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+        try {
+            HttpPost httpost = new HttpPost(host + urlPostfix);
+            httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
-                // execute postMethod
+            // execute postMethod
 
-                HttpResponse postResponse = httpClient.execute(httpost);
-                HttpEntity entity = postResponse.getEntity();
+            HttpResponse postResponse = httpClient.execute(httpost);
+            HttpEntity entity = postResponse.getEntity();
 
-                log.debug("facebookPostMethod: " + postResponse.getStatusLine());
-                if (entity != null) {
-                    responseStr = EntityUtils.toString(entity);
-                    //log.debug(responseStr);
-                    entity.consumeContent();
-                }
-
-                log.debug("Post Method done(" + postResponse.getStatusLine().getStatusCode() + "), response string length: " + (responseStr == null ? 0 : responseStr.length()));
-            } catch (IOException e) {
-                log.debug(e.getMessage());
+            log.debug("facebookPostMethod: " + postResponse.getStatusLine());
+            if (entity != null) {
+                responseStr = EntityUtils.toString(entity);
+                //log.debug(responseStr);
+                entity.consumeContent();
             }
+
+            log.debug("Post Method done(" + postResponse.getStatusLine().getStatusCode() + "), response string length: " + (responseStr == null ? 0 : responseStr.length()));
+        } catch (IOException e) {
+            log.debug(e.getMessage());
         }
+
         //TODO process the respons string
         //if statusCode == 200: no error;(responsStr contains "errorDescription":"No error.")
         //else retry?
@@ -907,36 +928,35 @@ public class FacebookManager {
         log.debug("url [ " + url + " ]");
 
         String responseStr = null;
-        synchronized (httpClient) {
 
-            try {
-                HttpGet loginGet = new HttpGet(url);
-                HttpResponse response = httpClient.execute(loginGet);
-                HttpEntity entity = response.getEntity();
+        try {
+            HttpGet loginGet = new HttpGet(url);
+            HttpResponse response = httpClient.execute(loginGet);
+            HttpEntity entity = response.getEntity();
 
-                log.debug("response status [ " + response.getStatusLine() + " ]");
-                if (entity != null) {
-                    responseStr = EntityUtils.toString(entity);
-                    entity.consumeContent();
-                }
-
-                int statusCode = response.getStatusLine().getStatusCode();
-
-                /**
-                 * @fixme I am not sure if 200 is the only code that
-                 *  means "success"
-                 */
-                if (statusCode != 200) {
-                    //error occured
-                    log.debug("Error Occured! Status Code = " + statusCode);
-                    log.debug("response [ " + statusCode + " ]");
-                    responseStr = null;
-                }
-                log.debug("Get Method done(" + statusCode + "), response string length: " + (responseStr == null ? 0 : responseStr.length()));
-            } catch (IOException e) {
-                log.debug(e.getMessage());
+            log.debug("response status [ " + response.getStatusLine() + " ]");
+            if (entity != null) {
+                responseStr = EntityUtils.toString(entity);
+                entity.consumeContent();
             }
+
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            /**
+             * @fixme I am not sure if 200 is the only code that
+             *  means "success"
+             */
+            if (statusCode != 200) {
+                //error occured
+                log.debug("Error Occured! Status Code = " + statusCode);
+                log.debug("response [ " + statusCode + " ]");
+                responseStr = null;
+            }
+            log.debug("Get Method done(" + statusCode + "), response string length: " + (responseStr == null ? 0 : responseStr.length()));
+        } catch (IOException e) {
+            log.debug(e);
         }
+
         return responseStr;
     }
 

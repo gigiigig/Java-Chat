@@ -17,7 +17,6 @@ import chatcommons.Client;
 import emoticon.Emoticon;
 import emoticon.EmoticonAddDialog;
 import emoticon.EmoticonsManger;
-import emoticon.Util;
 import gg.msn.facebook.core.FacebookManager;
 import gg.msn.core.manager.PersistentDataManager;
 import java.awt.Color;
@@ -33,13 +32,8 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,13 +65,11 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
-import static chatcommons.Commands.*;
 
 /**
  *
@@ -997,7 +989,6 @@ class MainPanel extends JPanel {
 class InputTextListener extends KeyAdapter {
 
     ChatWindow chatWindow;
-    int typCount = 0;
     final Object locker = new Object();
     Client client = null;
     String Uid;
@@ -1031,19 +1022,19 @@ class InputTextListener extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent arg0) {
         chatWindow.refreshInputTextFont();
-        if (typCount < 5) {
-            typCount++;
 
-        }
+        int typCount = chatWindow.getInputText().getDocument().getLength();
+//        log.debug("document lengtha [" + typCount + "]");
+
         //ogni 5 letterscrittte invio un messaggio di tipo typ
-        if (typCount >= 5 && StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)) {
+        if ((typCount == 1 || typCount == 20) && StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)) {
             Runnable runnable = new Runnable() {
 
                 public void run() {
                     log.debug("send typ message");
                     try {
                         FacebookManager.PostTypMessage(Uid, 1);
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                         FacebookManager.PostTypMessage(Uid, 0);
                     } catch (Exception e) {
                         log.error(e);
@@ -1052,8 +1043,6 @@ class InputTextListener extends KeyAdapter {
                 }
             };
             new Thread(runnable).start();
-
-            typCount = 0;
 
         }
     }

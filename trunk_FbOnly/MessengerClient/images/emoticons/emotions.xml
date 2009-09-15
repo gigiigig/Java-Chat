@@ -320,29 +320,4 @@
         <image>EMO_63.png</image>
         <shortcut>(lpz)</shortcut>
     </emotions>
-    <emotions>
-        <name></name>
-        <image>no.gif</image>
-        <shortcut>no</shortcut>
-    </emotions>
-    <emotions>
-        <name></name>
-        <image>emot_display.asp.gif</image>
-        <shortcut>argh</shortcut>
-    </emotions>
-    <emotions>
-        <name></name>
-        <image>devil.gif</image>
-        <shortcut>devil</shortcut>
-    </emotions>
-    <emotions>
-        <name></name>
-        <image>sorriso.gif</image>
-        <shortcut>:))</shortcut>
-    </emotions>
-    <emotions>
-        <name></name>
-        <image>OO.gif</image>
-        <shortcut>OO</shortcut>
-    </emotions>
 </EMOTIONXML>

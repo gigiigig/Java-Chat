@@ -70,7 +70,6 @@ public class FBLoginPanel extends javax.swing.JPanel {
         passwText = new javax.swing.JPasswordField();
         saveMailCheck = new javax.swing.JCheckBox();
         savePswCheck = new javax.swing.JCheckBox();
-        siteLinkButton = new AnotherLinkButton("gigi")  ;
 
         setName("Form"); // NOI18N
 
@@ -103,9 +102,6 @@ public class FBLoginPanel extends javax.swing.JPanel {
         savePswCheck.setName("savePswCheck"); // NOI18N
         savePswCheck.setOpaque(false);
 
-        siteLinkButton.setText(resourceMap.getString("siteLinkButton.text")); // NOI18N
-        siteLinkButton.setName("siteLinkButton"); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,12 +122,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
                                 .addComponent(emailText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(112, 112, 112)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(siteLinkButton)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -153,9 +146,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(connectionStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(loginButton))
-                .addGap(18, 18, 18)
-                .addComponent(siteLinkButton)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -167,7 +158,6 @@ public class FBLoginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel psswLabel;
     private javax.swing.JCheckBox saveMailCheck;
     private javax.swing.JCheckBox savePswCheck;
-    private javax.swing.JButton siteLinkButton;
     // End of variables declaration//GEN-END:variables
 
     public FBLoginPanel(ChatClientView ccv) {

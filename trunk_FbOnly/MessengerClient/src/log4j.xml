@@ -40,7 +40,7 @@
         <appender-ref ref="appender" />
         <appender-ref ref="console" />
     </logger>
-    <logger name="gg.msn.facebook.core.FacebookManager.doParseHomePage">
+    <logger name="login.page">
         <level value="debug"/>
         <appender-ref ref="homeAppender" />
     </logger>
