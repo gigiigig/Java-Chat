@@ -15,10 +15,8 @@ import gg.msn.facebook.core.FacebookManager;
 import gg.msn.facebook.core.FacebookUser;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.facebook.panel.FBLoginPanel;
-import gg.msn.ui.form.OptionsDialog;
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.HeadlessException;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -27,16 +25,13 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Properties;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.swing.JFrame;
 import org.apache.commons.lang.StringUtils;
-import static chatcommons.Commands.*;
 
 /**
  *
@@ -65,15 +60,6 @@ public class ChatClientViewHelper {
         ccv.getFrame().validate();
     }
 
-    /**
-     * rende visibile il loginPanel e nasconde mainPanel
-     */
-    public void showLoginPanel() {
-        ccv.getFrame().setContentPane(ccv.getLoginPanel());
-        ccv.getFrame().repaint();
-        ccv.getFrame().validate();
-    }
-
     public void showFacebookLoginPanel() {
         ccv.getFrame().remove(ccv.getMainPanel());
         ccv.getFrame().setContentPane(new FBLoginPanel(ccv));
@@ -81,104 +67,7 @@ public class ChatClientViewHelper {
         ccv.getFrame().validate();
     }
 
-    /**
-     * Connette al server principle 
-     * @return
-     */
-    public void connect() {
-        new Thread(new Runnable() {
-
-            public void run() {
-                try {
-                    connects();
-                    return;
-                    /*catch for some exception*/
-                } catch (ConnectException e) {
-                    showErrorDialog("Impossibile connettersi al server");
-                    resetLoginPanel();
-                    log.error(e);
-                } catch (SocketException e) {
-                    showErrorDialog(e.toString());
-                    resetLoginPanel();
-                    log.error(e);
-                } catch (UnknownHostException ex) {
-                    showErrorDialog(ex.toString());
-                    resetLoginPanel();
-                    log.error(ex);
-                } catch (IOException ex) {
-                    showErrorDialog(ex.toString());
-                    resetLoginPanel();
-                    log.error(ex);
-                }
-
-            }
-
-            private void connects() throws SocketException, IOException, UnknownHostException, ConnectException {
-
-                //blocco input text e bottone
-                ccv.getLoginPanel().getNickText().setEnabled(false);
-                ccv.getLoginPanel().getLogin().setEnabled(false);
-
-                //leggo il nick
-                String nick = ccv.getLoginPanel().getNickText().getText().trim();
-
-                //connetto il socket
-                Socket socket = new Socket();
-                String ip = PersistentDataManager.getIp();
-                int port = PersistentDataManager.getPort();
-
-                log.debug("address ip [" + ip + "] port [" + port + "]");
-
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(ip, port);
-
-
-                    //setto il protocolllo
-                    ChatClientView.protocol = ChatClientView.GIGIMSN_PROTOCOL;
-                    //messaggio di stato
-                    //setMessage("Connecting to server");
-                    //creo il socket
-                    PersistentDataManager.setSocket(socket);
-                    log.info("client : connect on port : " + PersistentDataManager.getPort());
-                    //connetto il socket
-                    //-PersistentDataManager.getSocket().connect(new InetSocketAddress(PersistentDataManager.getIp(), PersistentDataManager.getPort()));
-                    PersistentDataManager.setOutputStream(PersistentDataManager.getSocket().getOutputStream());
-                    PersistentDataManager.setNick(nick);
-                
-
-
-                //lancio il thread
-                ccv.getMainPanel().getNickLabel().setText(PersistentDataManager.getNick());
-                showMainPanel();
-                //riattivo inputtext e bottone di login
-                ccv.getLoginPanel().getNickText().setEnabled(true);
-                ccv.getLoginPanel().getLogin().setEnabled(true);
-                //setMessage("Connected");
-                //aggiorno il messaggio nella systemtray
-                if (ccv.getTray() != null) {
-                    ccv.getTray().setToolTip("Gigi Messenger - connesso : " + PersistentDataManager.getNick());
-                }
-                //nel prperties salvo il nick impostato per  la connessione
-                Properties properties = Util.readProperties();
-                if (properties != null) {
-                    properties.setProperty("nick", nick);
-                    Util.writeProperties(properties);
-                } else {
-                    properties = new Properties();
-                    properties.setProperty("nick", nick);
-                    Util.writeProperties(properties);
-                }
-                /*catch for some exception*/
-            }
-
-            private void resetLoginPanel() {
-                ccv.getLoginPanel().getNickText().setEnabled(true);
-                ccv.getLoginPanel().getLogin().setEnabled(true);
-            }
-        }).start();
-
-        //return new Connect(Application.getInstance());
-    }
-
+    //return new Connect(Application.getInstance());
     public void showErrorDialog(String message) throws HeadlessException {
         JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>" + message + "</html>", "Errore", JOptionPane.ERROR_MESSAGE);
     }
@@ -192,7 +81,13 @@ public class ChatClientViewHelper {
      */
     public void disconnetti() {
         if (StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)) {
-            FacebookManager.shutdown();
+            new Thread(new Runnable() {
+
+                public void run() {
+                    FacebookManager.shutdown();
+                }
+            }).start();
+
             showFacebookLoginPanel();
         }
     }
@@ -355,22 +250,8 @@ public class ChatClientViewHelper {
         Properties properties = Util.readProperties();
 
         if (properties == null) {
-            try {
-                OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true, ccv.getLoginPanel());
-                optionsFrame.setLocationRelativeTo(ccv.getFrame());
-                optionsFrame.getPortaText().setText("3434");
-                optionsFrame.getIpText().setText("localhost");
-                optionsFrame.getThemeFolderText().setText(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
-                optionsFrame.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-                optionsFrame.getCancel().setVisible(false);
-                optionsFrame.setVisible(true);
-            } catch (Exception e) {
-                log.error(e);
-            }
         }
-        if (properties != null && !StringUtils.equals(properties.getProperty("nick"), "")) {
-            ccv.getLoginPanel().getNickText().setText(properties.getProperty("nick"));
-        }
+
         if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_IP), "")) {
             PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
         }

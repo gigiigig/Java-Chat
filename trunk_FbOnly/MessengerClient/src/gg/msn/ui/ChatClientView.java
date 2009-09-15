@@ -6,9 +6,8 @@ package gg.msn.ui;
 import emoticon.EmoticonsManageFrame;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.listener.ChatClientViewListeners;
-import gg.msn.ui.form.OptionsDialog;
 import gg.msn.ui.helper.ChatClientViewHelper;
-import gg.msn.ui.panel.LoginPanel;
+
 import gg.msn.ui.panel.MainPanel;
 import java.awt.AWTException;
 import java.awt.HeadlessException;
@@ -39,7 +38,6 @@ public class ChatClientView extends FrameView {
     private Log log = LogFactory.getLog(ChatClientView.class);
     private ChatClientViewHelper helper;// = new ChatClientViewHelper();
     private MainPanel mainPanel;
-    private LoginPanel loginPanel;
     public static String protocol;
     public static final String GIGIMSN_PROTOCOL = "ggmsn";
     public static final String FACEBOOK_PROTOCOL = "facebook";
@@ -65,7 +63,6 @@ public class ChatClientView extends FrameView {
 
 
         mainPanel = new MainPanel(this);
-        loginPanel = new LoginPanel(this);
 
         helper = new ChatClientViewHelper(this);
         helper.initializeProperties();
@@ -116,12 +113,7 @@ public class ChatClientView extends FrameView {
     /**
      * Show Option Frame
      */
-    @Action
-    public void showOptionFrame() {
-        OptionsDialog of = new OptionsDialog(this.getFrame(), true, loginPanel);
-        of.setLocationRelativeTo(this.getFrame());
-        of.setVisible(true);
-    }
+    
 
     private void createSystemTray() throws HeadlessException {
         try {
@@ -258,13 +250,6 @@ public class ChatClientView extends FrameView {
         this.mainPanel = mainPanel;
     }
 
-    public LoginPanel getLoginPanel() {
-        return loginPanel;
-    }
-
-    public void setLoginPanel(LoginPanel loginPanel) {
-        this.loginPanel = loginPanel;
-    }
 
     //</editor-fold>
     @Action
@@ -279,10 +264,7 @@ public class ChatClientView extends FrameView {
         helper.showFacebookLoginPanel();
     }
 
-    @Action
-    public void showLogin() {
-        helper.showLoginPanel();
-    }
+   
 }
 // <editor-fold defaultstate="collapsed" desc="Old MainPanel">
 /*class MainPanel extends JPanel {

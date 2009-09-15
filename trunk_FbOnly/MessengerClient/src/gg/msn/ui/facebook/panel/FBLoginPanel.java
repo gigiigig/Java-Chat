@@ -66,9 +66,6 @@ public class FBLoginPanel extends javax.swing.JPanel {
         loginButton = new javax.swing.JButton();
         connectionStatusLabel = new javax.swing.JLabel();
         passwText = new javax.swing.JPasswordField();
-        buttonsToolBar = new javax.swing.JToolBar();
-        ggLoginButton = new javax.swing.JButton();
-        fbLoginButton = new javax.swing.JButton();
         saveMailCheck = new javax.swing.JCheckBox();
         savePswCheck = new javax.swing.JCheckBox();
 
@@ -95,30 +92,6 @@ public class FBLoginPanel extends javax.swing.JPanel {
         passwText.setText(resourceMap.getString("passwText.text")); // NOI18N
         passwText.setName("passwText"); // NOI18N
 
-        buttonsToolBar.setBackground(resourceMap.getColor("buttonsToolBar.background")); // NOI18N
-        buttonsToolBar.setBorder(null);
-        buttonsToolBar.setRollover(true);
-        buttonsToolBar.setName("buttonsToolBar"); // NOI18N
-        buttonsToolBar.setOpaque(false);
-
-        ggLoginButton.setAction(actionMap.get("showLogin")); // NOI18N
-        ggLoginButton.setIcon(resourceMap.getIcon("ggLoginButton.icon")); // NOI18N
-        ggLoginButton.setFocusable(false);
-        ggLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ggLoginButton.setName("ggLoginButton"); // NOI18N
-        ggLoginButton.setOpaque(false);
-        ggLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        buttonsToolBar.add(ggLoginButton);
-
-        fbLoginButton.setAction(actionMap.get("showFacebookLogin")); // NOI18N
-        fbLoginButton.setIcon(resourceMap.getIcon("fbLoginButton.icon")); // NOI18N
-        fbLoginButton.setFocusable(false);
-        fbLoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        fbLoginButton.setName("fbLoginButton"); // NOI18N
-        fbLoginButton.setOpaque(false);
-        fbLoginButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        buttonsToolBar.add(fbLoginButton);
-
         saveMailCheck.setText(resourceMap.getString("saveMailCheck.text")); // NOI18N
         saveMailCheck.setName("saveMailCheck"); // NOI18N
         saveMailCheck.setOpaque(false);
@@ -131,7 +104,6 @@ public class FBLoginPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonsToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(112, 112, 112)
                 .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -155,8 +127,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(buttonsToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(127, 127, 127)
+                .addGap(156, 156, 156)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(emailLabel)
                     .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -176,12 +147,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToolBar buttonsToolBar;
     private javax.swing.JLabel connectionStatusLabel;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailText;
-    private javax.swing.JButton fbLoginButton;
-    private javax.swing.JButton ggLoginButton;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passwText;
     private javax.swing.JLabel psswLabel;
@@ -193,7 +161,6 @@ public class FBLoginPanel extends javax.swing.JPanel {
         super();
         initComponents();
         this.ccv = ccv;
-        buttonsToolBar.setVisible(false);
 
         //add nickText ENTER keystroke
 //        emailText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
@@ -377,11 +344,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         ccv.getHelper().showFacebookLoginPanel();
     }
 
-    @Action
-    public void showLogin() {
-        ccv.getHelper().showLoginPanel();
-    }
-
+    
     public static void main(String[] args) {
 //        FacebookManager facebookManager = new FacebookManager();
 //        facebookManager.doLogin("luigi.ant@email.it", "03021984");
@@ -389,7 +352,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
 //        System.out.println(FacebookManager.facebookGetMethod("http://www.google.com"));
     }
 
-    private String encryptPass(char[] passArr) {
+     String encryptPass(char[] passArr) {
         String pass = "";
         try {
             // Generate a temporary key. In practice, you would save this key.

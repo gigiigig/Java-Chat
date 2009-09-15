@@ -4,26 +4,18 @@
  */
 package gg.msn.ui.listener;
 
-import chatcommons.Client;
 import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.ChatClientView;
 import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
-import gg.msn.ui.form.OptionsDialog;
 
-import gg.msn.ui.helper.ChatClientViewHelper;
-import gg.msn.ui.panel.MainPanel;
 import gg.msn.ui.theme.ThemeManager;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Properties;
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -173,22 +165,10 @@ public class ChatClientViewListeners {
             Properties properties = Util.readProperties();
 
             if (properties == null) {
-                try {
-                    OptionsDialog optionsFrame = new OptionsDialog(ccv.getFrame(), true, ccv.getLoginPanel());
-                    optionsFrame.setLocationRelativeTo(ccv.getFrame());
-                    optionsFrame.getPortaText().setText("3434");
-                    optionsFrame.getIpText().setText("localhost");
-                    optionsFrame.getThemeFolderText().setText(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
-                    optionsFrame.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-                    optionsFrame.getCancel().setVisible(false);
-                    optionsFrame.setVisible(true);
-                } catch (Exception e) {
-                    log.error(e);
-                }
+               
             }
             if (properties != null) {
                 if (!StringUtils.equals(properties.getProperty("nick"), "")) {
-                    ccv.getLoginPanel().getNickText().setText(properties.getProperty("nick"));
                 }
                 if (!StringUtils.equals(properties.getProperty(Util.PROPERTY_IP), "")) {
                     PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
