@@ -11,7 +11,6 @@ import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.form.OptionsDialog;
 
-import gg.msn.ui.form.SendFileDialog;
 import gg.msn.ui.helper.ChatClientViewHelper;
 import gg.msn.ui.panel.MainPanel;
 import gg.msn.ui.theme.ThemeManager;
@@ -84,41 +83,7 @@ public class ChatClientViewListeners {
             startChat.setText("Chiama in chat");
             jpm.add(startChat);
             if (StringUtils.equals(ChatClientView.protocol, ChatClientView.GIGIMSN_PROTOCOL)) {
-                JMenuItem startDama = new JMenuItem();
-                startDama.setAction(new AbstractAction() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        ChatClientView ccv = (ChatClientView) (ChatClientApp.getApplication().getMainView());
-                        ccv.getHelper().startGameWithSelected();
-                    }
-                });
-                startDama.setText("Gioca a Dama (V. alpha)");
-                JMenuItem startSendFile = new JMenuItem();
-                startSendFile.setAction(new AbstractAction() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        ChatClientView ccv = (ChatClientView) (ChatClientApp.getApplication().getMainView());
-                        Client selected = null;
-                        try {
-                            selected = (Client) ccv.getMainPanel().getClientsList().getSelectedValue();
-                            String nickSelected = selected.getNick();
-                            SendFileDialog sendFileDialog = new SendFileDialog(nickSelected, ccv);
-                            sendFileDialog.setLocationRelativeTo(ccv.getFrame());
-                            sendFileDialog.setVisible(true);
-                        } catch (Exception ex) {
-                            log.error(ex);
-                        }
-                    }
-                });
-                startSendFile.setText("Invia un file");
-                startSendFile.setIcon(new ImageIcon(ChatClientView.class.getResource("resources/send_small.png")));
-
-                JMenu games = new JMenu("Giochi");
-                games.add(startDama);
-                jpm.add(games);
-                jpm.add(startSendFile);
+                
             }
         }
 

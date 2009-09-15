@@ -6,24 +6,16 @@ package gg.msn.ui.helper;
 
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.chatwindow.ChatWindow;
-import gg.msn.ui.form.ReceiveFileDialog;
-import gg.msn.ui.form.SendFileDialog;
+
 import chatcommons.Client;
 import gg.msn.core.commons.Util;
-import gg.msn.ui.game.Canvas;
-import gg.msn.ui.game.GameHome;
-import gg.msn.ui.game.dama.DamaCanvas;
-import gg.msn.core.thread.ClientReader;
-import chatcommons.datamessage.MESSAGE;
-import chatcommons.datamessage.MessageManger;
+
 import emoticon.EmoticonsManger;
 import gg.msn.facebook.core.FacebookManager;
 import gg.msn.facebook.core.FacebookUser;
-import gg.msn.core.manager.ConnectionManager;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.facebook.panel.FBLoginPanel;
 import gg.msn.ui.form.OptionsDialog;
-import gg.msn.ui.listener.MessageReceivedListener;
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
@@ -55,13 +47,11 @@ public class ChatClientViewHelper {
     private static Log log = LogFactory.getLog(ChatClientViewHelper.class);
     private ChatClientView ccv;
     private ArrayList<ChatWindow> chatWindows;
-    private ArrayList<Canvas> canvases;
     private ArrayList<JFrame> fileDialogs;
 
     public ChatClientViewHelper(ChatClientView ccv) {
         this.ccv = ccv;
         chatWindows = new ArrayList<ChatWindow>();
-        canvases = new ArrayList<Canvas>();
         fileDialogs = new ArrayList<JFrame>();
 
     }
@@ -140,16 +130,7 @@ public class ChatClientViewHelper {
                 log.debug("address ip [" + ip + "] port [" + port + "]");
 
                 InetSocketAddress inetSocketAddress = new InetSocketAddress(ip, port);
-                String response = new ConnectionManager().connect(socket, inetSocketAddress, nick);
 
-                log.debug("server response [" + response + "]");
-
-                if (response.equals(Command.KO)) {
-                    JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=blue>Il nick scelto è già connesso<html>", "Attenzione", JOptionPane.WARNING_MESSAGE);
-                    resetLoginPanel();
-                    return;
-
-                } else {
 
                     //setto il protocolllo
                     ChatClientView.protocol = ChatClientView.GIGIMSN_PROTOCOL;
@@ -162,11 +143,10 @@ public class ChatClientViewHelper {
                     //-PersistentDataManager.getSocket().connect(new InetSocketAddress(PersistentDataManager.getIp(), PersistentDataManager.getPort()));
                     PersistentDataManager.setOutputStream(PersistentDataManager.getSocket().getOutputStream());
                     PersistentDataManager.setNick(nick);
-                }
+                
 
 
                 //lancio il thread
-                new Thread(new ClientReader(new MessageReceivedListener(ccv), ClientReader.MAINREADER)).start();
                 ccv.getMainPanel().getNickLabel().setText(PersistentDataManager.getNick());
                 showMainPanel();
                 //riattivo inputtext e bottone di login
@@ -214,30 +194,6 @@ public class ChatClientViewHelper {
         if (StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)) {
             FacebookManager.shutdown();
             showFacebookLoginPanel();
-        } else {
-            try {
-                //TODO metti nel finalli i comendi da eseguire per forza
-
-                new ConnectionManager().disconnect(PersistentDataManager.getSocket());
-                PersistentDataManager.setOutputStream(null);
-                PersistentDataManager.setClients(new Hashtable<String, Client>());
-
-                ((DefaultListModel) ccv.getMainPanel().getClientsList().getModel()).removeAllElements();
-
-                chatWindows = new ArrayList<ChatWindow>();
-                canvases = new ArrayList<Canvas>();
-                fileDialogs = new ArrayList<JFrame>();
-
-
-            } catch (SocketException se) {
-                log.error(se);
-//            ccv.ShowMessageFrame("Il server è disconnesso");
-                JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Il server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
-            } catch (IOException ex) {
-                log.error(ex);
-            }
-            showLoginPanel();
-
         }
     }
 
@@ -380,88 +336,7 @@ public class ChatClientViewHelper {
         return null;
     }
 
-    public Canvas getGameWith(String nick, Class typeOfGame) {
-
-        for (Canvas elem : canvases) {
-            log.debug("canvases pos : " + elem);
-            log.debug("elem instanceof DamaCanvas" + (elem instanceof DamaCanvas));
-            if (elem instanceof DamaCanvas && ((DamaCanvas) elem).getNickAdversar().equals(nick)) {
-                log.debug("finded existing games");
-                return elem;
-            }
-        }
-
-        return null;
-
-
-//        GameHome home = new GameHome(ccv, nick);
-//        home.startDamaClient();
-//        canvases.add(home.getCanvas());
-//        log.debug(home.getCanvas());
-//        return (home.getCanvas());
-
-
-
-    }
-
-    public SendFileDialog getSendFileDialog(String fileName, String receiver) {
-        log.debug("fileDialogs.size() : " + fileDialogs.size());
-        for (JFrame fileDialog : fileDialogs) {
-            if (fileDialog instanceof SendFileDialog) {
-                String elemReceiver = ((SendFileDialog) fileDialog).getReceiver();
-                String elemFileName = ((SendFileDialog) fileDialog).getFileSender().getToSend().getName();
-                log.debug(" elem : " + elemReceiver);
-                log.debug(" elem : " + elemFileName);
-                log.debug(" params : " + receiver);
-                log.debug(" params : " + fileName);
-                if (elemReceiver.equals(receiver) && elemFileName.equals(fileName)) {
-
-                    return (SendFileDialog) fileDialog;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public ReceiveFileDialog getReceiveFileDialog(String fileName, String sender) {
-        for (JFrame fileDialog : fileDialogs) {
-            if (fileDialog instanceof ReceiveFileDialog) {
-                String elemSender = ((ReceiveFileDialog) fileDialog).getSender();
-                String elemFileName = ((ReceiveFileDialog) fileDialog).getFile();
-
-//                log.debug(" elem : "+elemFileName +" "+elemSender);
-//                log.debug(" params : "+fileName +" "+sender);
-                if (elemSender.equals(sender) && elemFileName.equals(fileName)) {
-                    return (ReceiveFileDialog) fileDialog;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Inizia una partita con l'utente selezionato nella lista di utenti
-     */
-    public void startGameWithSelected() {
-
-        String nickSelected = (String) ccv.getMainPanel().getClientsList().getSelectedValue();
-        GameHome home = new GameHome(ccv);
-        home.setLocationRelativeTo(ccv.getFrame());
-        home.setVisible(true);
-        home.startDamaServer(nickSelected);
-
-        MESSAGE message = MessageManger.createRequest(Request.STARTGAME, null, null);
-        MessageManger.addReceiver(message, nickSelected);
-
-        try {
-            MessageManger.directWriteMessage(message, PersistentDataManager.getOutputStream());
-        } catch (SocketException socketException) {
-            log.error(socketException);
-        }
-    }
-
-    public  Client clientFromFacebookUser(FacebookUser fu) {
+    public Client clientFromFacebookUser(FacebookUser fu) {
         Client client = new Client();
         client.setNick(fu.name);
         try {
@@ -524,14 +399,6 @@ public class ChatClientViewHelper {
 
     public void setChatWindows(ArrayList<ChatWindow> chatWindows) {
         this.chatWindows = chatWindows;
-    }
-
-    public ArrayList<Canvas> getCanvases() {
-        return canvases;
-    }
-
-    public void setCanvases(ArrayList<Canvas> canvases) {
-        this.canvases = canvases;
     }
 
     public ArrayList<JFrame> getFileDialogs() {

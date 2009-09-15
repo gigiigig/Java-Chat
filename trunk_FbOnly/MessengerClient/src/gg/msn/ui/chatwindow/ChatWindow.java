@@ -12,11 +12,8 @@ package gg.msn.ui.chatwindow;
 
 import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.ChatClientView;
-import gg.msn.ui.form.SelectClientsToAdd;
 import gg.msn.ui.theme.ThemeManager;
 import chatcommons.Client;
-import chatcommons.datamessage.MESSAGE;
-import chatcommons.datamessage.MessageManger;
 import emoticon.Emoticon;
 import emoticon.EmoticonAddDialog;
 import emoticon.EmoticonsManger;
@@ -633,83 +630,6 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
                     if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
                         FacebookManager.PostMessage(clients.get(0).getUid(), newText);
 
-                    } else {
-
-                        MESSAGE message = null;
-                        //parametri
-                        List<String> receivers = new LinkedList<String>();
-                        if (clients.size() == 1) {
-                            receivers.add(clients.get(0).getNick());
-                            message = MessageManger.createMessage(Message.SINGLE, receivers, null);
-                        } else {
-                            for (Client client : clients) {
-                                receivers.add(client.getNick());
-                            }
-                            message = MessageManger.createMessage(Message.CONFERENCE, receivers, null);
-                        }
-
-                        //paramtri
-                        MessageManger.addParameter(message, "text", newText);
-                        String fontSt = fontToString(font);
-
-                        log.debug("font : " + fontSt);
-                        MessageManger.addParameter(message, "font", fontSt);
-                        MessageManger.addParameter(message, "color", color.getRGB() + "");
-
-                        EmoticonsManger emotionsManger = new EmoticonsManger();
-
-                        try {
-                            List<Emoticon> emotocinsToAdd = emotionsManger.emoticonsInDoc(newText);
-                            log.debug("emotocinsToAdd : " + emotocinsToAdd.size());
-                            for (Emoticon emotion : emotocinsToAdd) {
-
-                                File source = new File(Util.getInstance().getPath() + EmoticonsManger.EMOTICONSPATH + emotion.getFileName());
-
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                FileInputStream fis = new FileInputStream(source);
-
-                                IOUtils.copy(fis, baos);
-                                /*
-                                byte[] temp = new byte[1024];
-                                while (fis.read(temp) != -1) {
-                                baos.write(temp);
-                                }*/
-
-                                try {
-
-                                    baos.close();
-                                    log.trace("ByteArrayOutputStream = " + baos.size());
-                                    byte[] data = baos.toByteArray();
-                                    byte[] compressed = gg.msn.core.commons.Util.compress(data);
-                                    log.debug("initial size = " + data.length);
-                                    log.debug("final size = " + compressed.length);
-                                    MessageManger.addContent(message, emotion.getShortcut(), compressed);
-
-                                } catch (IOException ex) {
-                                    log.error(ex);
-                                }
-
-                            }
-
-                            try {
-                                //invio il messaggio
-                                MessageManger.directWriteMessage(message, outputStream);
-                            } catch (SocketException socketException) {
-                                // se il server nn risponde chiudo tutte le finestre
-                                log.warn("server not respond : " + socketException);
-                                List<ChatWindow> chatWindows = ccv.getHelper().getChatWindows();
-
-                                for (ChatWindow chatWindow : chatWindows) {
-                                    chatWindow.setVisible(false);
-                                }
-                                //JOptionPane.showMessageDialog(ccv.getFrame(), "<html><font color=red>Il server non risponde<html>", "Errore", JOptionPane.ERROR_MESSAGE);
-                                ccv.getHelper().showErrorDialog("Il server non risponde");
-                                ccv.getHelper().showLoginPanel();
-                            }
-
-                        } catch (Exception e) {
-                            log.error(e);
-                        }
                     }
                     return;
                 }
@@ -729,16 +649,6 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
         for (Client client : clients) {
             listModel.addElement(client.getNick());
         }
-    }
-
-    /**
-     * Visualizza il pannello pwer aggingere utenti alla chat
-     */
-    @Action
-    public void showSelectClientToAdd() {
-        SelectClientsToAdd scta = new SelectClientsToAdd(this, (ChatClientView) ChatClientApp.getApplication().getMainView());
-        scta.setLocationRelativeTo(this);
-        scta.setVisible(true);
     }
 
     /**

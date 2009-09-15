@@ -36,6 +36,8 @@ public class Util {
     public static final String PROPERTY_COLOR = "color";
     public static final String PROPERTY_FACEBOOK_EMAIL = "facebookEmail";
     public static final String PROPERTY_FACEBOOK_PSW = "facebookPsw";
+    public static final String PROPERTY_SAVE_FACEBOOK_EMAIL = "saveFacebookEmail";
+    public static final String PROPERTY_SAVE_FACEBOOK_PSW = "saveFacebookPsw";
     private static final char SEPARATOR = IOUtils.DIR_SEPARATOR;
     public static final String VALUE_DEFAULT_THEME_FOLDER = "images" + SEPARATOR + "theme" + SEPARATOR + "default";
 
