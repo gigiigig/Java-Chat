@@ -1,7 +1,0 @@
-#Fri Jan 23 11:41:47 CET 2009
-chatcommons.datamessage.generated.MESSAGE=chatcommons.datamessage.generated.descriptors.MESSAGEDescriptor
-chatcommons.datamessage.generated.Content=chatcommons.datamessage.generated.descriptors.ContentDescriptor
-chatcommons.datamessage.generated.Parameter=chatcommons.datamessage.generated.descriptors.ParameterDescriptor
-chatcommons.datamessage.generated.Receivers=chatcommons.datamessage.generated.descriptors.ReceiversDescriptor
-chatcommons.datamessage.generated.Parameters=chatcommons.datamessage.generated.descriptors.ParametersDescriptor
-chatcommons.datamessage.generated.Contents=chatcommons.datamessage.generated.descriptors.ContentsDescriptor
