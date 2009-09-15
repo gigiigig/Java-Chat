@@ -41,17 +41,17 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.90296248"
-     inkscape:cx="263.49414"
+     inkscape:cx="75.778699"
      inkscape:cy="716.68089"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1280"
+     inkscape:window-width="1264"
      inkscape:window-height="738"
-     inkscape:window-x="1016"
-     inkscape:window-y="100" />
+     inkscape:window-x="0"
+     inkscape:window-y="26" />
   <metadata
      id="metadata2397">
     <rdf:RDF>
@@ -200,11 +200,11 @@
        y="311.78482"
        rx="27.980957"
        ry="27.980957"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
-       inkscape:export-xdpi="10.276682"
-       inkscape:export-ydpi="10.276682" />
+       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
+       inkscape:export-xdpi="10.353206"
+       inkscape:export-ydpi="10.353206" />
     <rect
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#00d455;stroke-width:8.973;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#00d400;stroke-width:8.97300000000000080;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect6776"
        width="234.42986"
        height="234.42986"
@@ -212,12 +212,12 @@
        y="307.73697"
        rx="27.470636"
        ry="27.714821"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
-       inkscape:export-xdpi="10.276682"
-       inkscape:export-ydpi="10.276682" />
+       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
+       inkscape:export-xdpi="10.353206"
+       inkscape:export-ydpi="10.353206" />
     <path
        sodipodi:type="arc"
-       style="opacity:1;fill:#00d455;fill-opacity:1;stroke:none;stroke-width:0.97799999;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.15228427"
+       style="opacity:1;fill:#00d400;fill-opacity:1;stroke:none;stroke-width:0.97799999000000004;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.15228427000000000"
        id="path6778"
        sodipodi:cx="303.44989"
        sodipodi:cy="426.27652"
@@ -225,16 +225,16 @@
        sodipodi:ry="73.219528"
        d="M 375.88632,426.27652 A 72.436432,73.219528 0 1 1 231.01346,426.27652 A 72.436432,73.219528 0 1 1 375.88632,426.27652 z"
        transform="matrix(1.3391052,0,0,1.3247832,-252.79514,-138.53682)"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
-       inkscape:export-xdpi="10.276682"
-       inkscape:export-ydpi="10.276682" />
+       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
+       inkscape:export-xdpi="10.353206"
+       inkscape:export-ydpi="10.353206" />
     <a
        id="a2465"
        style="fill:#ffffff"
        transform="matrix(0.4257433,0,0,0.4156347,-5.3752104,298.61569)"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
-       inkscape:export-xdpi="10.276682"
-       inkscape:export-ydpi="10.276682">
+       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\chatIcon.png"
+       inkscape:export-xdpi="10.353206"
+       inkscape:export-ydpi="10.353206">
       <path
          sodipodi:nodetypes="ccc"
          id="path2417"
