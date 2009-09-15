@@ -418,7 +418,7 @@ public class FacebookManager {
 
         String getMethodResponseBody = facebookGetMethod(homePageUrl);
         log.debug("=========HomePage: getMethodResponseBody begin=========");
-        //System.out.print(getMethodResponseBody);
+        log.debug(getMethodResponseBody);
         log.debug("+++++++++HomePage: getMethodResponseBody end+++++++++");
 
         //deal with the cookies
