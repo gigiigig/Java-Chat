@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="buttonsToolBar" alignment="0" pref="300" max="32767" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+              <Component id="loginButton" min="-2" pref="75" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="connectionStatusLabel" min="-2" pref="77" max="-2" attributes="1"/>
+              <EmptySpace pref="32" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="psswLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="emailLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="saveMailCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="savePswCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="passwText" alignment="0" max="32767" attributes="1"/>
+                      <Component id="emailText" alignment="0" pref="148" max="32767" attributes="1"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="buttonsToolBar" min="-2" pref="29" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="emailLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="emailText" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="psswLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="passwText" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Component id="saveMailCheck" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="savePswCheck" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="connectionStatusLabel" max="32767" attributes="1"/>
+                  <Component id="loginButton" alignment="1" min="-2" max="-2" attributes="1"/>
+              </Group>
+              <EmptySpace pref="75" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="emailLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="emailLabel.text"/>
+        <Property name="name" type="java.lang.String" value="emailLabel" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="psswLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="psswLabel.text"/>
+        <Property name="name" type="java.lang.String" value="psswLabel" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="emailText">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="emailText.text"/>
+        <Property name="name" type="java.lang.String" value="emailText" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="loginButton">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="gg.msn.ui.facebook.FBLoginPanel" id="connect" methodName="connect"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="loginButton.text"/>
+        <Property name="name" type="java.lang.String" value="loginButton" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="connectionStatusLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="connectionStatusLabel.text"/>
+        <Property name="name" type="java.lang.String" value="connectionStatusLabel" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="passwText">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="passwText.text"/>
+        <Property name="name" type="java.lang.String" value="passwText" noResource="true"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JToolBar" name="buttonsToolBar">
+      <Properties>
+        <Property name="background" type="java.awt.Color" resourceKey="buttonsToolBar.background"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
+        </Property>
+        <Property name="rollover" type="boolean" value="true"/>
+        <Property name="name" type="java.lang.String" value="buttonsToolBar" noResource="true"/>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="ggLoginButton">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="gg.msn.ui.facebook.panel.FBLoginPanel" id="showLogin" methodName="showLogin"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="ggLoginButton.icon"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="name" type="java.lang.String" value="ggLoginButton" noResource="true"/>
+            <Property name="opaque" type="boolean" value="false"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="fbLoginButton">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="gg.msn.ui.facebook.panel.FBLoginPanel" id="showFacebookLogin" methodName="showFacebookLogin"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="fbLoginButton.icon"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="name" type="java.lang.String" value="fbLoginButton" noResource="true"/>
+            <Property name="opaque" type="boolean" value="false"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JCheckBox" name="saveMailCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="saveMailCheck.text"/>
+        <Property name="name" type="java.lang.String" value="saveMailCheck" noResource="true"/>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="savePswCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="savePswCheck.text"/>
+        <Property name="name" type="java.lang.String" value="savePswCheck" noResource="true"/>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>
