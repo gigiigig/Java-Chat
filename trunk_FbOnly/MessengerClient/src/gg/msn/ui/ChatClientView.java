@@ -63,7 +63,6 @@ public class ChatClientView extends FrameView {
 
 
         mainPanel = new MainPanel(this);
-
         helper = new ChatClientViewHelper(this);
         helper.initializeProperties();
 

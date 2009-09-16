@@ -17,7 +17,6 @@ import gg.msn.facebook.core.FacebookManager;
 import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientView;
-import gg.msn.ui.AnotherLinkButton;
 import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.facebook.thread.BuddyListRequester;
 import gg.msn.ui.facebook.thread.MessageRequester;
@@ -171,11 +170,13 @@ public class FBLoginPanel extends javax.swing.JPanel {
 //        emailText.getActionMap().put("Enter", getActionMap().get("connect"));
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
         emailText.getInputMap().put(enter, "Enter");
-        javax.swing.Action action = getActionMap().get("connect");
-        log.debug("action "+action);
-        passwText.getActionMap().put("Enter",action);
+        emailText.getActionMap().put("Enter", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                connect();
+            }
+        });
         passwText.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "Enter");
-        passwText.getActionMap().put("Enter", getActionMap().get("connect"));
+        passwText.getActionMap().put("Enter", ChatClientApp.getInstance().getContext().getActionMap(FBLoginPanel.class, this).get("connect"));
 
         //carico i valori salvati se ci sono
         String email = Util.readProperties().getProperty(Util.PROPERTY_FACEBOOK_EMAIL);

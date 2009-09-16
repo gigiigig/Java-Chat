@@ -11,12 +11,10 @@ import gg.msn.core.manager.PersistentDataManager;
 
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Properties;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -63,8 +61,8 @@ public class ChatClientViewListeners {
      * Contiene le operazioni da efffettuare in NICKTABLE in caso di rigthclick 
      */
     public class ClientsListRightClickListener extends MouseInputAdapter {
-        public static final int POPUPMENU_IMAGE_LATE = 20;
 
+        public static final int POPUPMENU_IMAGE_LATE = 20;
         private Log log = LogFactory.getLog(ClietsListOutClickListener.class);
         private ChatClientView ccv;
         private JPopupMenu jpm;
@@ -80,14 +78,13 @@ public class ChatClientViewListeners {
             startChat.setText("Chiama in chat");
             try {
                 ImageIcon icon = new ImageIcon(getClass().getResource("/gg/msn/ui/panel/resources/chatIcon.png"));
-                icon = new ImageIcon(icon.getImage().getScaledInstance(POPUPMENU_IMAGE_LATE,POPUPMENU_IMAGE_LATE, Image.SCALE_AREA_AVERAGING));
+                icon = new ImageIcon(icon.getImage().getScaledInstance(POPUPMENU_IMAGE_LATE, POPUPMENU_IMAGE_LATE, Image.SCALE_AREA_AVERAGING));
                 startChat.setIcon(icon);
             } catch (Exception e) {
                 log.error(e);
             }
- jpm.add(startChat);
+            jpm.add(startChat);
             if (StringUtils.equals(ChatClientView.protocol, ChatClientView.GIGIMSN_PROTOCOL)) {
-                
             }
         }
 
@@ -177,7 +174,6 @@ public class ChatClientViewListeners {
             Properties properties = Util.readProperties();
 
             if (properties == null) {
-               
             }
             if (properties != null) {
                 if (!StringUtils.equals(properties.getProperty("nick"), "")) {
