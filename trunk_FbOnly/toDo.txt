@@ -1,2 +1,2 @@
-download della cronologia
+download della cronologia   
 stop del thread di ricezione messaggi quancdo si fa il logout
