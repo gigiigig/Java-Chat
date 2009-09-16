@@ -10,10 +10,14 @@ import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
 
 import gg.msn.ui.theme.ThemeManager;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Properties;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
@@ -59,6 +63,7 @@ public class ChatClientViewListeners {
      * Contiene le operazioni da efffettuare in NICKTABLE in caso di rigthclick 
      */
     public class ClientsListRightClickListener extends MouseInputAdapter {
+        public static final int POPUPMENU_IMAGE_LATE = 20;
 
         private Log log = LogFactory.getLog(ClietsListOutClickListener.class);
         private ChatClientView ccv;
@@ -73,7 +78,14 @@ public class ChatClientViewListeners {
             JMenuItem startChat = new JMenuItem();
             startChat.setAction(ChatClientApp.getApplication().getContext().getActionMap(ccv).get("addChatWithSelected"));
             startChat.setText("Chiama in chat");
-            jpm.add(startChat);
+            try {
+                ImageIcon icon = new ImageIcon(getClass().getResource("/gg/msn/ui/panel/resources/chatIcon.png"));
+                icon = new ImageIcon(icon.getImage().getScaledInstance(POPUPMENU_IMAGE_LATE,POPUPMENU_IMAGE_LATE, Image.SCALE_AREA_AVERAGING));
+                startChat.setIcon(icon);
+            } catch (Exception e) {
+                log.error(e);
+            }
+ jpm.add(startChat);
             if (StringUtils.equals(ChatClientView.protocol, ChatClientView.GIGIMSN_PROTOCOL)) {
                 
             }

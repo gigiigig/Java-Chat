@@ -36,8 +36,8 @@ public class EmotionsPanel extends javax.swing.JPanel {
     public static final int TRASLAZIONEIMG = (int) (3 * SCALEFACTOR);
     public static final int LATOCASELLA = (int) (29 * SCALEFACTOR);
     public static final int IMGSIZE = 24;
-    public static final int NUMIMGX = 8;
-    public int NUMIMGY = 8;
+    public static final int NUMIMGX = 5;
+    public static int NUMIMGY = 5;
 //    public static final int ALTEZZATOT = LATOCASELLA * NUMIMGY + 1;
     public static final int LARGHEZZATOT = LATOCASELLA * NUMIMGX + 1;
     private Point2D selected;

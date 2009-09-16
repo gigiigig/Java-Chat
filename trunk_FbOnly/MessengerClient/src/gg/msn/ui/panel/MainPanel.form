@@ -139,7 +139,12 @@
           <Connection code="new Color(255,255,255,100)&#xd;&#xa;        " type="code"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="null"/>
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder justification="2" title="Utenti">
+              <Property name="titleX" resourceKey="clientListScrollPane.border.title"/>
+              <Property name="font" resourceKey="clientListScrollPane.border.titleFont"/>
+            </TitledBorder>
+          </Border>
         </Property>
         <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
         <Property name="name" type="java.lang.String" value="clientListScrollPane" noResource="true"/>
@@ -155,14 +160,6 @@
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new Color(255, 255, 255, 100)" type="code"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder justification="2" title="Utenti">
-                  <Property name="titleX" resourceKey="clientsList.border.title"/>
-                  <Property name="font" resourceKey="clientsList.border.titleFont"/>
-                </TitledBorder>
-              </Border>
             </Property>
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new DefaultListModel()&#xa;    " type="code"/>

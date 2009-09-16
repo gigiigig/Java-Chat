@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -47,6 +49,7 @@ import gg.msn.core.commons.Util;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -55,10 +58,11 @@ public class FacebookManager {
     public static final String FACEBOOK_LAST_CHANNEL = "facebookLastChannel";
     public static final int MAX_CONNECTION_TRY = 3;
     public static final int MAX_FACEBOOK_CHANNELS = 99;
+    public static final int TRY_FIND_CHANNEL_NUMBER = 3;
     private static Log log = LogFactory.getLog(FacebookManager.class);
     private static HttpClient httpClient;
     public static String loginPageUrl = "http://www.facebook.com/login.php";
-    public static String homePageUrl = "http://www.facebook.com/home.php";
+    public static String homePageUrl = "http://www.facebook.com/home.php?_fb_noscript=1";
     public static String uid = null;
     public static String channel = "35";
     public static String post_form_id = null;
@@ -689,93 +693,146 @@ public class FacebookManager {
 
     }
 
+    // <editor-fold defaultstate="collapsed" desc="OLO findChannel">
     /**
      * Setta il canale sulla variabile channel e restituisce il sequenz number
      * @return il sequenz number trovato -1 se non è stato trovato un canale
      */
-    public int findChannel() {
-        List<Cookie> cookies = ((DefaultHttpClient) httpClient).getCookieStore().getCookies();
-
-        log.debug("Post logon cookies:");
-        cookies = ((DefaultHttpClient) httpClient).getCookieStore().getCookies();
-        if (cookies.isEmpty()) {
-            log.debug("None");
-        } else {
-            for (int i = 0; i < cookies.size(); i++) {
-                log.debug("- " + cookies.get(i).toString());
-            }
-        }
-
-        //provo la connessione sull'ultimo canale salvato ...
-        //se nn funziona qui provo a ricercare il canale ma nn dovrebbe servire
-        String lastChannel = Util.readProperties().getProperty(FACEBOOK_LAST_CHANNEL);
-        try {
-            log.debug("last cannel [ " + lastChannel + " ]");
-            if (lastChannel != null && !lastChannel.equals("")) {
-                for (int i = 0; i < 3; i++) {
-                    String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(Integer.parseInt(lastChannel), -1));
-                    int tempSeq = parseSeq(seqResponseBody);
-                    log.debug("Last Channel [ " + lastChannel + " ]  SEQ [ " + tempSeq + " ]");
-                    if (tempSeq >= 0) {
-                        channel = lastChannel;
-                        return tempSeq;
-                    } else {
-                        try {
-                            Thread.sleep(2000);
-                            log.debug("tentivo " + 1 + "sul canale salvato .... riprovo tra 2 secondi");
-                        } catch (InterruptedException interruptedException) {
-                        }
-                    }
-                }
-            }
-        } catch (JSONException ex) {
-            log.error(ex);
-        }
-
-        int i = 1;
-        int tryCoun = 1;
-
-        while (true) {
-            try {
-                String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(i, -1));
-
-//                if (seqResponseBody == null && i > 0) {
-//                    log.info("non c'è riposta per questo canale quindi i canali sono finiti, riazzero il contatore");
+//    @Deprecated
+//    public int findChannel() {
+//
+//        /*
+//         * http://www.facebook.com/ajax/presence/reconnect.php?post_form_id=90b406644968d3685ba55bbb64912805
+//         */
+//
+//        List<Cookie> cookies = ((DefaultHttpClient) httpClient).getCookieStore().getCookies();
+//
+//        log.debug("Post logon cookies:");
+//        cookies = ((DefaultHttpClient) httpClient).getCookieStore().getCookies();
+//        if (cookies.isEmpty()) {
+//            log.debug("None");
+//        } else {
+//            for (int i = 0; i < cookies.size(); i++) {
+//                log.debug("- " + cookies.get(i).toString());
+//            }
+//        }
+//
+//        //provo la connessione sull'ultimo canale salvato ...
+//        //se nn funziona qui provo a ricercare il canale ma nn dovrebbe servire
+//        String lastChannel = Util.readProperties().getProperty(FACEBOOK_LAST_CHANNEL);
+//        try {
+//            log.debug("last cannel [ " + lastChannel + " ]");
+//            if (lastChannel != null && !lastChannel.equals("")) {
+//                for (int i = 0; i < 3; i++) {
+//                    String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(Integer.parseInt(lastChannel), -1));
+//                    int tempSeq = parseSeq(seqResponseBody);
+//                    log.debug("Last Channel [ " + lastChannel + " ]  SEQ [ " + tempSeq + " ]");
+//                    if (tempSeq >= 0) {
+//                        channel = lastChannel;
+//                        return tempSeq;
+//                    } else {
+//                        try {
+//                            Thread.sleep(2000);
+//                            log.debug("tentivo " + 1 + "sul canale salvato .... riprovo tra 2 secondi");
+//                        } catch (InterruptedException interruptedException) {
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (JSONException ex) {
+//            log.error(ex);
+//        }
+//
+//        int i = 1;
+//        int tryCoun = 1;
+//
+//        while (true) {
+//            try {
+//                String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(i, -1));
+//
+////                if (seqResponseBody == null && i > 0) {
+////                    log.info("non c'è riposta per questo canale quindi i canali sono finiti, riazzero il contatore");
+////                    i = 0;
+////                    tryCoun++;
+////                    continue;
+////                }
+//
+//                if (seqResponseBody != null) {
+//                    int tempSeq = parseSeq(seqResponseBody);
+//                    log.debug("Channel [ " + i + " ]  SEQ [ " + tempSeq + " ]");
+//                    if (tempSeq >= 0) {
+//                        channel = "" + i;
+//                        //aggiorno la prprioetà last channel
+//                        Properties properties = Util.readProperties();
+//                        properties.setProperty(FACEBOOK_LAST_CHANNEL, i + "");
+//                        Util.writeProperties(properties);
+//                        return tempSeq;
+//                    }
+//                    i++;
+//                } else if (seqResponseBody == null && i > 0 && tryCoun < MAX_CONNECTION_TRY) {
 //                    i = 0;
 //                    tryCoun++;
-//                    continue;
+//
+//                    //riprovo il login
+//                    try {
+//                        Thread.sleep(3000);
+//                    } catch (InterruptedException interruptedException) {
+//                    }
+//                    doLogin();
+//
+//                } else if (seqResponseBody == null && i > 0 && tryCoun == 3) {
+//                    return -1;
 //                }
+//            } catch (JSONException e) {
+//                log.error(e);
+//            }
+//        }
+//    }// </editor-fold>
+    public int findChannel() {
 
-                if (seqResponseBody != null) {
-                    int tempSeq = parseSeq(seqResponseBody);
-                    log.debug("Channel [ " + i + " ]  SEQ [ " + tempSeq + " ]");
-                    if (tempSeq >= 0) {
-                        channel = "" + i;
-                        //aggiorno la prprioetà last channel
-                        Properties properties = Util.readProperties();
-                        properties.setProperty(FACEBOOK_LAST_CHANNEL, i + "");
-                        Util.writeProperties(properties);
-                        return tempSeq;
-                    }
-                    i++;
-                }else if (seqResponseBody == null && i > 0 && tryCoun < MAX_CONNECTION_TRY) {
-                    i = 0;
-                    tryCoun++;
+        channel = "-1";
 
-                    //riprovo il login
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException interruptedException) {
-                    }
-                    doLogin();
+        /*
+         * GET = http://www.facebook.com/ajax/presence/reconnect.php?post_form_id=90b406644968d3685ba55bbb64912805
+         * RESPONSE = 
+        for(;;);{"error":0,
+        "errorSummary":"",
+        "errorDescription":"",
+        "errorIsWarning":false,
+        "payload":{"user_channel":"p_1567835536",
+        "seq":18,"retry_interval":0,
+        "host":"channel10",
+        "port":80,
+        "path":"\/iframe\/10?r=http%3A%2F%2Fstatic.ak.fbcdn.net%2Frsrc.php%2FzEG00%2Fhash%2F1wsyvczm.js&r=http%3A%2F%2Fstatic.ak.fbcdn.net%2Frsrc.php%2FzAIGN%2Fhash%2F2x5twzb9.js&r=http%3A%2F%2Fstatic.ak.fbcdn.net%2Frsrc.php%2Fz5IXH%2Fhash%2Fce4rz18c.js&r=http%3A%2F%2Fstatic.ak.fbcdn.net%2Frsrc.php%2Fz5R4L%2Fhash%2Fc847h7bu.js","visibility":true}}
+         */
+        String reconnectUrl = "http://www.facebook.com/ajax/presence/reconnect.php";
+        String url = reconnectUrl + "?post_form_id=" + post_form_id;
+        int tryfind = 0;
+        while (tryfind < TRY_FIND_CHANNEL_NUMBER) {
+            String response = facebookGetMethod(url);
+            int indexOfGraph = response.indexOf("{");
+            response = response.substring(indexOfGraph);
+            log.debug("response [" + response + "]");
+            try {
+                JSONObject respObjs = new JSONObject(response);
+                JSONObject pyload = respObjs.getJSONObject("payload");
+                String host = pyload.getString("host");
+                log.debug("host [" + host + "]");
+                host = host.replace("channel", "");
+                log.debug("channel [" + host + "]");
+                channel = host;
+                return NumberUtils.toInt(host, -1);
 
-                } else if (seqResponseBody == null && i > 0 && tryCoun == 3) {
-                    return -1;
-                }
-            } catch (JSONException e) {
-                log.error(e);
+            } catch (JSONException ex) {
+                log.error(ex);
             }
+            tryfind++;
         }
+
+        return -1;
+
+
+
     }
 
     private int parseSeq(String msgResponseBody) throws JSONException {
@@ -841,6 +898,20 @@ public class FacebookManager {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
+    }
+
+    public String getHistory() {
+
+        /*
+         * http://www.facebook.com/ajax/chat/history.php?id=100000191774044&__a=1
+         */
+
+        String historyUrl = "http://www.facebook.com/ajax/chat/history.php";//?id=100000191774044&__a=1";
+        String url = historyUrl + "?id=" + uid + "&__a=1";
+        String response = facebookGetMethod(url);
+        log.debug("response [" + response + "]");
+
+        return "";
     }
 
     /**

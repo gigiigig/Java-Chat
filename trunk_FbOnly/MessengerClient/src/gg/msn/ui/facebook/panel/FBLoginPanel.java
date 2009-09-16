@@ -183,9 +183,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
             emailText.setText(email);
         }
         String psw = Util.readProperties().getProperty(Util.PROPERTY_FACEBOOK_PSW);
-        log.debug("crypted passworda [" + psw + "]");
+//        log.debug("crypted passworda [" + psw + "]");
         psw = decryptPass(psw);
-        log.debug("decrypted psw [" + psw + "]");
+//        log.debug("decrypted psw [" + psw + "]");
         if (psw != null && !psw.equals("")) {
             passwText.setText(psw);
         }
@@ -264,7 +264,8 @@ public class FBLoginPanel extends javax.swing.JPanel {
                     return;
                 }
                 PersistentDataManager.setUid(FacebookManager.uid);
-                FacebookManager.getBuddyList();
+                //FacebookManager.getBuddyList();
+                fbManger.getHistory();
                 ChatClientView.protocol = ChatClientView.FACEBOOK_PROTOCOL;
                 PersistentDataManager.setNick(FacebookUserList.me.name);
 

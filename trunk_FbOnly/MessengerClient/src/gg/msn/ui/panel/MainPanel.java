@@ -144,13 +144,12 @@ public class MainPanel extends javax.swing.JPanel {
 
         clientListScrollPane.setBackground(new Color(255,255,255,100)
         );
-        clientListScrollPane.setBorder(null);
+        clientListScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("clientListScrollPane.border.title"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, resourceMap.getFont("clientListScrollPane.border.titleFont"))); // NOI18N
         clientListScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         clientListScrollPane.setName("clientListScrollPane"); // NOI18N
         clientListScrollPane.setOpaque(false);
 
         clientsList.setBackground(new Color(255, 255, 255, 100));
-        clientsList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("clientsList.border.title"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, resourceMap.getFont("clientsList.border.titleFont"))); // NOI18N
         clientsList.setModel(new DefaultListModel()
         );
         clientsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
