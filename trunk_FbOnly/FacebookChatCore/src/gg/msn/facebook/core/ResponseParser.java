@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -146,8 +148,8 @@ public class ResponseParser {
      * @param response
      * @throws JSONException
      */
-    public synchronized static FacebookMessage messageRequestResultParser(String response, FacebookManager manager) throws Exception {
-        FacebookMessage toReturn = null;
+    public synchronized static List<FacebookMessage> messageRequestResultParser(String response, FacebookManager manager) throws Exception {
+        List<FacebookMessage> toReturn = new LinkedList<FacebookMessage>();
 
 
         String prefix = "for (;;);";
@@ -176,7 +178,7 @@ public class ResponseParser {
                         fm.from = (Number) msg.get("from");
 
                         if (!fm.from.toString().equals(FacebookManager.uid)) {
-                            toReturn = fm;
+                            toReturn.add(fm);
                         }
 
                     } else if (!msg.get("type").equals("msg")) {
@@ -248,7 +250,7 @@ public class ResponseParser {
                         logMessage(fm);
 
                         if (!fm.from.toString().equals(FacebookManager.uid)) {
-                            toReturn = fm;
+                            toReturn.add(fm);
                         }
                     }
                 }

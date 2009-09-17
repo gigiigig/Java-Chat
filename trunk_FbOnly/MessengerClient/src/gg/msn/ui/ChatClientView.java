@@ -64,6 +64,9 @@ public class ChatClientView extends FrameView {
 
         mainPanel = new MainPanel(this);
         helper = new ChatClientViewHelper(this);
+
+
+        //inizializzo le prprietà
         helper.initializeProperties();
 
         //<editor-fold defaultstate="collapsed" desc="System tray control">             
@@ -85,13 +88,24 @@ public class ChatClientView extends FrameView {
 
         /*aggiungo agli oggetti i vari componenti personalizzati*/
 
+        final ChatClientView ccv = this;
+        //dopo l'apertura devo verificar gli aggiotrnamenti
+        this.getFrame().addWindowListener(new WindowAdapter() {
 
+            @Override
+            public void windowOpened(WindowEvent e) {
+                super.windowOpened(e);
+                ccv.getHelper().verifyUpdates();
+            }
 
-        //aggiungo tutti i listeners dei vari componenti
-        ChatClientViewListeners listeners = new ChatClientViewListeners(this);
-
-        //this frame
-        this.getFrame().addWindowListener(listeners.getMainViewListerner());
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+            }
+            
+        });
+        //verifico gli aggiornamenti
+        //helper.verifyUpdates();
     }
     // </editor-fold>  
     /*Show metods for Frames*/
@@ -112,8 +126,6 @@ public class ChatClientView extends FrameView {
     /**
      * Show Option Frame
      */
-    
-
     private void createSystemTray() throws HeadlessException {
         try {
             SystemTray systemTray = SystemTray.getSystemTray();
@@ -249,7 +261,6 @@ public class ChatClientView extends FrameView {
         this.mainPanel = mainPanel;
     }
 
-
     //</editor-fold>
     @Action
     public void showNewEmotionManage() {
@@ -262,8 +273,6 @@ public class ChatClientView extends FrameView {
     public void showFacebookLogin() {
         helper.showFacebookLoginPanel();
     }
-
-   
 }
 // <editor-fold defaultstate="collapsed" desc="Old MainPanel">
 /*class MainPanel extends JPanel {

@@ -982,6 +982,8 @@ public class FacebookManager {
             log.debug("Post Method done(" + postResponse.getStatusLine().getStatusCode() + "), response string length: " + (responseStr == null ? 0 : responseStr.length()));
         } catch (IOException e) {
             log.debug(e.getMessage());
+        } catch (Exception e) {
+            log.debug(e.getMessage());
         }
 
         //TODO process the respons string

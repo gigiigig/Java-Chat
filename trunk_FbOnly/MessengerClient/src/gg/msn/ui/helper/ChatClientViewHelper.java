@@ -14,19 +14,31 @@ import emoticon.EmoticonsManger;
 import gg.msn.facebook.core.FacebookManager;
 import gg.msn.facebook.core.FacebookUser;
 import gg.msn.core.manager.PersistentDataManager;
+import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.facebook.panel.FBLoginPanel;
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.swing.JFrame;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.jdesktop.application.ResourceMap;
 
 /**
  *
@@ -139,8 +151,8 @@ public class ChatClientViewHelper {
 
         if (toReturn != null) {
             //se c'è già una chat con l'utente scelto la apro
-            toReturn.setVisible(true);
-            toReturn.toFront();
+            //toReturn.setVisible(true);
+            //toReturn.toFront();
             return toReturn;
         } else {
             //altrimenti ne creo una nuova
@@ -273,6 +285,49 @@ public class ChatClientViewHelper {
             }
 
         }
+    }
+
+    public void verifyUpdates() {
+        try {
+            ResourceMap resourceMap = ChatClientApp.getInstance().getContext().getResourceMap(ChatClientView.class);
+
+            log.debug("resource map [" + resourceMap + "]");
+            String version = resourceMap.getString("version");
+            String url = resourceMap.getString("update.url");
+
+            log.debug("version [" + version + "]");
+            log.debug("url [" + url + "]");
+
+            url = url.concat("?version=" + version);
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpGet httpget = new HttpGet(url);
+
+            log.debug("executing request " + httpget.getURI());
+            // Create a response handler
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            String responseBody = httpclient.execute(httpget, responseHandler);
+
+            log.debug("response [" + responseBody + "]");
+            if (BooleanUtils.toBoolean(responseBody)) {
+                String message = "<html>" +
+                        "E' disponibile una nuova versione di Giff ,scaricala all'indirizzo " +
+                        "<a href=\"www.luigiantonini.it\">www.luigiantonini.it</a>!<html> ";
+                JOptionPane.showMessageDialog(ccv.getFrame(), message, "Aggiornamento disponibile", JOptionPane.INFORMATION_MESSAGE);
+
+            }
+
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            httpclient.getConnectionManager().shutdown();
+        } catch (ClientProtocolException ex) {
+            log.error(ex);
+        } catch (IOException ex) {
+            log.error(ex);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
+
     }
     // <editor-fold defaultstate="collapsed" desc=" Getter and Setter ">
 

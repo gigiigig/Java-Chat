@@ -4,10 +4,7 @@
 package gg.msn.ui;
 
 import gg.msn.core.commons.Util;
-import java.awt.event.WindowEvent;
 import java.util.EventObject;
-import java.util.List;
-import javax.swing.JFrame;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Application;
@@ -63,6 +60,7 @@ public class ChatClientApp extends SingleFrameApplication {
     public void exit(EventObject arg0) {
         try {
             if (arg0.toString().contains("WINDOW_CLOSING")) {
+                getMainFrame().setVisible(false);
             } else {
                 super.exit(arg0);
             }
@@ -72,11 +70,6 @@ public class ChatClientApp extends SingleFrameApplication {
             getMainFrame().setVisible(false);
             super.exit(arg0);
         }
-
-
-
-
-
     }
 
     void realQuit() {

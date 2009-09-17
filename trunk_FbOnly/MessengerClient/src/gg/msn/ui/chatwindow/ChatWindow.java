@@ -26,12 +26,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -44,9 +46,11 @@ import java.util.Map;
 import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
+import javax.swing.FocusManager;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
@@ -822,8 +826,12 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
             //aggiorno la posizione dello scroll
             chatText.setCaretPosition(chatText.getDocument().getLength());
 
-            this.toFront();
-            inputText.requestFocus();
+            setFocusableWindowState(false);
+            toFront();
+            setFocusableWindowState(true);
+
+
+            //inputText.requestFocus();
             inputText.repaint();
             inputText.validate();
 

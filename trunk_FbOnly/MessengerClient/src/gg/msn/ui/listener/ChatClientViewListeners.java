@@ -49,14 +49,6 @@ public class ChatClientViewListeners {
         return new ClietsListOutClickListener(ccv);
     }
 
-    public MainViewListerner getMainViewListerner() {
-        return new MainViewListerner(ccv);
-    }
-
-    public GeneralButtonListener generalButtonListener() {
-        return new GeneralButtonListener();
-    }
-
     /**
      * Contiene le operazioni da efffettuare in NICKTABLE in caso di rigthclick 
      */
@@ -141,78 +133,6 @@ public class ChatClientViewListeners {
 //            clientsList.setEnabled(false);
             clientsList.getSelectionModel().clearSelection();
 
-        }
-    }
-
-    /**
-     * Operazioni per gli eventi dell'applicazione
-     */
-    public class MainViewListerner extends WindowAdapter {
-
-        private ChatClientView ccv;
-
-        public MainViewListerner(ChatClientView ccv) {
-            super();
-            this.ccv = ccv;
-
-        }
-
-        @Override
-        public void windowClosing(WindowEvent arg0) {
-            ccv.getFrame().setVisible(false);
-            log.info("window closing");
-//            if (PersistentDataManager.getOutputStream() != null) {
-//                log.info("nell'if");
-//                ccv.getHelper().disconnetti();
-//            }
-        }
-
-        @Override
-        public void windowOpened(WindowEvent arg0) {
-            super.windowOpened(arg0);
-            //Crea proprietà
-            Properties properties = Util.readProperties();
-
-            if (properties == null) {
-            }
-            if (properties != null) {
-                if (!StringUtils.equals(properties.getProperty("nick"), "")) {
-                }
-                if (!StringUtils.equals(properties.getProperty(Util.PROPERTY_IP), "")) {
-                    PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
-                }
-
-                try {
-                    if (properties.getProperty(Util.PROPERTY_PORT) != null) {
-                        PersistentDataManager.setPort(NumberUtils.toInt(properties.getProperty(Util.PROPERTY_PORT), 3434));
-                    }
-                } catch (NumberFormatException numberFormatException) {
-                    log.error(numberFormatException);
-                }
-
-                if (StringUtils.equals(properties.getProperty(Util.PROPERTY_THEME_FOLDER), "")) {
-                    ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
-                    ccv.getFrame().repaint();
-                }
-            }
-        }
-    }
-
-    public class GeneralButtonListener extends MouseInputAdapter {
-
-        public GeneralButtonListener() {
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            JButton button = (JButton) e.getComponent();
-            button.setContentAreaFilled(true);
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            JButton button = (JButton) e.getComponent();
-            button.setContentAreaFilled(false);
         }
     }
 }

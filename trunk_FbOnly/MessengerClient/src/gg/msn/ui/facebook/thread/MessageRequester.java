@@ -15,6 +15,7 @@ import gg.msn.ui.chatwindow.ChatWindow;
 import gg.msn.ui.helper.ChatClientViewHelper;
 import java.awt.Image;
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -80,52 +81,56 @@ public class MessageRequester implements Runnable {
             String msgResponseBody = FacebookManager.facebookGetMethod(fbManger.getMessageRequestingUrl(Integer.parseInt(FacebookManager.channel), FacebookManager.seq));
 
             try {
-                FacebookMessage fm = ResponseParser.messageRequestResultParser(msgResponseBody, fbManger);
-                if (fm != null) {
-                    ChatClientViewHelper helper = ccv.getHelper();
+                List<FacebookMessage> facebookMessages = ResponseParser.messageRequestResultParser(msgResponseBody, fbManger);
+                
+                for (FacebookMessage fm : facebookMessages) {
 
-                    if (StringUtils.equals(fm.type, "typ")) {
-                        log.debug("received typing message");
+                    if (fm != null) {
+                        ChatClientViewHelper helper = ccv.getHelper();
 
-                        final ChatWindow chat = helper.getChatFromUid(fm.from + "");
-                        log.debug("finded chat [" + chat + "]");
-                        if (chat != null) {
-                            Runnable runnable = new Runnable() {
+                        if (StringUtils.equals(fm.type, "typ")) {
+                            log.debug("received typing message");
 
-                                public void run() {
-                                    try {
-                                        JLabel nickLabel = chat.getNickLabel();
-                                        synchronized (nickLabel) {
-                                            String nickText = nickLabel.getText();
-                                            nickLabel.setText("...");
-                                            Thread.sleep(TYPING_TIME);
-                                            nickLabel.setText(nickText);
+                            final ChatWindow chat = helper.getChatFromUid(fm.from + "");
+                            log.debug("finded chat [" + chat + "]");
+                            if (chat != null) {
+                                Runnable runnable = new Runnable() {
+
+                                    public void run() {
+                                        try {
+                                            JLabel nickLabel = chat.getNickLabel();
+                                            synchronized (nickLabel) {
+                                                String nickText = nickLabel.getText();
+                                                nickLabel.setText("...");
+                                                Thread.sleep(TYPING_TIME);
+                                                nickLabel.setText(nickText);
+                                            }
+                                        } catch (InterruptedException ex) {
+                                            log.error(ex);
                                         }
-                                    } catch (InterruptedException ex) {
-                                        log.error(ex);
                                     }
-                                }
-                            };
-                            new Thread(runnable).start();
-                        }
+                                };
+                                new Thread(runnable).start();
+                            }
 
-                    } else {
-                        log.debug("helper [ " + helper + " ]");
-                        Client client = new Client(fm.fromName);
-                        client.setUid(fm.from + "");
-                        try {
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            ImageIcon imageIcon = FacebookUserList.buddies.get(client.getUid()).portrait;
-                            ImageIO.write(EmoticonsManger.toBufferedImage(imageIcon.getImage()), "jpg", baos);
-                            client.setImage(baos.toByteArray());
-                        } catch (Exception ex) {
-                            log.error(ex);
+                        } else {
+                            log.debug("helper [ " + helper + " ]");
+                            Client client = new Client(fm.fromName);
+                            client.setUid(fm.from + "");
+                            try {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                ImageIcon imageIcon = FacebookUserList.buddies.get(client.getUid()).portrait;
+                                ImageIO.write(EmoticonsManger.toBufferedImage(imageIcon.getImage()), "jpg", baos);
+                                client.setImage(baos.toByteArray());
+                            } catch (Exception ex) {
+                                log.error(ex);
+                            }
+                            ChatWindow chatWith = helper.getChatWith(client);
+                            log.debug("chatWith [ " + chatWith + " ]");
+                            chatWith.writeMessage(fm.fromName, fm.text);
+                            FacebookManager.incrementMessage();
+                            log.debug("senquenz number [" + FacebookManager.seq + "]");
                         }
-                        ChatWindow chatWith = helper.getChatWith(client);
-                        log.debug("chatWith [ " + chatWith + " ]");
-                        chatWith.writeMessage(fm.fromName, fm.text);
-                        FacebookManager.incrementMessage();
-                        log.debug("senquenz number [" + FacebookManager.seq + "]");
                     }
                 }
             } catch (Exception e) {
@@ -138,7 +143,6 @@ public class MessageRequester implements Runnable {
                 fbManger.findChannel();
                 FacebookManager.seq = fbManger.getSeq();
             }
-
         }
     }
 //    }

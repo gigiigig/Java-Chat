@@ -1,169 +1,47 @@
-<html>
-    <head>
-        <title>Licenza</title>
-    </head>
-    <body>
-  <div id="content">
+Licenza
+Questo contratto di licenza d'uso (EULA) è un accordo legale tra l'Utente (sia esso un individuo od una singola entità) e l'autore di questo software :
 
-                <h2>
-                    Licenza d'uso
-                </h2>
-                <p>
-                    Questo contratto di licenza d'uso (EULA) Ã¨ un accordo legale
-                    tra l'Utente (sia esso un individuo od una singola entitÃ ) e
-                    l'autore di questo software :<br><br>
-                    <b>Luigi Antonini</b><br>
-                    <b>luigi.ant@email.it</b>
-                    <br>
-                    <br>
-                    Installando, copiando o utilizzando in qualsiasi modo il
-                    prodotto software, si accetta implicitamente ed in tutte le sue
-                    parti il presente accordo.<br>
-                    <br>
-                    Se non si accettano i termini di questo contratto, non
-                    installare o utilizzare il prodotto software.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h3>
-                    <strong>Licenza Software</strong>
-                </h3>
-                <p>
-                    Tutte le versioni di questo software sono protette dalle leggi
-                    sul copyright e dagli accordi internazionali sui diritti
-                    d'autore e sulle proprietÃ  intellettuali. Luigi Antonini
-                    detiene tutti i diritti.<br>
-                    <br>
-                    Il software non puÃ² essere duplicato, venduto, distribuito od
-                    utilizzato in qualsiasi maniera non descritta in questo
-                    documento senza il permesso scritto di Luigi Antonini.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h3>
-                    <strong>1. Privilegi concessi</strong>
-                </h3>
-                <p>
-                    Questa licenza concede i seguenti diritti: installazione ed
-                    utilizzo. E' concesso installare ed utilizzare un numero
-                    illimitato di copie di questo prodotto.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h4>
-                    <strong>Riproduzione e distribuzione</strong>
-                </h4>
-                <p>
-                    E concessa la riproduzione e distribuzione in un numero
-                    illimitato di copie di questo software; ciascuna copia deve
-                    contenere tutte le parti del software ed essere accompagnata da
-                    una copia della presente EULA.<br>
-                    <br>
-                    Il software non dovrebbe essere incluso in nessun altro
-                    pacchetto o prodotto freeware, shareware o commerciale senza un
-                    esplicito consenso di Luigi Antonini.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h3>
-                    2. Descrizione degli altri diritti e limitazioni
-                </h3>
-                <p>
-                    E' vietato il reverse engineering, la decompilazione, il
-                    disassemblamento e qualsiasi tipo di alterazione del prodotto.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h4>
-                    Separazione dei componenti
-                </h4>
-                <p>
-                    Il software Ã¨ licenziato come un singolo prodotto; eventuali
-                    sue parti non possono essere separate e utilizzate su piÃ¹ di un
-                    computer.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h4>
-                    Trasferimento del Software
-                </h4>
-                <p>
-                    E' concesso il trasferimento permanente del software a terzi,
-                    nell'ambito di quanto specificato in questa EULA.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h4>
-                    Cessazione
-                </h4>
-                <p>
-                    I diritti di licenza decadono automaticamente nel caso in cui
-                    l'Utente non rispetti i termini di questa EULA. In tal caso si
-                    Ã¨ tenuti a distruggere tutte le copie del software e dei suoi
-                    componenti.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h3>
-                    3. Copyright
-                </h3>
-                <p>
-                    Con eccezione di quanto eventualmente annotato in modo
-                    esplicito, tutti i diritti ed i copyright sul software e sulle
-                    sue parti (incluse immagini, fotografie, animazioni, video,
-                    audio, musica, testi e codice) e su eventuali documenti
-                    accompagnatori sono posseduti da Luigi Antonini.<br>
-                    <br>
-                    Questo software Ã¨ protetto dalle leggi sui copyright e dagli
-                    accordi internazionali e deve essere considerato come qualsiasi
-                    altro materiale soggetto a copyright.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h3>
-                    Limiti alla Garanzia
-                </h3>
-                <h4>
-                    Nessuna Garanzia
-                </h4>
-                <p>
-                    Luigi Antonini espressamente esclude qualsiasi tipo di garanzia
-                    su questo prodotto. Il software e tutto il materiale allegato Ã¨
-                    rilasciato cosÃ¬ com'Ã©, senza garanzie di alcun tipo, esplicite
-                    o implicite. Tutti i rischi derivanti dal funzionamento, o dal
-                    mancato funzionamento del software sono a carico dell'Utente.
-                </p>
-                <p>
-                    Â 
-                </p>
-                <h4>
-                    Nessuna responsabilitÃ  per danni
-                </h4>
-                <p>
-                    In nessun caso l'autore di questo software potrÃ  essere
-                    considerato responsabile per qualsiasi danno diretto od
-                    indiretto di qualsiasi tipo (inclusi, senza limitazioni, danni
-                    per perdita di profitti, di interruzione di servizi o di
-                    perdite di dati) derivanti dall'utilizzo o dall'impossibilitÃ 
-                    di utilizzo del prodotto.
-                </p>
-                <p>
-                    <strong>Usando questo software, si accettano i termini della
-                        suddetta licenza.</strong>
-                </p>
-                <p>
-                    Â 
-                </p>
+Luigi Antonini (luigi.ant@email.it)
 
-            </div>
-    </body>
-</html>
+Installando, copiando o utilizzando in qualsiasi modo il prodotto software, si accetta implicitamente ed in tutte le sue parti il presente accordo.
+
+Se non si accettano i termini di questo contratto, non installare o utilizzare il prodotto software.
+
+Licenza Software
+Tutte le versioni di questo software sono protette dalle leggi sul copyright e dagli accordi internazionali sui diritti d'autore e sulle proprietà intellettuali. Luigi Antonini detiene tutti i diritti.
+
+Il software non può essere duplicato, venduto, distribuito od utilizzato in qualsiasi maniera non descritta in questo documento senza il permesso scritto di Luigi Antonini.
+
+1. Privilegi concessi
+Questa licenza concede i seguenti diritti: installazione ed utilizzo. E' concesso installare ed utilizzare un numero illimitato di copie di questo prodotto.
+
+Riproduzione e distribuzione
+E concessa la riproduzione e distribuzione in un numero illimitato di copie di questo software; ciascuna copia deve contenere tutte le parti del software ed essere accompagnata da una copia della presente EULA.
+
+Il software non dovrebbe essere incluso in nessun altro pacchetto o prodotto freeware, shareware o commerciale senza un esplicito consenso di Luigi Antonini.
+
+2. Descrizione degli altri diritti e limitazioni
+E' vietato il reverse engineering, la decompilazione, il disassemblamento e qualsiasi tipo di alterazione del prodotto.
+
+Separazione dei componenti
+Il software è licenziato come un singolo prodotto; eventuali sue parti non possono essere separate e utilizzate su più di un computer.
+
+Trasferimento del Software
+E' concesso il trasferimento permanente del software a terzi, nell'ambito di quanto specificato in questa EULA.
+
+Cessazione
+I diritti di licenza decadono automaticamente nel caso in cui l'Utente non rispetti i termini di questa EULA. In tal caso si è tenuti a distruggere tutte le copie del software e dei suoi componenti.
+
+3. Copyright
+Con eccezione di quanto eventualmente annotato in modo esplicito, tutti i diritti ed i copyright sul software e sulle sue parti (incluse immagini, fotografie, animazioni, video, audio, musica, testi e codice) e su eventuali documenti accompagnatori sono posseduti da Luigi Antonini.
+
+Questo software è protetto dalle leggi sui copyright e dagli accordi internazionali e deve essere considerato come qualsiasi altro materiale soggetto a copyright.
+
+Limiti alla Garanzia
+Nessuna Garanzia
+Luigi Antonini espressamente esclude qualsiasi tipo di garanzia su questo prodotto. Il software e tutto il materiale allegato è rilasciato così com'é, senza garanzie di alcun tipo, esplicite o implicite. Tutti i rischi derivanti dal funzionamento, o dal mancato funzionamento del software sono a carico dell'Utente.
+
+Nessuna responsabilità per danni
+In nessun caso l'autore di questo software potrà essere considerato responsabile per qualsiasi danno diretto od indiretto di qualsiasi tipo (inclusi, senza limitazioni, danni per perdita di profitti, di interruzione di servizi o di perdite di dati) derivanti dall'utilizzo o dall'impossibilità di utilizzo del prodotto.
+
+Usando questo software, si accettano i termini della suddetta licenza.
