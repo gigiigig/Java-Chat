@@ -26,6 +26,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.SystemTray;
+import java.awt.TrayIcon.MessageType;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
@@ -74,6 +76,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
+import org.jdesktop.application.TaskService;
 
 /**
  *
@@ -826,10 +829,17 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
             //aggiorno la posizione dello scroll
             chatText.setCaretPosition(chatText.getDocument().getLength());
 
-            setFocusableWindowState(false);
-            toFront();
-            setFocusableWindowState(true);
-
+            if (getExtendedState() == JFrame.ICONIFIED) {
+                toFront();
+                writeTrayMessage(message, sender);
+            } else {
+                log.trace("active [ " + isActive() + "]");
+                log.trace("enalbed [ " + isEnabled() + "]");
+                log.trace("focused [ " + isFocused() + "]");
+                if (!isActive() && !isFocused()) {
+                    writeTrayMessage(message, sender);
+                }
+            }
 
             //inputText.requestFocus();
             inputText.repaint();
@@ -955,6 +965,16 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
         fontSt += "-" + font.getSize();
 
         return fontSt;
+    }
+
+    private void writeTrayMessage(String message, String sender) {
+        int substringMax = 10;
+        int txtLength = message.length();
+        int subEnd = substringMax;
+        if (substringMax > txtLength) {
+            subEnd = txtLength;
+        }
+        SystemTray.getSystemTray().getTrayIcons()[0].displayMessage(sender, message.substring(0, subEnd) + "...", MessageType.NONE);
     }
 }
 
