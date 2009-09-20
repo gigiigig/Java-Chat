@@ -4,6 +4,7 @@
 package gg.msn.ui;
 
 import emoticon.EmoticonsManageFrame;
+import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.listener.ChatClientViewListeners;
 import gg.msn.ui.helper.ChatClientViewHelper;
@@ -67,7 +68,7 @@ public class ChatClientView extends FrameView {
 
 
         //inizializzo le prprietà
-        helper.initializeProperties();
+        Util.initializeProperties();
 
         //<editor-fold defaultstate="collapsed" desc="System tray control">             
         //creo una system tray    

@@ -39,9 +39,14 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
-                      <Component id="loginButton" min="-2" pref="75" max="-2" attributes="1"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="connectionStatusLabel" min="-2" pref="77" max="-2" attributes="1"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="invisibleCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="loginButton" min="-2" pref="75" max="-2" attributes="1"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="connectionStatusLabel" min="-2" pref="77" max="-2" attributes="1"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace pref="32" max="32767" attributes="0"/>
@@ -70,7 +75,9 @@
                   <Component id="connectionStatusLabel" max="32767" attributes="1"/>
                   <Component id="loginButton" alignment="1" min="-2" max="-2" attributes="1"/>
               </Group>
-              <EmptySpace pref="75" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="invisibleCheck" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="45" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -126,6 +133,13 @@
       <Properties>
         <Property name="text" type="java.lang.String" resourceKey="savePswCheck.text"/>
         <Property name="name" type="java.lang.String" value="savePswCheck" noResource="true"/>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="invisibleCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="invisibleCheck.text"/>
+        <Property name="name" type="java.lang.String" value="invisibleCheck" noResource="true"/>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
     </Component>

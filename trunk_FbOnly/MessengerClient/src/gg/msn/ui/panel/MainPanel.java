@@ -272,9 +272,9 @@ public class MainPanel extends javax.swing.JPanel {
         //po tutti quelli offline
         while (it.hasNext()) {
             String key = it.next();
-            log.debug("userID: " + key);
+            log.trace("userID: " + key);
             FacebookUser fu = FacebookUserList.buddies.get(key);
-            log.debug("status: " + fu.status);
+            log.trace("status: " + fu.status);
             if (StringUtils.equals(fu.status, FacebookUser.STATUS_ONLINE)) {
                 listModel.addElement(fu);
             } else {

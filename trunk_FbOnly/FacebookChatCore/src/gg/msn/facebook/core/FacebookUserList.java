@@ -60,9 +60,9 @@ public class FacebookUserList {
         buddies.clear();
         while (it.hasNext()) {
             String key = it.next();
-            log.debug("userID: " + key);
+            log.trace("userID: " + key);
             JSONObject user = (JSONObject) userInfos.get(key);
-            log.debug("user : " + user);
+            log.trace("user : " + user);
             FacebookUser fu = null;
             try {
 
@@ -80,7 +80,7 @@ public class FacebookUserList {
                 buddies.put(key, fu);
 
                 //Launcher.getChatroomAnyway(key).setRoomName(fu.name);
-                //printUserInfo(fu);
+//                printUserInfo(fu);
             } catch (JSONException jSONException) {
                 log.error("error parsing user : " + jSONException);
             }

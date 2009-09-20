@@ -165,6 +165,8 @@ public class ResponseParser {
                 log.debug("NO of msges: " + ms.length());
                 //Iterator<JSONObject> it = ms..iterator();
                 int index = 0;
+
+                //parso ogni messaggio 
                 while (index < ms.length()) {
                     JSONObject msg = ms.getJSONObject(index);
                     index++;
@@ -180,17 +182,6 @@ public class ResponseParser {
                         if (!fm.from.toString().equals(FacebookManager.uid)) {
                             toReturn.add(fm);
                         }
-
-                    } else if (!msg.get("type").equals("msg")) {
-                        //do nothing
-                        /*
-                        {"t":"msg",
-                        "c":"p_100000191774044",
-                        "ms":[{"type":"typ","st":0,"from":1567835536,"to":100000191774044}]}
-                         */
-                        log.debug("type [" + msg.get("type") + "]");
-                        FacebookManager.incrementMessage();
-
 
                     } else if (msg.get("type").equals("msg")) {
                         //the message itself
@@ -230,6 +221,7 @@ public class ResponseParser {
                         fm.time = (Number) realmsg.get("time");
                         fm.clientTime = (Number) realmsg.get("clientTime");
                         fm.msgID = (String) realmsg.get("msgID");
+                        fm.type = "msg";
 
                         //the attributes of the message
                         fm.from = (Number) msg.get("from");
@@ -239,19 +231,35 @@ public class ResponseParser {
                         fm.fromFirstName = (String) msg.get("from_first_name");
                         fm.toFirstName = (String) msg.get("to_first_name");
 
+                        FacebookManager.incrementMessage();
+
                         if (FacebookManager.msgIDCollection.contains(fm.msgID)) {
                             log.debug("Omitting a already handled message: msgIDCollection.contains(msgID)");
-                            FacebookManager.seq = manager.getSeq();
+                            //FacebookManager.seq = manager.getSeq();
+
                             continue;
-                        }
-                        FacebookManager.msgIDCollection.add(fm.msgID);
-                        log.debug("Size of msgIDCollection:" + FacebookManager.msgIDCollection.size());
+                        } else {
+                            FacebookManager.msgIDCollection.add(fm.msgID);
 
-                        logMessage(fm);
+                            log.debug("Size of msgIDCollection:" + FacebookManager.msgIDCollection.size());
+                            logMessage(fm);
 
-                        if (!fm.from.toString().equals(FacebookManager.uid)) {
-                            toReturn.add(fm);
+                            //se il messaggio è mio nn lo stampo
+                            if (!fm.from.toString().equals(FacebookManager.uid)) {
+                                toReturn.add(fm);
+                            }
                         }
+                    } else {
+                        //do nothing
+                        /*
+                        {"t":"msg",
+                        "c":"p_100000191774044",
+                        "ms":[{"type":"typ","st":0,"from":1567835536,"to":100000191774044}]}
+                         */
+                        log.debug("type [" + msg.get("type") + "]");
+                        FacebookManager.incrementMessage();
+
+
                     }
                 }
             } else if (((String) respObjs.get("t")).equals("refresh")) {

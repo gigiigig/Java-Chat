@@ -70,7 +70,7 @@ public class FacebookUser {
     
     public FacebookUser(String id, JSONObject user, JSONObject statusObj) throws JSONException {
 
-        log.debug("status obj [ " + statusObj+" ]");
+        log.trace("status obj [ " + statusObj+" ]");
         uid = id;
         if (user == null) {
             throw new JSONException("Param user is null when init FacebookUser");
@@ -95,7 +95,7 @@ public class FacebookUser {
         //{"i" = "false"} significa che è verde
        try {
             boolean aBoolean = statusObj.getBoolean("i");
-            log.debug(" status  boolean [ " + aBoolean+" ]");
+            log.trace(" status  boolean [ " + aBoolean+" ]");
             if (!aBoolean) {
                 status = STATUS_ONLINE;
             } else {

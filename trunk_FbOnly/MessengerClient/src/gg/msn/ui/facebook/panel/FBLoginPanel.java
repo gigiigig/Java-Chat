@@ -69,6 +69,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         passwText = new javax.swing.JPasswordField();
         saveMailCheck = new javax.swing.JCheckBox();
         savePswCheck = new javax.swing.JCheckBox();
+        invisibleCheck = new javax.swing.JCheckBox();
 
         setName("Form"); // NOI18N
 
@@ -101,6 +102,10 @@ public class FBLoginPanel extends javax.swing.JPanel {
         savePswCheck.setName("savePswCheck"); // NOI18N
         savePswCheck.setOpaque(false);
 
+        invisibleCheck.setText(resourceMap.getString("invisibleCheck.text")); // NOI18N
+        invisibleCheck.setName("invisibleCheck"); // NOI18N
+        invisibleCheck.setOpaque(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,9 +126,12 @@ public class FBLoginPanel extends javax.swing.JPanel {
                                 .addComponent(emailText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(112, 112, 112)
-                        .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(invisibleCheck)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -145,13 +153,16 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(connectionStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(loginButton))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(invisibleCheck)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel connectionStatusLabel;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailText;
+    private javax.swing.JCheckBox invisibleCheck;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passwText;
     private javax.swing.JLabel psswLabel;
@@ -171,6 +182,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
         emailText.getInputMap().put(enter, "Enter");
         emailText.getActionMap().put("Enter", new AbstractAction() {
+
             public void actionPerformed(ActionEvent e) {
                 connect();
             }
@@ -222,6 +234,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
         boolean savePsw = BooleanUtils.toBoolean(Util.readProperties().getProperty(Util.PROPERTY_SAVE_FACEBOOK_PSW));
         log.debug("savePsw [" + savePsw + "]");
         savePswCheck.setSelected(savePsw);
+        boolean invisible = BooleanUtils.toBoolean(Util.readProperties().getProperty(Util.PROPERTY_INVISIBLE));
+        log.debug("online [" + invisible + "]");
+        invisibleCheck.setSelected(invisible);
 
     }
 
@@ -259,19 +274,24 @@ public class FBLoginPanel extends javax.swing.JPanel {
         int loginErrorCode = fbManger.doLogin();
         if (loginErrorCode == ErrorCode.Error_Global_NoError) {
             if (fbManger.doParseHomePage() == ErrorCode.Error_Global_NoError) {
-                int seqNumber = fbManger.findChannel();
-                if (seqNumber < 0) {
-                    ccv.getHelper().showErrorDialog("Impossibile connettersi, provare più tardi!");
-                    return;
+                if (!invisibleCheck.isSelected()) {
+                    fbManger.findChannel();
                 }
+
                 PersistentDataManager.setUid(FacebookManager.uid);
-                //FacebookManager.getBuddyList();
-                fbManger.getHistory();
+
+                //
+
                 ChatClientView.protocol = ChatClientView.FACEBOOK_PROTOCOL;
                 PersistentDataManager.setNick(FacebookUserList.me.name);
-
+                MessageRequester messageRequester = new MessageRequester(ccv, fbManger, email, pass);
+                if (invisibleCheck.isSelected()) {
+                    MessageRequester.setOnline(false);
+                } else {
+                    MessageRequester.setOnline(true);
+                }
                 //keep requesting message from the server
-                new Thread(new MessageRequester(ccv, fbManger, email, pass)).start();
+                new Thread(messageRequester).start();
 
                 //requests buddy list every 90 seconds
                 new Thread(new BuddyListRequester(ccv)).start();
@@ -288,9 +308,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                     ccv.getTray().setToolTip("Facebook - connesso : " + PersistentDataManager.getNick());
                 }
                 log.debug("showed main panel");
-                //必须在getbuddylist之后
-//                fbc = new Cheyenne();
-//                fbc.setVisible(true);
+
             } else {
                 ccv.getHelper().showWarnDialog("Non è stato possibile effettuare il login.<br>" +
                         "Ricontrolla email e password!");

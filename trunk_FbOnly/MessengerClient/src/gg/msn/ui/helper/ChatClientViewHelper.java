@@ -132,6 +132,7 @@ public class ChatClientViewHelper {
         cv.setVisible(true);
         cv.toFront();
         cv.setTitle(selected.getNick() + " - Conversazione");
+        cv.getInputText().requestFocus();
         chatWindows.add(cv);
 
         return cv;
@@ -143,7 +144,7 @@ public class ChatClientViewHelper {
      * @param nick 
      * Il nick da chiamare in chat
      */
-    public ChatWindow getChatWith(Client selected) {
+    public synchronized ChatWindow getChatWith(Client selected) {
 //        ChatClientApp.getApplication().show(new ChatView(true, getNick(), "localhost", 3636));
 
         ChatWindow toReturn = getChatWithNullable(selected);
@@ -151,7 +152,9 @@ public class ChatClientViewHelper {
 
         if (toReturn != null) {
             //se c'è già una chat con l'utente scelto la apro
-            //toReturn.setVisible(true);
+            if (!toReturn.isVisible()) {
+                toReturn.setVisible(true);
+            }
             //toReturn.toFront();
             return toReturn;
         } else {
@@ -252,40 +255,7 @@ public class ChatClientViewHelper {
         return client;
     }
 
-    public void initializeProperties() {
-        //Crea proprietà
-        Properties properties = Util.readProperties();
-
-        if (properties == null) {
-            properties = new Properties();
-            ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
-            properties.setProperty(Util.PROPERTY_THEME_FOLDER, Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
-            Util.writeProperties(properties);
-            ccv.getFrame().repaint();
-        } else {
-
-            if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_IP), "")) {
-                PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
-            }
-
-            try {
-                if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_PORT), "")) {
-                    PersistentDataManager.setPort(NumberUtils.toInt(properties.getProperty(Util.PROPERTY_PORT)));
-                }
-            } catch (NumberFormatException numberFormatException) {
-                log.error(numberFormatException);
-            }
-
-
-            if (properties == null || properties.getProperty(Util.PROPERTY_THEME_FOLDER) == null || StringUtils.equals(properties.getProperty(Util.PROPERTY_THEME_FOLDER), "")) {
-                ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
-                properties.setProperty(Util.PROPERTY_THEME_FOLDER, Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
-                Util.writeProperties(properties);
-                ccv.getFrame().repaint();
-            }
-
-        }
-    }
+  
 
     public void verifyUpdates() {
         try {

@@ -5,6 +5,8 @@ package gg.msn.core.commons;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import gg.msn.core.manager.PersistentDataManager;
+import gg.msn.ui.theme.ThemeManager;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
@@ -15,6 +17,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -37,8 +41,10 @@ public class Util {
     public static final String PROPERTY_FACEBOOK_PSW = "facebookPsw";
     public static final String PROPERTY_SAVE_FACEBOOK_EMAIL = "saveFacebookEmail";
     public static final String PROPERTY_SAVE_FACEBOOK_PSW = "saveFacebookPsw";
+    public static final String PROPERTY_INVISIBLE = "invisible";
     private static final char SEPARATOR = IOUtils.DIR_SEPARATOR;
     public static final String VALUE_DEFAULT_THEME_FOLDER = "images" + SEPARATOR + "theme" + SEPARATOR + "default";
+    public static boolean VALUE_DEFAULT_INVISIBLE = true;
 
     public Util() {
     }
@@ -73,6 +79,41 @@ public class Util {
             }
         } else {
             return null;
+        }
+    }
+
+    public static void initializeProperties() {
+        //Crea proprietà
+        Properties properties = Util.readProperties();
+
+        if (properties == null) {
+            properties = new Properties();
+            ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
+            properties.setProperty(Util.PROPERTY_THEME_FOLDER, Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
+            properties.setProperty(PROPERTY_INVISIBLE, VALUE_DEFAULT_INVISIBLE + "");
+            Util.writeProperties(properties);
+
+        } else {
+
+            if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_IP), "")) {
+                PersistentDataManager.setIp(properties.getProperty(Util.PROPERTY_IP));
+            }
+
+            try {
+                if (properties != null && !StringUtils.equals(properties.getProperty(Util.PROPERTY_PORT), "")) {
+                    PersistentDataManager.setPort(NumberUtils.toInt(properties.getProperty(Util.PROPERTY_PORT)));
+                }
+            } catch (NumberFormatException numberFormatException) {
+                log.error(numberFormatException);
+            }
+
+
+            if (properties == null || properties.getProperty(Util.PROPERTY_THEME_FOLDER) == null || StringUtils.equals(properties.getProperty(Util.PROPERTY_THEME_FOLDER), "")) {
+                ThemeManager.loadTheme(Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
+                properties.setProperty(Util.PROPERTY_THEME_FOLDER, Util.getPath() + Util.VALUE_DEFAULT_THEME_FOLDER);
+                Util.writeProperties(properties);
+            }
+
         }
     }
 

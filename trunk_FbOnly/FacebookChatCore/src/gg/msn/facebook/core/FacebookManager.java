@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -42,16 +39,21 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import gg.msn.core.commons.Util;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HeaderElement;
+import org.apache.http.HeaderElementIterator;
+import org.apache.http.conn.ConnectionKeepAliveStrategy;
+import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.protocol.ExecutionContext;
 
 public class FacebookManager {
 
@@ -60,13 +62,13 @@ public class FacebookManager {
     public static final int MAX_FACEBOOK_CHANNELS = 99;
     public static final int TRY_FIND_CHANNEL_NUMBER = 3;
     private static Log log = LogFactory.getLog(FacebookManager.class);
-    private static HttpClient httpClient;
+    private static volatile HttpClient httpClient;
     public static String loginPageUrl = "http://www.facebook.com/login.php";
     public static String homePageUrl = "http://www.facebook.com/home.php?_fb_noscript=1";
-    public static String uid = null;
-    public static String channel = "35";
-    public static String post_form_id = null;
-    public static long seq = -1;
+    public static volatile String uid = null;
+    public static volatile String channel = "35";
+    public static volatile String post_form_id = null;
+    public static volatile long seq = -1;
     public static HashSet<String> msgIDCollection;
     //public static Queue<Object> requestQ;
     private String Proxy_Host = "ISASRV";
@@ -199,6 +201,38 @@ public class FacebookManager {
 
         DefaultHttpClient dhc =
                 new DefaultHttpClient(ccm, getParams());
+        dhc.setKeepAliveStrategy(new ConnectionKeepAliveStrategy() {
+
+            public long getKeepAliveDuration(HttpResponse response, HttpContext context) {
+                // Honor 'keep-alive' header
+     /*   HeaderElementIterator it = new BasicHeaderElementIterator(
+                response.headerIterator(HTTP.CONN_KEEP_ALIVE));
+                while (it.hasNext()) {
+                HeaderElement he = it.nextElement();
+                String param = he.getName();
+                String value = he.getValue();
+                if (value != null && param.equalsIgnoreCase("timeout")) {
+                try {
+                return Long.parseLong(value) * 1000;
+                } catch(NumberFormatException ignore) {
+                }
+                }
+                }
+                HttpHost target = (HttpHost) context.getAttribute(
+                ExecutionContext.HTTP_TARGET_HOST);
+                if ("www.naughty-server.com".equalsIgnoreCase(target.getHostName())) {
+                // Keep alive for 5 seconds only
+                return 5 * 1000;
+                } else {
+                // otherwise keep alive for 30 seconds
+                return 30 * 1000;
+                }
+                }*/
+
+                //facebook tiene le connessioni 55 secondi ... dopo 60 significa che nn c'è un problema 
+                return 60 * 1000;
+            }
+        });
 
         dhc.getParams().setParameter(
                 ClientPNames.COOKIE_POLICY, CookiePolicy.BROWSER_COMPATIBILITY);
@@ -230,7 +264,7 @@ public class FacebookManager {
      * Performs general setup.
      * This should be called only once.
      */
-    private final static void setup() {
+    private final void setup() {
 
         supportedSchemes = new SchemeRegistry();
 
@@ -368,13 +402,13 @@ public class FacebookManager {
                 //log.debug(EntityUtils.toString(entity));
                 entity.consumeContent();
             }
-            log.debug("Initial set of cookies:");
+            log.trace("Initial set of cookies:");
             List<Cookie> cookies = ((DefaultHttpClient) httpClient).getCookieStore().getCookies();
             if (cookies.isEmpty()) {
-                log.debug("None");
+                log.trace("None");
             } else {
                 for (int i = 0; i < cookies.size(); i++) {
-                    log.debug("- " + cookies.get(i).toString());
+                    log.trace("- " + cookies.get(i).toString());
                 }
             }
 
@@ -389,19 +423,19 @@ public class FacebookManager {
             HttpResponse responsePost = httpClient.execute(httpost);
             entity = responsePost.getEntity();
 
-            log.debug("Login form get: " + responsePost.getStatusLine());
+            log.trace("Login form get: " + responsePost.getStatusLine());
             if (entity != null) {
                 //log.debug(EntityUtils.toString(entity));
                 entity.consumeContent();
             }
 
-            log.debug("Post logon cookies:");
+            log.trace("Post logon cookies:");
             cookies = ((DefaultHttpClient) httpClient).getCookieStore().getCookies();
             if (cookies.isEmpty()) {
-                log.debug("None");
+                log.trace("None");
             } else {
                 for (int i = 0; i < cookies.size(); i++) {
-                    log.debug("- " + cookies.get(i).toString());
+                    log.trace("- " + cookies.get(i).toString());
                 }
             }
         } catch (IOException ioe) {
@@ -579,7 +613,8 @@ public class FacebookManager {
             // testHttpClient("http://www.facebook.com/home.php?");
 
             //incremento il messaggio
-            incrementMessage();
+            //li incremento quando ricevo il messaggio che ho inviato
+            //incrementMessage();
             ResponseParser.messagePostingResultParser(uid, msg, responseStr);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -830,9 +865,6 @@ public class FacebookManager {
         }
 
         return -1;
-
-
-
     }
 
     private int parseSeq(String msgResponseBody) throws JSONException {
@@ -867,9 +899,17 @@ public class FacebookManager {
         } else {
             value = "" + channel;
         }
-        String url = "http://0.channel" + value + ".facebook.com/x/0/false/p_" + uid + "=" + seq;
+        Random random = new Random();
+        final int nextInt = random.nextInt(Integer.MAX_VALUE);
+
+        String url = "http://0.channel" + value + ".facebook.com/x/" + 0 + "/false/p_" + uid + "=" + seq;
         log.debug("url [ " + url + " ]");
         return url;
+    }
+
+    public static void main(String[] args) {
+        Random random = new Random();
+        System.out.println(random.nextInt(Integer.MAX_VALUE));
     }
 
     /**
@@ -900,18 +940,30 @@ public class FacebookManager {
         }
     }
 
-    public String getHistory() {
+    public JSONObject[] getHistory(String UID) {
 
         /*
          * http://www.facebook.com/ajax/chat/history.php?id=100000191774044&__a=1
          */
 
         String historyUrl = "http://www.facebook.com/ajax/chat/history.php";//?id=100000191774044&__a=1";
-        String url = historyUrl + "?id=" + uid + "&__a=1";
+        String url = historyUrl + "?id=" + UID + "&__a=1";
         String response = facebookGetMethod(url);
         log.debug("response [" + response + "]");
-
-        return "";
+        response = response.replace("for", "");
+        response = response.replace("(;;);", "");
+        try {
+            JSONObject respnse = new JSONObject(response);
+            log.debug("respnse  [ " + response + " ] ");
+            JSONObject payload = (JSONObject) respnse.get("payload");
+            log.debug("payload [ " + payload + " ] ");
+            JSONObject[] history = (JSONObject[]) payload.get("history");
+            log.debug("history [ " + history + " ] ");
+            return history;
+        } catch (Exception e) {
+            log.error(e);
+        }
+        return null;
     }
 
     /**
@@ -1031,12 +1083,6 @@ public class FacebookManager {
         }
 
         return responseStr;
-    }
-
-    public static void main(String[] args) {
-//        new FacebookManager();
-////        System.out.println(facebookGetMethod("http://0.channel35.facebook.com/x/0/false/p_1567835536=-1"));
-//        System.out.println(facebookGetMethod("http://0.channel35.facebook.com/x/0/false/p_1567835536=-1"));
     }
 }
 

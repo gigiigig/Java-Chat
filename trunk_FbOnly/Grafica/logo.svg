@@ -24,6 +24,38 @@
        inkscape:vp_z="1304.5165 : 259.33242 : 1"
        inkscape:persp3d-origin="511.10131 : 13.714073 : 1"
        id="perspective10" />
+    <filter
+       inkscape:collect="always"
+       id="filter3421">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="5.474862"
+         id="feGaussianBlur3423" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3597"
+       x="-0.3507637"
+       width="1.7015274"
+       y="-0.16891236"
+       height="1.3378247">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="8.6725304"
+         id="feGaussianBlur3599" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter4053"
+       x="-0.061283358"
+       width="1.1225667"
+       y="-0.10327667"
+       height="1.2065533">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="9.4870623"
+         id="feGaussianBlur4055" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -32,9 +64,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.65490196"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="247.58319"
-     inkscape:cy="505.46785"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="296.28241"
+     inkscape:cy="455.8837"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -131,67 +163,127 @@
          id="tspan3174"
          x="275.54294"
          y="412.50891">f</tspan></text>
-    <rect
-       style="fill:#008080;fill-opacity:1;stroke:#6e6e6e;stroke-opacity:1"
-       id="rect2392"
-       width="271.73102"
-       height="267.69043"
-       x="122.22845"
-       y="473.54477"
-       rx="44.143398"
-       ry="41.112942" />
+    <a
+       id="a3955"
+       style="opacity:1;fill:#ffffff;stroke:#008080;stroke-width:10.33381939;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.7738329,0,0,0.8599756,-33.741066,352.23897)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.png"
+       inkscape:export-xdpi="72.225708"
+       inkscape:export-ydpi="72.225708">
+      <path
+         style="fill:#ffffff;stroke:#008080;stroke-width:10.33381939;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d=""
+         id="path3957"
+         transform="translate(-1.4285717,-0.7142853)" />
+      <path
+         style="fill:#ffffff;stroke:#008080;stroke-width:10.33381939;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d=""
+         id="path3959"
+         transform="translate(-1.4285717,-0.7142853)" />
+      <path
+         style="fill:#ffffff;stroke:#008080;stroke-width:10.33381939;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d=""
+         id="path3961"
+         transform="translate(-1.4285717,-0.7142853)" />
+      <g
+         id="g3963"
+         transform="matrix(0.9798346,0,0,1,8.9885186,0)"
+         style="fill:#ffffff;stroke:#008080;stroke-width:10.43961525;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+        <path
+           transform="matrix(1.7919601,0,0,1.4019951,-92.396567,-571.3108)"
+           d="M 357.14287,605.2193 A 97.321426,65.35714 0 1 1 162.50002,605.2193 A 97.321426,65.35714 0 1 1 357.14287,605.2193 z"
+           sodipodi:ry="65.35714"
+           sodipodi:rx="97.321426"
+           sodipodi:cy="605.2193"
+           sodipodi:cx="259.82144"
+           id="path3965"
+           style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:7.35913897;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           sodipodi:type="arc" />
+        <path
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:11.66445446;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 249.6871,339.98831 C 248.97597,362.20912 206.61427,387.33994 168.40724,404.61243 C 218.37542,411.88455 332.77978,390.08834 366.519,367.86149"
+           id="path3967"
+           sodipodi:nodetypes="ccc" />
+      </g>
+    </a>
     <a
        id="a2394"
-       style="fill:#ffffff"
-       transform="matrix(0.6942324,0,0,0.7678363,0.203007,385.94366)">
+       style="opacity:1;fill:#00d1a3;fill-opacity:1;stroke:#008080;stroke-width:13.40313435000000000;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.5899325,0,0,0.6705637,26.815972,408.69483)"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.png"
+       inkscape:export-xdpi="72.225708"
+       inkscape:export-ydpi="72.225708">
       <path
-         sodipodi:nodetypes="ccc"
-         id="path2396"
-         d="M 258.57143,335.21932 C 253.65801,371.65195 226.13213,395.98557 190.78911,415.30155 C 249.64203,408.90668 317.03363,392.5042 349.76817,368.19038"
-         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.30680120000000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0" />
-      <path
-         style="fill:#ffffff"
-         d="M 260.10612,338.91293 C 260.54254,335.62285 260.46017,335.20586 259.45029,335.59339 C 256.94011,336.55662 241.24154,321.78432 235.2888,312.85754 C 227.05766,300.51404 224.57937,293.29357 224.14345,280.38563 C 223.77662,269.52269 224.61756,264.51534 228.23745,256.00872 C 233.57554,243.46439 246.16978,228.88119 260.38999,218.77844 C 274.27807,208.91165 299.22037,197.97152 319.31856,192.93134 C 357.75758,183.29169 403.79191,182.91428 441.77406,191.9274 C 487.82527,202.85532 523.26342,226.34139 535.93984,254.33428 C 540.86163,265.20302 542.43099,278.65224 540.07456,289.76959 C 536.97799,304.37922 525.74149,321.05676 511.54242,332.11787 C 489.4162,349.3543 462.0707,360.83514 428.96142,366.78893 C 412.93143,369.67148 403.73048,370.37422 382.53284,370.33499 C 360.19809,370.29364 352.04562,369.76591 351.14142,368.30289 C 350.69639,367.58278 348.94937,368.41975 343.86572,371.78856 C 173.82736,413.96968 263.89276,439.33146 260.10612,338.91293 z"
-         id="path2398"
-         transform="translate(-1.4285717,-0.7142853)"
-         sodipodi:nodetypes="cssssssssssssscc" />
-      <path
-         style="fill:#ffffff;fill-opacity:0;stroke:none;stroke-width:1.03612506000000000;stroke-opacity:1"
-         d="M 381.25893,184.62946 C 351.09571,184.55612 323.58651,188.99592 299.13393,197.91071 C 288.78535,201.68354 274.26733,208.40007 266.16518,213.16071 C 248.8674,223.32446 231.45958,242.11923 226.07143,256.53571 C 223.14476,264.36628 222.73187,266.71708 222.72768,276.66071 C 222.72149,291.42277 225.03491,299.02848 233.32143,311.66071 C 235.50603,314.99098 240.27279,320.32868 244.97768,325.03571 C 247.33012,327.38923 249.66552,329.56662 251.63393,331.25446 C 253.60234,332.9423 255.12677,334.11767 256.19643,334.50446 C 257.25076,334.88571 257.83763,335.19548 258.10268,335.50446 C 258.36773,335.81344 258.44643,336.21186 258.44643,337.03571 C 258.44643,337.56845 258.13723,338.75699 257.60268,340.22321 C 257.06813,341.68943 256.32217,343.45272 255.50893,345.34821 C 253.88244,349.13919 251.98138,353.39452 250.85268,356.66071 C 244.0647,389.03248 202.06547,393.84221 189.82143,409.81696 C 189.45421,410.3579 189.19344,410.7092 188.66518,410.97321 C 188.15375,411.22881 187.29518,411.41218 185.88393,411.41071 C 185.83747,411.41066 185.83795,411.41114 185.79018,411.41071 L 185.72768,411.41071 L 185.79018,412.44196 C 185.8046,412.44209 185.8071,412.44186 185.82143,412.44196 L 191.75893,411.94196 C 191.78564,412.24257 192.12324,412.22055 192.29018,412.34821 C 244.29737,411.76428 295.28642,393.49746 341.82143,371.78571 L 348.19643,367.97321 L 352.54018,368.78571 C 354.50577,369.14289 358.5291,369.35615 363.72768,369.50446 C 368.92626,369.65277 375.27424,369.72638 381.72768,369.69196 C 394.63455,369.62312 407.9687,369.18526 413.66518,368.44196 C 457.84773,362.67684 495.21072,346.99955 517.60268,324.72321 C 534.42917,307.98354 541.39358,291.3854 539.44643,272.41071 C 537.83809,256.73818 532.14899,245.20998 519.69643,232.25446 C 508.98598,221.11135 497.55935,213.14842 480.97768,205.25446 C 455.13869,192.9534 427.14629,186.3889 394.35268,184.94196 C 389.93584,184.74708 385.56796,184.63994 381.25893,184.62946 z M 381.25893,185.66071 C 385.55314,185.67115 389.88736,185.77894 394.29018,185.97321 C 426.97204,187.41522 454.80306,193.95428 480.50893,206.19196 C 497.01328,214.04911 508.32002,221.91754 518.94643,232.97321 C 531.29596,245.82154 536.82666,257.05638 538.41518,272.53571 C 540.33071,291.20226 533.56972,307.37352 516.88393,323.97321 C 494.72848,346.01425 457.55763,361.66713 413.54018,367.41071 C 408.00205,368.13335 394.61573,368.56072 381.72768,368.62946 C 375.28366,368.66383 368.94069,368.62104 363.75893,368.47321 C 358.57717,368.32538 354.5205,368.08024 352.72768,367.75446 L 348.19643,366.94196 L 348.00893,366.87946 L 347.82143,367.00446 L 341.29018,370.87946 C 239.43909,391.85876 177.34366,462.7706 251.82143,357.00446 C 252.92278,353.8174 254.81493,349.58837 256.44643,345.78571 C 257.26218,343.88438 258.02361,342.06959 258.57143,340.56696 C 259.11925,339.06433 259.47768,337.90182 259.47768,337.03571 C 259.47768,336.12744 259.36908,335.41377 258.88393,334.84821 C 258.39878,334.28265 257.67116,333.93338 256.57143,333.53571 C 255.89205,333.29004 254.26011,332.13555 252.32143,330.47321 C 250.38275,328.81087 248.06559,326.62468 245.72768,324.28571 C 241.05186,319.60776 236.2456,314.26965 234.16518,311.09821 C 225.93372,298.54992 223.75278,291.31757 223.75893,276.66071 C 223.76311,266.74246 224.12611,264.67633 227.04018,256.87946 C 232.27342,242.87745 249.61955,224.06966 266.69643,214.03571 C 274.69864,209.33379 289.23923,202.62353 299.50893,198.87946 C 323.83073,190.01234 351.19948,185.58761 381.25893,185.66071 z"
-         id="path2401"
-         sodipodi:nodetypes="cssssssssssssccsscccccccccssssssssccssssssssccccccssssssssssssc" />
-      <path
-         style="fill:#ffffff"
+         style="fill:#00d1a3;fill-opacity:1;stroke:#008080;stroke-width:13.40313435000000000;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d=""
          id="path2404"
          transform="translate(-1.4285717,-0.7142853)" />
       <path
-         style="fill:#ffffff"
+         style="fill:#00d1a3;fill-opacity:1;stroke:#008080;stroke-width:13.40313435000000000;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d=""
          id="path2406"
          transform="translate(-1.4285717,-0.7142853)" />
       <path
-         style="fill:#ffffff"
+         style="fill:#00d1a3;fill-opacity:1;stroke:#008080;stroke-width:13.40313435000000000;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d=""
          id="path2408"
          transform="translate(-1.4285717,-0.7142853)" />
-      <path
-         style="fill:#ffffff"
-         d="M 349.01962,368.79372 C 349.02676,368.78217 349.14794,368.68478 349.28891,368.5773 C 349.47824,368.43294 349.59449,368.36254 349.73381,368.30785 C 349.9167,368.23605 349.92671,368.2346 350.06472,368.26011 L 350.20704,368.28641 L 350.03833,368.30149 C 349.79117,368.32359 349.66963,368.37787 349.2807,368.63988 C 349.03111,368.80803 348.99913,368.82688 349.01962,368.79372 z"
-         id="path2410"
-         transform="translate(-1.4285717,-0.7142853)" />
+      <g
+         id="g3227"
+         transform="matrix(0.9798346,0,0,1,8.9885186,0)"
+         style="fill:#00d1a3;fill-opacity:1;stroke:#008080;stroke-width:13.54035282000000100;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+        <path
+           transform="matrix(1.7919601,0,0,1.4654398,-93.619858,-609.78016)"
+           d="M 357.14287,605.2193 A 97.321426,65.35714 0 1 1 162.50002,605.2193 A 97.321426,65.35714 0 1 1 357.14287,605.2193 z"
+           sodipodi:ry="65.35714"
+           sodipodi:rx="97.321426"
+           sodipodi:cy="605.2193"
+           sodipodi:cx="259.82144"
+           id="path3225"
+           style="fill:#00d1a3;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:7.35913897000000010;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           sodipodi:type="arc" />
+        <path
+           style="fill:#00d1a3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:11.66445446000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 265.73719,339.50873 C 274.44573,360.57356 248.41399,402.12608 194.61119,423.83119 C 259.83423,421.70114 343.87819,392.17531 376.61273,367.86149"
+           id="path2396"
+           sodipodi:nodetypes="ccc" />
+      </g>
     </a>
     <text
        xml:space="preserve"
-       style="font-size:169.25750732000000000px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#008080;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial Bold"
-       x="192.19885"
-       y="760.88019"
+       style="font-size:166.83206177px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial Bold"
+       x="179.92691"
+       y="767.79193"
        id="text2412"
-       transform="scale(1.1687612,0.8556068)"
-       sodipodi:linespacing="125%"><tspan
+       transform="scale(1.1857529,0.843346)"
+       sodipodi:linespacing="125%"
+       inkscape:export-xdpi="72.225708"
+       inkscape:export-ydpi="72.225708"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.png"><tspan
          sodipodi:role="line"
          id="tspan2414"
-         x="192.19885"
-         y="760.88019">f</tspan></text>
+         x="179.92691"
+         y="767.79193">f</tspan></text>
+    <rect
+       style="fill:#008080;fill-opacity:1;stroke:#6e6e6e;stroke-opacity:1"
+       id="rect2403"
+       width="0"
+       height="53.538086"
+       x="237.38585"
+       y="470.51431"
+       rx="0"
+       ry="53.538086" />
+    <rect
+       style="opacity:0.50387596999999995;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.99999994000000003;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3969"
+       width="319"
+       height="319"
+       x="94.752296"
+       y="444.86267"
+       rx="0"
+       ry="0"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.png"
+       inkscape:export-xdpi="72.225708"
+       inkscape:export-ydpi="72.225708" />
   </g>
 </svg>
