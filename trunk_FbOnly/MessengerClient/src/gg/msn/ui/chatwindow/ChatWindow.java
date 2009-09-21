@@ -17,7 +17,7 @@ import chatcommons.Client;
 import emoticon.Emoticon;
 import emoticon.EmoticonAddDialog;
 import emoticon.EmoticonsManger;
-import facebookchat.common.ErrorCode;
+import gg.msn.facebook.core.ErrorCode;
 import gg.msn.facebook.core.FacebookManager;
 import gg.msn.core.manager.PersistentDataManager;
 import java.awt.Color;
@@ -47,6 +47,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.FocusManager;
@@ -628,10 +630,26 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
                 public void run() {
 
                     if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
-                        int responseCode = FacebookManager.PostMessage(clients.get(0).getUid(), newText);
-                        if (responseCode != ErrorCode.Error_Global_NoError) {
-                            writeMessage(getNick(), "C'è stato un errore nell'invio del messaggio!", font, Color.red);
+                        int sendTry = 1;
+                        int responseCode = 0;
+                        while (sendTry <= 3) {
+                            log.debug("tentativo di invio  [ " + sendTry + " ] per il messaggio  [ " + newText + " ] ");
+                            responseCode = FacebookManager.PostMessage(clients.get(0).getUid(), newText);
+                            if (responseCode != ErrorCode.Error_Global_NoError) {
+                                if (sendTry == 3) {
+                                    writeMessage(getNick(), "Non è stato possibile consegnare il messggio : " + newText, font, Color.GRAY);
+                                }
+                                sendTry++;
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException ex) {
+                                    log.error(ex);
+                                }
+                            } else {
+                                break;
+                            }
                         }
+
 
                     }
                     return;
@@ -972,7 +990,7 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     }
 
     private void writeTrayMessage(String message, String sender) {
-        int substringMax = 10;
+        int substringMax = 25;
         int txtLength = message.length();
         int subEnd = substringMax;
         if (substringMax > txtLength) {

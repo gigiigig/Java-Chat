@@ -435,9 +435,7 @@ public class FacebookManager {
                 }
             }
         } catch (IOException ioe) {
-            System.err.print("IOException");
-            System.err.println(ioe.getMessage());
-            ioe.printStackTrace();
+            log.error(ioe);
             return ErrorCode.kError_Global_ValidationError;
         }
 

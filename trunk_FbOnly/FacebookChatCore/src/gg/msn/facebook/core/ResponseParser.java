@@ -62,6 +62,8 @@ public class ResponseParser {
                             log.debug("buddy lisst updated");
                         }
                     }
+                }else{
+                    
                 }
             } catch (ClassCastException cce) {
                 log.error(cce);

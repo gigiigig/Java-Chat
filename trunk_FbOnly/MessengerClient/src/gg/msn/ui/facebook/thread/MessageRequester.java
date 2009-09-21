@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.json.JSONObject;
 
 /**
@@ -58,18 +59,25 @@ public class MessageRequester implements Runnable {
         }
     }
 
-    private void findChannelAndSequenzNumber() {
+    private void findChannelAndSequenzNumber(boolean login) {
         FacebookManager.seq = fbManger.getSeq();
+
         while (FacebookManager.seq == -1) {
-            // fbManger.doLogin();
+            if (login) {
+                fbManger.doLogin();
+            }
             fbManger.findChannel();
             FacebookManager.seq = fbManger.getSeq();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException interruptedException) {
+            }
         }
     }
 
     private void keepRequesting() {
 
-       
+
         //go seq
         //  while (true) {
         //PostMessage("1190346972", "SEQ:"+seq);
@@ -82,11 +90,13 @@ public class MessageRequester implements Runnable {
 //            while (FacebookManager.seq <= currentSeq) {
         log.debug("online  [ " + online + " ] ");
         //mi metto in lettura dei messaggi
+        boolean login = false;
         while (true) {
             if (online) {
-                if(FacebookManager.channel == -1 || FacebookManager.seq == -1){
-                    findChannelAndSequenzNumber();
+                if (FacebookManager.channel == -1 || FacebookManager.seq == -1) {
+                    findChannelAndSequenzNumber(login);
                 }
+                login = true;
                 //get the old message between oldseq and seq
                 String msgResponseBody = FacebookManager.facebookGetMethod(fbManger.getMessageRequestingUrl(FacebookManager.channel, FacebookManager.seq));
 
@@ -126,7 +136,7 @@ public class MessageRequester implements Runnable {
                                     new Thread(runnable).start();
                                 }
 
-                            //caso messaggio testuale
+                                //caso messaggio testuale
                             } else if (StringUtils.equals(fm.type, "msg")) {
                                 log.debug("writw message from  [ " + fm.fromName + " ] ");
                                 Client client = new Client(fm.fromName);
@@ -143,7 +153,7 @@ public class MessageRequester implements Runnable {
                                 chatWith.writeMessage(fm.fromName, fm.text);
                                 log.debug("senquenz number [" + FacebookManager.seq + "]");
                                 //altro tipo di messaggio
-                            } else if (StringUtils.equals(fm.type, "focus_chat") || StringUtils.equals(fm.type, "focus_chat")) {
+                            } else if (StringUtils.equals(fm.type, "unfocus_chat") || StringUtils.equals(fm.type, "focus_chat")) {
                                 log.debug("receyed  [ " + fm.type + " ] message ");
                             }
                         }

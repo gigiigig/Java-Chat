@@ -11,9 +11,12 @@ import gg.msn.ui.helper.ChatClientViewHelper;
 
 import gg.msn.ui.panel.MainPanel;
 import java.awt.AWTException;
+import java.awt.Graphics2D;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
+import java.awt.RenderingHints;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.WindowEvent;
@@ -50,6 +53,8 @@ public class ChatClientView extends FrameView {
         // <editor-fold defaultstate="collapsed" desc="Window Icon"> 
         try {
             getFrame().setIconImage(getResourceMap().getImageIcon("trayIcon").getImage());
+            ((Graphics2D)getFrame().getIconImage().getGraphics()).setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR));
+            ((Graphics2D)getFrame().getIconImage().getGraphics()).setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
         } catch (Exception e) {
             log.warn(e);
         }
@@ -130,7 +135,7 @@ public class ChatClientView extends FrameView {
     private void createSystemTray() throws HeadlessException {
         try {
             SystemTray systemTray = SystemTray.getSystemTray();
-            TrayIcon trayIcon = new TrayIcon(getResourceMap().getImageIcon("trayIcon").getImage());
+            TrayIcon trayIcon = new TrayIcon(getResourceMap().getImageIcon("trayIcon").getImage().getScaledInstance(16, 16, Image.SCALE_AREA_AVERAGING));
 //            TrayIcon trayIcon = new TrayIcon(new ImageIcon("/entman/resources/tray.png").getImage());
             trayIcon.addMouseListener(new MouseAdapter() {
 
