@@ -24,7 +24,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="clientListScrollPane" alignment="1" pref="294" max="32767" attributes="0"/>
+                          <Component id="clientListScrollPane" alignment="1" pref="322" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="1">
                               <Component id="nickIcon" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -33,7 +33,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jToolBar1" alignment="1" min="-2" pref="140" max="-2" attributes="1"/>
+                  <Component id="jToolBar1" alignment="1" min="-2" pref="177" max="-2" attributes="1"/>
               </Group>
           </Group>
       </Group>
@@ -83,6 +83,20 @@
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="name" type="java.lang.String" value="selectThemeButton" noResource="true"/>
+            <Property name="opaque" type="boolean" value="false"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="swichVisibleInvisibleButton">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="gg.msn.ui.panel.MainPanel" id="swichVisibleInvisible" methodName="swichVisibleInvisible"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="swichVisibleInvisibleButton.icon"/>
+            <Property name="text" type="java.lang.String" resourceKey="swichVisibleInvisibleButton.text"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="name" type="java.lang.String" value="swichVisibleInvisibleButton" noResource="true"/>
             <Property name="opaque" type="boolean" value="false"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>

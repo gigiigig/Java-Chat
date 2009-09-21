@@ -274,9 +274,11 @@ public class FBLoginPanel extends javax.swing.JPanel {
         int loginErrorCode = fbManger.doLogin();
         if (loginErrorCode == ErrorCode.Error_Global_NoError) {
             if (fbManger.doParseHomePage() == ErrorCode.Error_Global_NoError) {
-                if (!invisibleCheck.isSelected()) {
-                    fbManger.findChannel();
-                }
+
+
+                //                if (!invisibleCheck.isSelected()) {
+//                    fbManger.findChannel();
+//                }
 
                 PersistentDataManager.setUid(FacebookManager.uid);
 
@@ -285,6 +287,8 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 ChatClientView.protocol = ChatClientView.FACEBOOK_PROTOCOL;
                 PersistentDataManager.setNick(FacebookUserList.me.name);
                 MessageRequester messageRequester = new MessageRequester(ccv, fbManger, email, pass);
+
+                //imposto l'inivisibilità
                 if (invisibleCheck.isSelected()) {
                     MessageRequester.setOnline(false);
                 } else {

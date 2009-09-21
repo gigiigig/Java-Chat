@@ -17,6 +17,7 @@ import chatcommons.Client;
 import emoticon.Emoticon;
 import emoticon.EmoticonAddDialog;
 import emoticon.EmoticonsManger;
+import facebookchat.common.ErrorCode;
 import gg.msn.facebook.core.FacebookManager;
 import gg.msn.core.manager.PersistentDataManager;
 import java.awt.Color;
@@ -627,7 +628,10 @@ private void mainPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
                 public void run() {
 
                     if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
-                        FacebookManager.PostMessage(clients.get(0).getUid(), newText);
+                        int responseCode = FacebookManager.PostMessage(clients.get(0).getUid(), newText);
+                        if (responseCode != ErrorCode.Error_Global_NoError) {
+                            writeMessage(getNick(), "C'è stato un errore nell'invio del messaggio!", font, Color.red);
+                        }
 
                     }
                     return;

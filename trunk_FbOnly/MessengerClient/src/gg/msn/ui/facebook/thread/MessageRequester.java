@@ -58,16 +58,18 @@ public class MessageRequester implements Runnable {
         }
     }
 
-    private void keepRequesting(){
-
+    private void findChannelAndSequenzNumber() {
         FacebookManager.seq = fbManger.getSeq();
-
         while (FacebookManager.seq == -1) {
             // fbManger.doLogin();
             fbManger.findChannel();
             FacebookManager.seq = fbManger.getSeq();
         }
+    }
 
+    private void keepRequesting() {
+
+       
         //go seq
         //  while (true) {
         //PostMessage("1190346972", "SEQ:"+seq);
@@ -78,12 +80,15 @@ public class MessageRequester implements Runnable {
 //            }
 
 //            while (FacebookManager.seq <= currentSeq) {
-        log.debug("online  [ " + online+" ] ");
+        log.debug("online  [ " + online + " ] ");
+        //mi metto in lettura dei messaggi
         while (true) {
-
             if (online) {
+                if(FacebookManager.channel == -1 || FacebookManager.seq == -1){
+                    findChannelAndSequenzNumber();
+                }
                 //get the old message between oldseq and seq
-                String msgResponseBody = FacebookManager.facebookGetMethod(fbManger.getMessageRequestingUrl(Integer.parseInt(FacebookManager.channel), FacebookManager.seq));
+                String msgResponseBody = FacebookManager.facebookGetMethod(fbManger.getMessageRequestingUrl(FacebookManager.channel, FacebookManager.seq));
 
                 try {
                     List<FacebookMessage> facebookMessages = ResponseParser.messageRequestResultParser(msgResponseBody, fbManger);
@@ -94,6 +99,7 @@ public class MessageRequester implements Runnable {
                             ChatClientViewHelper helper = ccv.getHelper();
 
                             log.debug("message type  [ " + fm.type + " ] ");
+                            //caso messaggio di typ
                             if (StringUtils.equals(fm.type, "typ")) {
                                 log.debug("received typing message");
 
@@ -102,6 +108,7 @@ public class MessageRequester implements Runnable {
                                 if (chat != null) {
                                     Runnable runnable = new Runnable() {
 
+                                        //fa appare i puntini e poi li leva
                                         public void run() {
                                             try {
                                                 JLabel nickLabel = chat.getNickLabel();
@@ -119,6 +126,7 @@ public class MessageRequester implements Runnable {
                                     new Thread(runnable).start();
                                 }
 
+                            //caso messaggio testuale
                             } else if (StringUtils.equals(fm.type, "msg")) {
                                 log.debug("writw message from  [ " + fm.fromName + " ] ");
                                 Client client = new Client(fm.fromName);
@@ -134,6 +142,7 @@ public class MessageRequester implements Runnable {
                                 ChatWindow chatWith = helper.getChatWith(client);
                                 chatWith.writeMessage(fm.fromName, fm.text);
                                 log.debug("senquenz number [" + FacebookManager.seq + "]");
+                                //altro tipo di messaggio
                             } else if (StringUtils.equals(fm.type, "focus_chat") || StringUtils.equals(fm.type, "focus_chat")) {
                                 log.debug("receyed  [ " + fm.type + " ] message ");
                             }
@@ -176,7 +185,7 @@ public class MessageRequester implements Runnable {
                     }
 //                FacebookManager.seq = fbManger.getSeq();
                 }
-            }else{
+            } else {
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException interruptedException) {

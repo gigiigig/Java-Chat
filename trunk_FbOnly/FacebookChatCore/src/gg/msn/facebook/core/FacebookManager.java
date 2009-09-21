@@ -49,11 +49,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HeaderElement;
-import org.apache.http.HeaderElementIterator;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
-import org.apache.http.message.BasicHeaderElementIterator;
-import org.apache.http.protocol.ExecutionContext;
 
 public class FacebookManager {
 
@@ -63,10 +59,10 @@ public class FacebookManager {
     public static final int TRY_FIND_CHANNEL_NUMBER = 3;
     private static Log log = LogFactory.getLog(FacebookManager.class);
     private static volatile HttpClient httpClient;
-    public static String loginPageUrl = "http://www.facebook.com/login.php";
-    public static String homePageUrl = "http://www.facebook.com/home.php?_fb_noscript=1";
+    public static final String loginPageUrl = "http://www.facebook.com/login.php";
+    public static final String homePageUrl = "http://www.facebook.com/home.php?_fb_noscript=1";
     public static volatile String uid = null;
-    public static volatile String channel = "35";
+    public static volatile int channel = -1;
     public static volatile String post_form_id = null;
     public static volatile long seq = -1;
     public static HashSet<String> msgIDCollection;
@@ -515,10 +511,11 @@ public class FacebookManager {
 //            log.debug("page : \n "+getMethodResponseBody);
 //            return ErrorCode.Error_System_ChannelNotFound;
 
-            channel = null;
+            channel = -1;
         } else {
-            channel = getMethodResponseBody.substring(channelBeginPos,
+            String channelSt = getMethodResponseBody.substring(channelBeginPos,
                     channelBeginPos + 2);
+            NumberUtils.toInt(channelSt, -1);
             log.debug("Channel: " + channel);
         }
 
@@ -580,7 +577,7 @@ public class FacebookManager {
      * @param uid
      * @param msg
      */
-    public static void PostMessage(String uid, String msg) {
+    public static int PostMessage(String uid, String msg) {
 //        if (uid.equals(Launcher.uid)) {
 //            return;
 //        }
@@ -610,14 +607,10 @@ public class FacebookManager {
             //for (;;);{"error":0,"errorSummary":"","errorDescription":"No error.","payload":[],"bootload":[{"name":"js\/common.js.pkg.php","type":"js","src":"http:\/\/static.ak.fbcdn.net\/rsrc.php\/pkg\/60\/106715\/js\/common.js.pkg.php"}]}
             //for (;;);{"error":1356003,"errorSummary":"Send destination not online","errorDescription":"This person is no longer online.","payload":null,"bootload":[{"name":"js\/common.js.pkg.php","type":"js","src":"http:\/\/static.ak.fbcdn.net\/rsrc.php\/pkg\/60\/106715\/js\/common.js.pkg.php"}]}
             log.debug("+++++++++ PostMessage end +++++++++");
-            // testHttpClient("http://www.facebook.com/home.php?");
-
-            //incremento il messaggio
-            //li incremento quando ricevo il messaggio che ho inviato
-            //incrementMessage();
-            ResponseParser.messagePostingResultParser(uid, msg, responseStr);
+            return ResponseParser.messagePostingResultParser(uid, msg, responseStr);
         } catch (JSONException e) {
-            e.printStackTrace();
+            log.error(e);
+            return -1;
         }
     }
 
@@ -711,9 +704,9 @@ public class FacebookManager {
     public int getSeq() {
         //int tempSeq = -1;
         //for (;;);{"t":"refresh", "seq":0}
-        if (channel != null) {
+        if (channel != -1) {
             try {
-                String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(Integer.parseInt(channel), -1));
+                String seqResponseBody = facebookGetMethod(getMessageRequestingUrl(channel, -1));
                 int tempSeq = parseSeq(seqResponseBody);
                 log.debug("Channel [ " + channel + " ]  SEQ [ " + tempSeq + " ]");
 
@@ -823,9 +816,13 @@ public class FacebookManager {
 //            }
 //        }
 //    }// </editor-fold>
+    /**
+     * Setta il valore del channel e lo restituisce
+     * @return
+     */
     public int findChannel() {
 
-        channel = "-1";
+        channel = -1;
 
         /*
          * GET = http://www.facebook.com/ajax/presence/reconnect.php?post_form_id=90b406644968d3685ba55bbb64912805
@@ -855,8 +852,8 @@ public class FacebookManager {
                 log.debug("host [" + host + "]");
                 host = host.replace("channel", "");
                 log.debug("channel [" + host + "]");
-                channel = host;
-                return NumberUtils.toInt(host, -1);
+                channel = NumberUtils.toInt(host, -1);
+                return channel;
 
             } catch (JSONException ex) {
                 log.error(ex);

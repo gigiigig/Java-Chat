@@ -16,6 +16,7 @@ import gg.msn.facebook.core.FacebookUser;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.facebook.panel.FBLoginPanel;
+import gg.msn.ui.facebook.thread.MessageRequester;
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
@@ -104,6 +105,10 @@ public class ChatClientViewHelper {
      */
     public void startChatWithSelected() {
 
+        if (!MessageRequester.isOnline()) {
+            JOptionPane.showMessageDialog(ccv.getFrame(), "Non è possibile inviare messaggi se si è invisibili", "Attenzione!", JOptionPane.INFORMATION_MESSAGE);
+            return ;
+        }
         Client nickSelected = null;
 
         if (ChatClientView.protocol.equals(ChatClientView.FACEBOOK_PROTOCOL)) {
@@ -111,7 +116,7 @@ public class ChatClientViewHelper {
         } else {
             nickSelected = ((Client) ccv.getMainPanel().getClientsList().getSelectedValue());
         }
-        if (nickSelected != null && !nickSelected.equals("")) {
+        if (nickSelected != null && !nickSelected.getNick().equals("")) {
             log.info("nick selected : " + nickSelected);
             ChatWindow chatWith = getChatWith(nickSelected);
         }
@@ -254,8 +259,6 @@ public class ChatClientViewHelper {
         client.setUid(fu.uid);
         return client;
     }
-
-  
 
     public void verifyUpdates() {
         try {

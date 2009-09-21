@@ -11,11 +11,13 @@
 package gg.msn.ui.panel;
 
 import chatcommons.Client;
+import gg.msn.facebook.core.FacebookManager;
 import gg.msn.facebook.core.FacebookUserList;
 import gg.msn.facebook.core.FacebookUser;
 import gg.msn.ui.ChatClientAboutBox;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.facebook.form.OptionsDialog;
+import gg.msn.ui.facebook.thread.MessageRequester;
 import gg.msn.ui.form.LicenseDialog;
 import gg.msn.ui.listener.ChatClientViewListeners;
 import gg.msn.ui.theme.ThemeManager;
@@ -37,7 +39,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
-
 
 /**
  *
@@ -81,6 +82,7 @@ public class MainPanel extends javax.swing.JPanel {
         nickLabel = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
         selectThemeButton = new javax.swing.JButton();
+        swichVisibleInvisibleButton = new javax.swing.JButton();
         chat = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         disconnect = new javax.swing.JButton();
@@ -111,6 +113,16 @@ public class MainPanel extends javax.swing.JPanel {
         selectThemeButton.setOpaque(false);
         selectThemeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(selectThemeButton);
+
+        swichVisibleInvisibleButton.setAction(actionMap.get("swichVisibleInvisible")); // NOI18N
+        swichVisibleInvisibleButton.setIcon(resourceMap.getIcon("swichVisibleInvisibleButton.icon")); // NOI18N
+        swichVisibleInvisibleButton.setText(resourceMap.getString("swichVisibleInvisibleButton.text")); // NOI18N
+        swichVisibleInvisibleButton.setFocusable(false);
+        swichVisibleInvisibleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        swichVisibleInvisibleButton.setName("swichVisibleInvisibleButton"); // NOI18N
+        swichVisibleInvisibleButton.setOpaque(false);
+        swichVisibleInvisibleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(swichVisibleInvisibleButton);
 
         chat.setAction(actionMap.get("addChatWithSelected")); // NOI18N
         chat.setIcon(resourceMap.getIcon("chat.icon")); // NOI18N
@@ -174,13 +186,13 @@ public class MainPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(clientListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                            .addComponent(clientListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(nickIcon)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(nickLabel)))
                         .addContainerGap())
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,6 +217,7 @@ public class MainPanel extends javax.swing.JPanel {
     private javax.swing.JLabel nickIcon;
     private javax.swing.JLabel nickLabel;
     private javax.swing.JButton selectThemeButton;
+    private javax.swing.JButton swichVisibleInvisibleButton;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -248,18 +261,20 @@ public class MainPanel extends javax.swing.JPanel {
             ImageIcon userIcon = null;
             if (StringUtils.equals(ChatClientView.protocol, ChatClientView.FACEBOOK_PROTOCOL)) {
                 userIcon = FacebookUserList.me.portrait;
-                log.debug("user icon [ " + userIcon + " ]");
+                log.trace("user icon [ " + userIcon + " ]");
                 nickIcon.setIcon(userIcon);
             } else {
                 userIcon = ThemeManager.getTheme().get(ThemeManager.USER_ICON);
                 nickIcon.setIcon(userIcon);
             }
+            swichUserVisibleIcon();
+
         } catch (Exception e) {
             log.warn("nessuna icona trovata");
         }
     }
 
-    public synchronized  void updateListWithFACEBOOKContacts() {
+    public synchronized void updateListWithFACEBOOKContacts() {
         //fmod.removeAll();
         ((DefaultListModel) clientsList.getModel()).removeAllElements();
         log.debug("utenti presenti [" + FacebookUserList.buddies.size() + "]");
@@ -288,7 +303,7 @@ public class MainPanel extends javax.swing.JPanel {
         //clientsList.repaint();
         clientsList.validate();
         clientsList.repaint();
-        
+
 
     }
 
@@ -334,10 +349,43 @@ public class MainPanel extends javax.swing.JPanel {
         chatClientAboutBox.setLocationRelativeTo(this);
         chatClientAboutBox.setVisible(true);
     }
-}
-class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
-    public static final int ARC_SIZE = 5;
 
+    @Action
+    public void swichVisibleInvisible() {
+        //iverto lo stato di visible
+        MessageRequester.setOnline(!MessageRequester.isOnline());
+        swichUserVisibleIcon();
+    }
+
+    private void swichUserVisibleIcon() {
+        //icona utente visibile invisibile
+        if (!MessageRequester.isOnline()) {
+            ImageIcon icon = null;
+            try {
+                icon = new ImageIcon(getClass().getResource("resources/userVisibleIcon.png"));
+                swichVisibleInvisibleButton.setIcon(icon);
+                swichVisibleInvisibleButton.setToolTipText("Passa a visibile");
+                nickLabel.setForeground(Color.gray);
+            } catch (Exception e) {
+                log.error(e);
+            }
+
+        } else {
+            try {
+                ImageIcon icon = new ImageIcon(getClass().getResource("resources/userInvisibleIcon.png"));
+                swichVisibleInvisibleButton.setIcon(icon);
+                swichVisibleInvisibleButton.setToolTipText("Passa a invisibile");
+                nickLabel.setForeground(Color.black);
+            } catch (Exception e) {
+                log.error(e);
+            }
+        }
+    }
+}
+
+class ClientsListCellRenderer extends JPanel implements ListCellRenderer {
+
+    public static final int ARC_SIZE = 5;
     public static final int IMAGE_LATE = 28;
     public static final String ONLINE_STATUS = "ONLINE";
     public static final int STATUS_ICON_OFFSET = 15;

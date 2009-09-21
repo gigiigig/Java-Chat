@@ -97,10 +97,12 @@ public class ResponseParser {
      * @param response
      * @throws JSONException
      */
-    public static void messagePostingResultParser(String uid, String msg, String response) throws JSONException {
-        if (response == null) {
-            return;
-        }
+    public static int messagePostingResultParser(String uid, String msg, String response) throws JSONException {
+
+        int toReturn = -1;
+//        if (response == null) {
+//            return -1;
+//        }
         String prefix = "for (;;);";
         if (response.startsWith(prefix)) {
             response = response.substring(prefix.length());
@@ -109,9 +111,9 @@ public class ResponseParser {
         //for (;;);{"error":0,"errorSummary":"","errorDescription":"No error.","payload":[],"bootload":[{"name":"js\/common.js.pkg.php","type":"js","src":"http:\/\/static.ak.fbcdn.net\/rsrc.php\/pkg\/60\/106715\/js\/common.js.pkg.php"}]}
         //for (;;);{"error":1356003,"errorSummary":"Send destination not online","errorDescription":"This person is no longer online.","payload":null,"bootload":[{"name":"js\/common.js.pkg.php","type":"js","src":"http:\/\/static.ak.fbcdn.net\/rsrc.php\/pkg\/60\/106715\/js\/common.js.pkg.php"}]}
         JSONObject respObjs = new JSONObject(response);
-        if (respObjs == null) {
-            return;
-        }
+//        if (respObjs == null) {
+//            return -1;
+//        }
         log.debug("error: " + respObjs.getInt("error"));
         if (respObjs.get("error") != null) {
             /*kError_Global_ValidationError = 1346001,
@@ -130,15 +132,17 @@ public class ResponseParser {
 
             log.debug(errorString);
 
-            if (errorCode == ErrorCode.Error_Global_NoError) {
-                //do nothing
-//            } else {
-//                if (FacebookManager.isChatroomExist(uid)) {
-//                    FacebookManager.getChatroomAnyway(uid).showFeedbackMsg(msg, errorString);
-//                }
+            toReturn = errorCode;
+//            if (errorCode == ErrorCode.Error_Global_NoError) {
+//                //do nothing
+////            } else {
+////                if (FacebookManager.isChatroomExist(uid)) {
+////                    FacebookManager.getChatroomAnyway(uid).showFeedbackMsg(msg, errorString);
+////                }
+////            }
 //            }
-            }
         }
+        return toReturn;
     }
 
     /**
