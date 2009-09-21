@@ -61,10 +61,11 @@ public class FacebookUserList {
         while (it.hasNext()) {
             String key = it.next();
             log.trace("userID: " + key);
-            JSONObject user = (JSONObject) userInfos.get(key);
-            log.trace("user : " + user);
-            FacebookUser fu = null;
             try {
+                JSONObject user = (JSONObject) userInfos.get(key);
+                log.trace("user : " + user);
+                FacebookUser fu = null;
+
 
                 fu = new FacebookUser(key, user, (JSONObject) nowAvailableList.get(key));
                 /*
