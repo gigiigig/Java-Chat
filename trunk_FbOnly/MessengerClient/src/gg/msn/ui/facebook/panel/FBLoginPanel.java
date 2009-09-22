@@ -18,6 +18,7 @@ import gg.msn.core.commons.Util;
 import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientView;
 import gg.msn.ui.ChatClientApp;
+import gg.msn.ui.JLinkButton;
 import gg.msn.ui.facebook.thread.BuddyListRequester;
 import gg.msn.ui.facebook.thread.MessageRequester;
 import gg.msn.ui.theme.ThemeManager;
@@ -70,6 +71,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         saveMailCheck = new javax.swing.JCheckBox();
         savePswCheck = new javax.swing.JCheckBox();
         invisibleCheck = new javax.swing.JCheckBox();
+        jButton1 = new JLinkButton() ;
 
         setName("Form"); // NOI18N
 
@@ -106,6 +108,11 @@ public class FBLoginPanel extends javax.swing.JPanel {
         invisibleCheck.setName("invisibleCheck"); // NOI18N
         invisibleCheck.setOpaque(false);
 
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setBorder(null);
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.setOpaque(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,13 +138,18 @@ public class FBLoginPanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(156, 156, 156)
+                .addGap(56, 56, 56)
+                .addComponent(jButton1)
+                .addGap(77, 77, 77)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(emailLabel)
                     .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -155,7 +167,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
                     .addComponent(loginButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(invisibleCheck)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -163,6 +175,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailText;
     private javax.swing.JCheckBox invisibleCheck;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passwText;
     private javax.swing.JLabel psswLabel;
@@ -314,9 +327,9 @@ public class FBLoginPanel extends javax.swing.JPanel {
                 log.debug("showed main panel");
 
             } else {
-                ccv.getHelper().showWarnDialog("Non è stato possibile effettuare il login.<br>" +
+                ccv.getHelper().showWarnDialog("Non è stato possibile effettuare il login." +
                         "Ricontrolla email e password!");
-                connectionStatusLabel.setVisible(false);
+                connectionStatusLabel.setText("");
                 loginButton.setVisible(true);
             }
         } else if (loginErrorCode == ErrorCode.kError_Async_NotLoggedIn) {
@@ -325,11 +338,14 @@ public class FBLoginPanel extends javax.swing.JPanel {
                     ccv.getFrame(), "Not logged in, please check your input!",
                     "Not Logged In",
                     JOptionPane.ERROR_MESSAGE);
+            connectionStatusLabel.setText("");
+            loginButton.setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(
-                    ccv.getFrame(), "Not logged in, please check your internet connection!",
-                    "Not Logged In",
+            JOptionPane.showMessageDialog(ccv.getFrame(), "Non è stato possibile effettuare il login." +
+                    "C' stato un problema di connessione!", "Errore connessione",
                     JOptionPane.ERROR_MESSAGE);
+            connectionStatusLabel.setText("");
+            loginButton.setVisible(true);
         }
     }
 

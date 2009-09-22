@@ -34,7 +34,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.70710678"
      inkscape:cx="16.602293"
-     inkscape:cy="471.31108"
+     inkscape:cy="414.74254"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -146,8 +146,8 @@
        id="rect2416"
        width="330"
        height="329.9758"
-       x="-33.478134"
-       y="437.65439"
+       x="37.232544"
+       y="467.35287"
        ry="74.953323"
        rx="69.296471"
        inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
@@ -156,7 +156,7 @@
     <a
        id="a3955"
        style="opacity:1;fill:#ffffff;stroke:#008080;stroke-width:9.28336716;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(0.8790357,0,0,0.9380751,-189.70297,323.48057)"
+       transform="matrix(0.8790357,0,0,0.9380751,-118.99229,353.17905)"
        inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311">
@@ -199,8 +199,8 @@
     <text
        xml:space="preserve"
        style="font-size:223.57382202px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#008080;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial Bold"
-       x="58.137756"
-       y="834.18909"
+       x="113.72207"
+       y="871.96954"
        id="text2412"
        transform="scale(1.2721337,0.7860809)"
        sodipodi:linespacing="125%"
@@ -209,8 +209,8 @@
        inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"><tspan
          sodipodi:role="line"
          id="tspan2414"
-         x="58.137756"
-         y="834.18909">f</tspan></text>
+         x="113.72207"
+         y="871.96954">f</tspan></text>
     <a
        id="a2410"
        style="opacity:1;fill:#008080;stroke:#008080;stroke-width:10.38795185000000000;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
