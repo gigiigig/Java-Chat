@@ -71,7 +71,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         saveMailCheck = new javax.swing.JCheckBox();
         savePswCheck = new javax.swing.JCheckBox();
         invisibleCheck = new javax.swing.JCheckBox();
-        jButton1 = new JLinkButton() ;
+        linkButton = new JLinkButton() ;
 
         setName("Form"); // NOI18N
 
@@ -108,10 +108,10 @@ public class FBLoginPanel extends javax.swing.JPanel {
         invisibleCheck.setName("invisibleCheck"); // NOI18N
         invisibleCheck.setOpaque(false);
 
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setBorder(null);
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.setOpaque(false);
+        linkButton.setText(resourceMap.getString("linkButton.text")); // NOI18N
+        linkButton.setBorder(null);
+        linkButton.setName("linkButton"); // NOI18N
+        linkButton.setOpaque(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -141,14 +141,14 @@ public class FBLoginPanel extends javax.swing.JPanel {
                                 .addComponent(connectionStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(84, 84, 84)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(linkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addComponent(jButton1)
+                .addComponent(linkButton)
                 .addGap(77, 77, 77)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(emailLabel)
@@ -175,7 +175,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailText;
     private javax.swing.JCheckBox invisibleCheck;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton linkButton;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passwText;
     private javax.swing.JLabel psswLabel;
@@ -250,8 +250,7 @@ public class FBLoginPanel extends javax.swing.JPanel {
         boolean invisible = BooleanUtils.toBoolean(Util.readProperties().getProperty(Util.PROPERTY_INVISIBLE));
         log.debug("online [" + invisible + "]");
         invisibleCheck.setSelected(invisible);
-
-    }
+  }
 
     private void connectStart() {
         String email = emailText.getText().trim();

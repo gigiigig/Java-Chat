@@ -332,7 +332,7 @@ public class MainPanel extends javax.swing.JPanel {
     }
 
     @Action
-    public void addChatWithSelected() {
+    public void startChatWithSelected() {
         ccv.getHelper().startChatWithSelected();
     }
 

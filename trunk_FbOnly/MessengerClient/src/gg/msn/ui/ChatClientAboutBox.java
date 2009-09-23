@@ -6,6 +6,8 @@ package gg.msn.ui;
 
 import gg.msn.ui.form.LicenseDialog;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
 import org.jdesktop.application.Action;
 
 public class ChatClientAboutBox extends javax.swing.JDialog {
@@ -17,6 +19,14 @@ public class ChatClientAboutBox extends javax.swing.JDialog {
         this.parent = parent;
         initComponents();
         getRootPane().setDefaultButton(closeButton);
+        JLinkButton jlinkLicense = (JLinkButton) licenseLinkButton;
+        jlinkLicense.setIsLink(false);
+        jlinkLicense.setDefaultAction(new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                showLicense();
+            }
+        });
+
     }
 
     @Action public void closeAboutBox() {
@@ -38,11 +48,11 @@ public class ChatClientAboutBox extends javax.swing.JDialog {
         javax.swing.JLabel vendorLabel = new javax.swing.JLabel();
         javax.swing.JLabel appVendorLabel = new javax.swing.JLabel();
         javax.swing.JLabel homepageLabel = new javax.swing.JLabel();
-        javax.swing.JLabel appHomepageLabel = new javax.swing.JLabel();
         javax.swing.JLabel appDescLabel = new javax.swing.JLabel();
-        imageLabel = new javax.swing.JLabel();
+        javax.swing.JLabel imageLabel = new javax.swing.JLabel();
         javax.swing.JLabel licenseLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        licenseLinkButton = new JLinkButton() ;
+        homeLinkButton =  new JLinkButton() ;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(gg.msn.ui.ChatClientApp.class).getContext().getResourceMap(ChatClientAboutBox.class);
@@ -78,9 +88,6 @@ public class ChatClientAboutBox extends javax.swing.JDialog {
         homepageLabel.setText(resourceMap.getString("homepageLabel.text")); // NOI18N
         homepageLabel.setName("homepageLabel"); // NOI18N
 
-        appHomepageLabel.setText(resourceMap.getString("Application.homepage")); // NOI18N
-        appHomepageLabel.setName("appHomepageLabel"); // NOI18N
-
         appDescLabel.setText(resourceMap.getString("appDescLabel.text")); // NOI18N
         appDescLabel.setName("appDescLabel"); // NOI18N
 
@@ -91,9 +98,12 @@ public class ChatClientAboutBox extends javax.swing.JDialog {
         licenseLabel.setText(resourceMap.getString("licenseLabel.text")); // NOI18N
         licenseLabel.setName("licenseLabel"); // NOI18N
 
-        jButton1.setAction(actionMap.get("showLicense")); // NOI18N
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
+        licenseLinkButton.setAction(actionMap.get("showLicense")); // NOI18N
+        licenseLinkButton.setText(resourceMap.getString("licenseLinkButton.text")); // NOI18N
+        licenseLinkButton.setName("licenseLinkButton"); // NOI18N
+
+        homeLinkButton.setText(resourceMap.getString("homeLinkButton.text")); // NOI18N
+        homeLinkButton.setName("homeLinkButton"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,12 +122,13 @@ public class ChatClientAboutBox extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(appVersionLabel)
                             .addComponent(appVendorLabel)
-                            .addComponent(appHomepageLabel)))
+                            .addComponent(homeLinkButton))
+                        .addGap(17, 17, 17))
                     .addComponent(appTitleLabel)
-                    .addComponent(appDescLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                    .addComponent(appDescLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                     .addComponent(closeButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(licenseLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                    .addComponent(jButton1))
+                    .addComponent(licenseLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                    .addComponent(licenseLinkButton))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -138,12 +149,12 @@ public class ChatClientAboutBox extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(homepageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(appHomepageLabel))
+                    .addComponent(homeLinkButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(licenseLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addComponent(licenseLinkButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(closeButton)
                 .addContainerGap())
             .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 254, Short.MAX_VALUE)
@@ -162,8 +173,8 @@ public class ChatClientAboutBox extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
-    private javax.swing.JLabel imageLabel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton homeLinkButton;
+    private javax.swing.JButton licenseLinkButton;
     // End of variables declaration//GEN-END:variables
     
 }

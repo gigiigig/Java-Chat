@@ -29,14 +29,12 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.SystemTray;
 import java.awt.TrayIcon.MessageType;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -47,11 +45,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
-import javax.swing.FocusManager;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
@@ -79,7 +74,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
-import org.jdesktop.application.TaskService;
 
 /**
  *

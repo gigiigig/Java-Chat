@@ -93,14 +93,13 @@ public class MessageRequester implements Runnable {
         boolean login = false;
         while (true) {
             if (online) {
-                if (FacebookManager.channel == -1 || FacebookManager.seq == -1) {
-                    findChannelAndSequenzNumber(login);
-                }
-                login = true;
-                //get the old message between oldseq and seq
-                String msgResponseBody = FacebookManager.facebookGetMethod(fbManger.getMessageRequestingUrl(FacebookManager.channel, FacebookManager.seq));
-
                 try {
+                    if (FacebookManager.channel == -1 || FacebookManager.seq == -1) {
+                        findChannelAndSequenzNumber(login);
+                    }
+                    login = true;
+                    //get the old message between oldseq and seq
+                    String msgResponseBody = FacebookManager.facebookGetMethod(fbManger.getMessageRequestingUrl(FacebookManager.channel, FacebookManager.seq));
                     List<FacebookMessage> facebookMessages = ResponseParser.messageRequestResultParser(msgResponseBody, fbManger);
 
                     for (FacebookMessage fm : facebookMessages) {

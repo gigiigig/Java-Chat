@@ -4,26 +4,19 @@
  */
 package gg.msn.ui.listener;
 
-import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.ChatClientView;
-import gg.msn.core.commons.Util;
-import gg.msn.core.manager.PersistentDataManager;
 
-import gg.msn.ui.theme.ThemeManager;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Properties;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -59,14 +52,21 @@ public class ChatClientViewListeners {
         private ChatClientView ccv;
         private JPopupMenu jpm;
 
-        public ClientsListRightClickListener(ChatClientView ccv) {
+        public ClientsListRightClickListener(final ChatClientView ccv) {
             super();
 //            this.ccv = (ChatClientView) ChatClientApp.getApplication().getMainView();
             this.ccv = ccv;
             //creo il popup menù
             jpm = new JPopupMenu();
             JMenuItem startChat = new JMenuItem();
-            startChat.setAction(ChatClientApp.getApplication().getContext().getActionMap(ccv).get("addChatWithSelected"));
+//            startChat.setAction(ChatClientApp.getApplication().getContext().getActionMap(ccv.getMainPanel()).get("addChatWithSelected"));
+            startChat.setAction(new AbstractAction() {
+
+                public void actionPerformed(ActionEvent e) {
+                    ccv.getMainPanel().startChatWithSelected();
+                }
+            });
+
             startChat.setText("Chiama in chat");
             try {
                 ImageIcon icon = new ImageIcon(getClass().getResource("/gg/msn/ui/panel/resources/chatIcon.png"));
@@ -76,6 +76,7 @@ public class ChatClientViewListeners {
                 log.error(e);
             }
             jpm.add(startChat);
+
             if (StringUtils.equals(ChatClientView.protocol, ChatClientView.GIGIMSN_PROTOCOL)) {
             }
         }
@@ -123,7 +124,6 @@ public class ChatClientViewListeners {
         public ClietsListOutClickListener(ChatClientView ccv) {
             super();
             this.ccv = ccv;
-
         }
 
         @Override
@@ -132,7 +132,6 @@ public class ChatClientViewListeners {
             JList clientsList = ccv.getMainPanel().getClientsList();
 //            clientsList.setEnabled(false);
             clientsList.getSelectionModel().clearSelection();
-
         }
     }
 }

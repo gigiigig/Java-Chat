@@ -44,7 +44,7 @@ public class Util {
     public static final String PROPERTY_INVISIBLE = "invisible";
     private static final char SEPARATOR = IOUtils.DIR_SEPARATOR;
     public static final String VALUE_DEFAULT_THEME_FOLDER = "images" + SEPARATOR + "theme" + SEPARATOR + "default";
-    public static boolean VALUE_DEFAULT_INVISIBLE = true;
+    public static boolean VALUE_DEFAULT_INVISIBLE = false;
 
     public Util() {
     }

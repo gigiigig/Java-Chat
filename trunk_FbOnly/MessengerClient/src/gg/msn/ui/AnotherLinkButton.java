@@ -101,7 +101,7 @@ public class AnotherLinkButton extends JButton {
 class BasicLinkButtonUI extends BasicButtonUI {
 
     public static ComponentUI createUI(JComponent c) {
-        return new BasicLinkButtonUI();
+        return new StandardLinkButtonUI();
     }
     private static Rectangle viewRect = new Rectangle();
     private static Rectangle textRect = new Rectangle();
@@ -237,7 +237,7 @@ class BasicLinkButtonUI extends BasicButtonUI {
     }
 }
 
-class WindowsLinkButtonUI extends BasicLinkButtonUI {
+class WindowsLinkButtonUI extends StandardLinkButtonUI {
 
     private static WindowsLinkButtonUI buttonUI = new WindowsLinkButtonUI();
 

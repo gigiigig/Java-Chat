@@ -1,14 +1,16 @@
 package gg.msn.ui;
 
-
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
@@ -18,282 +20,310 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalButtonUI;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
-public class JLinkButton extends JButton {
-  private static final String uiString = "LinkButtonUI";
+public class JLinkButton extends JButton implements ActionListener {
 
-  public static final int ALWAYS_UNDERLINE = 0;
+    private Log log = LogFactory.getLog(JLinkButton.class);
+    private static final String uiString = "LinkButtonUI";
+    public static final int ALWAYS_UNDERLINE = 0;
+    public static final int HOVER_UNDERLINE = 1;
+    public static final int NEVER_UNDERLINE = 2;
+    public static final int SYSTEM_DEFAULT = 3;
+    private int linkBehavior;
+    private Color linkColor;
+    private Color colorPressed;
+    private Color visitedLinkColor;
+    private Color disabledLinkColor;
+    private URL buttonURL;
+    private Action defaultAction;
+    private boolean isLinkVisited;
+    private boolean isLink;
 
-  public static final int HOVER_UNDERLINE = 1;
+    public static void main(String[] a) {
+        JFrame f = new JFrame();
+        f.getContentPane().setLayout(new GridLayout(0, 2));
+        f.getContentPane().add(new JLinkButton("www.java2s.com"));
+        f.getContentPane().add(new JLinkButton("www.java2s.com/ExampleCode/CatalogExampleCode.htm"));
+        f.setSize(600, 200);
+        f.setVisible(true);
+    }
 
-  public static final int NEVER_UNDERLINE = 2;
+    public JLinkButton() {
+        this(null, null, null);
+    }
 
-  public static final int SYSTEM_DEFAULT = 3;
+    public JLinkButton(Action action) {
+        this();
+        setAction(action);
+    }
 
-  private int linkBehavior;
+    public JLinkButton(Icon icon) {
+        this(null, icon, null);
+    }
 
-  private Color linkColor;
+    public JLinkButton(String s) {
+        this(s, null, null);
+    }
 
-  private Color colorPressed;
+    public JLinkButton(URL url) {
+        this(null, null, url);
+    }
 
-  private Color visitedLinkColor;
+    public JLinkButton(String s, URL url) {
+        this(s, null, url);
+    }
 
-  private Color disabledLinkColor;
+    public JLinkButton(Icon icon, URL url) {
+        this(null, icon, url);
+    }
 
-  private URL buttonURL;
+    public JLinkButton(String text, Icon icon, URL url) {
+        super(text, icon);
+        linkBehavior = SYSTEM_DEFAULT;
+        linkColor = Color.blue;
+        colorPressed = Color.red;
+        visitedLinkColor = new Color(128, 0, 128);
+        if (text == null && url != null) {
+            setText(url.toExternalForm());
+        }
+        isLink = true;
+        setLinkURL(url);
+        setCursor(Cursor.getPredefinedCursor(12));
+        setBorderPainted(false);
+        setContentAreaFilled(false);
+        setRolloverEnabled(true);
+        setFocusable(false);
+        addActionListener(this);
 
-  private Action defaultAction;
+    }
 
-  private boolean isLinkVisited;
+    public void updateUI() {
+        setUI(StandardLinkButtonUI.createUI(this));
+    }
 
-  public static void main(String[] a) {
-    JFrame f = new JFrame();
-    f.getContentPane().setLayout(new GridLayout(0,2));
-    f.getContentPane().add(new JLinkButton("www.java2s.com"));
-    f.getContentPane().add(new JLinkButton("www.java2s.com/ExampleCode/CatalogExampleCode.htm"));
-    f.setSize(600, 200);
-    f.setVisible(true);
-  }
+    private void setDefault() {
+        UIManager.getDefaults().put("LinkButtonUI", "BasicLinkButtonUI");
+    }
 
-  public JLinkButton() {
-    this(null, null, null);
-  }
+    public String getUIClassID() {
+        return "LinkButtonUI";
+    }
 
-  public JLinkButton(Action action) {
-    this();
-    setAction(action);
-  }
+    protected void setupToolTipText() {
+        String tip = null;
+        if (buttonURL != null) {
+            tip = buttonURL.toExternalForm();
+        }
+        setToolTipText(tip);
+    }
 
-  public JLinkButton(Icon icon) {
-    this(null, icon, null);
-  }
+    public void setLinkBehavior(int bnew) {
+        checkLinkBehaviour(bnew);
+        int old = linkBehavior;
+        linkBehavior = bnew;
+        firePropertyChange("linkBehavior", old, bnew);
+        repaint();
+    }
 
-  public JLinkButton(String s) {
-    this(s, null, null);
-  }
+    private void checkLinkBehaviour(int beha) {
+        if (beha != ALWAYS_UNDERLINE && beha != HOVER_UNDERLINE && beha != NEVER_UNDERLINE && beha != SYSTEM_DEFAULT) {
+            throw new IllegalArgumentException("Not a legal LinkBehavior");
+        } else {
+            return;
+        }
+    }
 
-  public JLinkButton(URL url) {
-    this(null, null, url);
-  }
+    public int getLinkBehavior() {
+        return linkBehavior;
+    }
 
-  public JLinkButton(String s, URL url) {
-    this(s, null, url);
-  }
+    public void setLinkColor(Color color) {
+        Color colorOld = linkColor;
+        linkColor = color;
+        firePropertyChange("linkColor", colorOld, color);
+        repaint();
+    }
 
-  public JLinkButton(Icon icon, URL url) {
-    this(null, icon, url);
-  }
+    public Color getLinkColor() {
+        return linkColor;
+    }
 
-  public JLinkButton(String text, Icon icon, URL url) {
-    super(text, icon);
-    linkBehavior = SYSTEM_DEFAULT;
-    linkColor = Color.blue;
-    colorPressed = Color.red;
-    visitedLinkColor = new Color(128, 0, 128);
-    if (text == null && url != null)
-      setText(url.toExternalForm());
-    setLinkURL(url);
-    setCursor(Cursor.getPredefinedCursor(12));
-    setBorderPainted(false);
-    setContentAreaFilled(false);
-    setRolloverEnabled(true);
-    setFocusable(false);
-    addActionListener(defaultAction);
-  }
+    public void setActiveLinkColor(Color colorNew) {
+        Color colorOld = colorPressed;
+        colorPressed = colorNew;
+        firePropertyChange("activeLinkColor", colorOld, colorNew);
+        repaint();
+    }
 
-  public void updateUI() {
-    setUI(BasicLinkButtonUI.createUI(this));
-  }
+    public Color getActiveLinkColor() {
+        return colorPressed;
+    }
 
-  private void setDefault() {
-    UIManager.getDefaults().put("LinkButtonUI", "BasicLinkButtonUI");
-  }
+    public void setDisabledLinkColor(Color color) {
+        Color colorOld = disabledLinkColor;
+        disabledLinkColor = color;
+        firePropertyChange("disabledLinkColor", colorOld, color);
+        if (!isEnabled()) {
+            repaint();
+        }
+    }
 
-  public String getUIClassID() {
-    return "LinkButtonUI";
-  }
+    public Color getDisabledLinkColor() {
+        return disabledLinkColor;
+    }
 
-  protected void setupToolTipText() {
-    String tip = null;
-    if (buttonURL != null)
-      tip = buttonURL.toExternalForm();
-    setToolTipText(tip);
-  }
+    public void setVisitedLinkColor(Color colorNew) {
+        Color colorOld = visitedLinkColor;
+        visitedLinkColor = colorNew;
+        firePropertyChange("visitedLinkColor", colorOld, colorNew);
+        repaint();
+    }
 
-  public void setLinkBehavior(int bnew) {
-    checkLinkBehaviour(bnew);
-    int old = linkBehavior;
-    linkBehavior = bnew;
-    firePropertyChange("linkBehavior", old, bnew);
-    repaint();
-  }
+    public Color getVisitedLinkColor() {
+        return visitedLinkColor;
+    }
 
-  private void checkLinkBehaviour(int beha) {
-    if (beha != ALWAYS_UNDERLINE && beha != HOVER_UNDERLINE
-        && beha != NEVER_UNDERLINE && beha != SYSTEM_DEFAULT)
-      throw new IllegalArgumentException("Not a legal LinkBehavior");
-    else
-      return;
-  }
+    public URL getLinkURL() {
+        return buttonURL;
+    }
 
-  public int getLinkBehavior() {
-    return linkBehavior;
-  }
+    public void setLinkURL(URL url) {
+        URL urlOld = buttonURL;
+        buttonURL = url;
+        setupToolTipText();
+        firePropertyChange("linkURL", urlOld, url);
+        revalidate();
+        repaint();
+    }
 
-  public void setLinkColor(Color color) {
-    Color colorOld = linkColor;
-    linkColor = color;
-    firePropertyChange("linkColor", colorOld, color);
-    repaint();
-  }
+    public void setLinkVisited(boolean flagNew) {
+        boolean flagOld = isLinkVisited;
+        isLinkVisited = flagNew;
+        firePropertyChange("linkVisited", flagOld, flagNew);
+        repaint();
+    }
 
-  public Color getLinkColor() {
-    return linkColor;
-  }
+    public boolean isLinkVisited() {
+        return isLinkVisited;
+    }
 
-  public void setActiveLinkColor(Color colorNew) {
-    Color colorOld = colorPressed;
-    colorPressed = colorNew;
-    firePropertyChange("activeLinkColor", colorOld, colorNew);
-    repaint();
-  }
+    public void setDefaultAction(Action actionNew) {
+        Action actionOld = defaultAction;
+        defaultAction = actionNew;
+        firePropertyChange("defaultAction", actionOld, actionNew);
+    }
 
-  public Color getActiveLinkColor() {
-    return colorPressed;
-  }
+    public Action getDefaultAction() {
+        return defaultAction;
+    }
 
-  public void setDisabledLinkColor(Color color) {
-    Color colorOld = disabledLinkColor;
-    disabledLinkColor = color;
-    firePropertyChange("disabledLinkColor", colorOld, color);
-    if (!isEnabled())
-      repaint();
-  }
+    protected String paramString() {
+        String str;
+        if (linkBehavior == ALWAYS_UNDERLINE) {
+            str = "ALWAYS_UNDERLINE";
+        } else if (linkBehavior == HOVER_UNDERLINE) {
+            str = "HOVER_UNDERLINE";
+        } else if (linkBehavior == NEVER_UNDERLINE) {
+            str = "NEVER_UNDERLINE";
+        } else {
+            str = "SYSTEM_DEFAULT";
+        }
+        String colorStr = linkColor == null ? "" : linkColor.toString();
+        String colorPressStr = colorPressed == null ? "" : colorPressed.toString();
+        String disabledLinkColorStr = disabledLinkColor == null ? ""
+                : disabledLinkColor.toString();
+        String visitedLinkColorStr = visitedLinkColor == null ? ""
+                : visitedLinkColor.toString();
+        String buttonURLStr = buttonURL == null ? "" : buttonURL.toString();
+        String isLinkVisitedStr = isLinkVisited ? "true" : "false";
+        return super.paramString() + ",linkBehavior=" + str + ",linkURL=" + buttonURLStr + ",linkColor=" + colorStr + ",activeLinkColor=" + colorPressStr + ",disabledLinkColor=" + disabledLinkColorStr + ",visitedLinkColor=" + visitedLinkColorStr + ",linkvisitedString=" + isLinkVisitedStr;
+    }
 
-  public Color getDisabledLinkColor() {
-    return disabledLinkColor;
-  }
+    public boolean isIsLink() {
+        return isLink;
+    }
 
-  public void setVisitedLinkColor(Color colorNew) {
-    Color colorOld = visitedLinkColor;
-    visitedLinkColor = colorNew;
-    firePropertyChange("visitedLinkColor", colorOld, colorNew);
-    repaint();
-  }
+    public void setIsLink(boolean isLink) {
+        this.isLink = isLink;
+    }
 
-  public Color getVisitedLinkColor() {
-    return visitedLinkColor;
-  }
 
-  public URL getLinkURL() {
-    return buttonURL;
-  }
 
-  public void setLinkURL(URL url) {
-    URL urlOld = buttonURL;
-    buttonURL = url;
-    setupToolTipText();
-    firePropertyChange("linkURL", urlOld, url);
-    revalidate();
-    repaint();
-  }
+    public void actionPerformed(ActionEvent e) {
 
-  public void setLinkVisited(boolean flagNew) {
-    boolean flagOld = isLinkVisited;
-    isLinkVisited = flagNew;
-    firePropertyChange("linkVisited", flagOld, flagNew);
-    repaint();
-  }
+        if (!java.awt.Desktop.isDesktopSupported()) {
+            log.error("Desktop is not supported (fatal)");
+        }
 
-  public boolean isLinkVisited() {
-    return isLinkVisited;
-  }
-
-  public void setDefaultAction(Action actionNew) {
-    Action actionOld = defaultAction;
-    defaultAction = actionNew;
-    firePropertyChange("defaultAction", actionOld, actionNew);
-  }
-
-  public Action getDefaultAction() {
-    return defaultAction;
-  }
-
-  protected String paramString() {
-    String str;
-    if (linkBehavior == ALWAYS_UNDERLINE)
-      str = "ALWAYS_UNDERLINE";
-    else if (linkBehavior == HOVER_UNDERLINE)
-      str = "HOVER_UNDERLINE";
-    else if (linkBehavior == NEVER_UNDERLINE)
-      str = "NEVER_UNDERLINE";
-    else
-      str = "SYSTEM_DEFAULT";
-    String colorStr = linkColor == null ? "" : linkColor.toString();
-    String colorPressStr = colorPressed == null ? "" : colorPressed
-        .toString();
-    String disabledLinkColorStr = disabledLinkColor == null ? ""
-        : disabledLinkColor.toString();
-    String visitedLinkColorStr = visitedLinkColor == null ? ""
-        : visitedLinkColor.toString();
-    String buttonURLStr = buttonURL == null ? "" : buttonURL.toString();
-    String isLinkVisitedStr = isLinkVisited ? "true" : "false";
-    return super.paramString() + ",linkBehavior=" + str + ",linkURL="
-        + buttonURLStr + ",linkColor=" + colorStr + ",activeLinkColor="
-        + colorPressStr + ",disabledLinkColor=" + disabledLinkColorStr
-        + ",visitedLinkColor=" + visitedLinkColorStr
-        + ",linkvisitedString=" + isLinkVisitedStr;
-  }
+        java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+        if (!desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+            log.error("Desktop doesn't support the browse action (fatal)");
+        }
+        if (isLink) {
+            try {
+                java.net.URI uri = new java.net.URI("http://" + getText());
+                desktop.browse(uri);
+            } catch (Exception ex) {
+                log.error(ex);
+            }
+        }
+    }
 }
+class StandardLinkButtonUI extends MetalButtonUI {
 
-class BasicLinkButtonUI extends MetalButtonUI {
-  private static final BasicLinkButtonUI ui = new BasicLinkButtonUI();
+    private static final StandardLinkButtonUI ui = new StandardLinkButtonUI();
 
-  public BasicLinkButtonUI() {
-  }
-
-  public static ComponentUI createUI(JComponent jcomponent) {
-    return ui;
-  }
-
-  protected void paintText(Graphics g, JComponent com, Rectangle rect,
-      String s) {
-    JLinkButton bn = (JLinkButton) com;
-    ButtonModel bnModel = bn.getModel();
-    Color color = bn.getForeground();
-    Object obj = null;
-    if (bnModel.isEnabled()) {
-      if (bnModel.isPressed())
-        bn.setForeground(bn.getActiveLinkColor());
-      else if (bn.isLinkVisited())
-        bn.setForeground(bn.getVisitedLinkColor());
-
-      else
-        bn.setForeground(bn.getLinkColor());
-    } else {
-      if (bn.getDisabledLinkColor() != null)
-        bn.setForeground(bn.getDisabledLinkColor());
+    public StandardLinkButtonUI() {
     }
-    super.paintText(g, com, rect, s);
-    int behaviour = bn.getLinkBehavior();
-    boolean drawLine = false;
-    if (behaviour == JLinkButton.HOVER_UNDERLINE) {
-      if (bnModel.isRollover())
-        drawLine = true;
-    } else if (behaviour == JLinkButton.ALWAYS_UNDERLINE || behaviour == JLinkButton.SYSTEM_DEFAULT)
-      drawLine = true;
-    if (!drawLine)
-      return;
-    FontMetrics fm = g.getFontMetrics();
-    int x = rect.x + getTextShiftOffset();
-    int y = (rect.y + fm.getAscent() + fm.getDescent() + getTextShiftOffset()) - 1;
-    if (bnModel.isEnabled()) {
-      g.setColor(bn.getForeground());
-      g.drawLine(x, y, (x + rect.width) - 1, y);
-    } else {
-      g.setColor(bn.getBackground().brighter());
-      g.drawLine(x, y, (x + rect.width) - 1, y);
+
+    public static ComponentUI createUI(JComponent jcomponent) {
+        return ui;
     }
-  }
+
+    protected void paintText(Graphics g, JComponent com, Rectangle rect,
+            String s) {
+        JLinkButton bn = (JLinkButton) com;
+        ButtonModel bnModel = bn.getModel();
+        Color color = bn.getForeground();
+        Object obj = null;
+        if (bnModel.isEnabled()) {
+            if (bnModel.isPressed()) {
+                bn.setForeground(bn.getActiveLinkColor());
+            } else if (bn.isLinkVisited()) {
+                bn.setForeground(bn.getVisitedLinkColor());
+            } else {
+                bn.setForeground(bn.getLinkColor());
+            }
+        } else {
+            if (bn.getDisabledLinkColor() != null) {
+                bn.setForeground(bn.getDisabledLinkColor());
+            }
+        }
+        super.paintText(g, com, rect, s);
+        int behaviour = bn.getLinkBehavior();
+        boolean drawLine = false;
+        if (behaviour == JLinkButton.HOVER_UNDERLINE) {
+            if (bnModel.isRollover()) {
+                drawLine = true;
+            }
+        } else if (behaviour == JLinkButton.ALWAYS_UNDERLINE || behaviour == JLinkButton.SYSTEM_DEFAULT) {
+            drawLine = true;
+        }
+        if (!drawLine) {
+            return;
+        }
+        FontMetrics fm = g.getFontMetrics();
+        int x = rect.x + getTextShiftOffset();
+        int y = (rect.y + fm.getAscent() + fm.getDescent() + getTextShiftOffset()) - 1;
+        if (bnModel.isEnabled()) {
+            g.setColor(bn.getForeground());
+            g.drawLine(x, y, (x + rect.width) - 1, y);
+        } else {
+            g.setColor(bn.getBackground().brighter());
+            g.drawLine(x, y, (x + rect.width) - 1, y);
+        }
+    }
 }
