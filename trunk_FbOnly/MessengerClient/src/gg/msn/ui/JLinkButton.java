@@ -82,7 +82,7 @@ public class JLinkButton extends JButton implements ActionListener {
 
     public JLinkButton(String text, Icon icon, URL url) {
         super(text, icon);
-        linkBehavior = SYSTEM_DEFAULT;
+        linkBehavior = HOVER_UNDERLINE;
         linkColor = Color.blue;
         colorPressed = Color.red;
         visitedLinkColor = new Color(128, 0, 128);
