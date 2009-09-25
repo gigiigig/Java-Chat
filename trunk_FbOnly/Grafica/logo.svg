@@ -176,10 +176,10 @@
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1280"
+     inkscape:window-width="1264"
      inkscape:window-height="750"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-x="0"
+     inkscape:window-y="14"
      inkscape:snap-global="false" />
   <metadata
      id="metadata7">
@@ -287,14 +287,14 @@
        y="471.32864"
        ry="74.958824"
        rx="69.296471"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
+       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311" />
     <a
        id="a3955"
        style="opacity:1;fill:#ffffff;stroke:#008080;stroke-width:9.28336716;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        transform="matrix(0.8790357,0,0,0.9380751,-174.99227,351.17905)"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
+       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311">
       <path
@@ -342,7 +342,7 @@
        y="-310.7728"
        ry="69.779251"
        rx="74.677055"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
+       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311"
        transform="matrix(-2.8718491e-3,0.9999959,-0.9999959,-2.8710459e-3,0,0)" />
@@ -440,9 +440,9 @@
        id="text2438"
        transform="matrix(1.1578528,7.5367369e-2,3.3151284e-2,0.8658255,0,0)"
        sodipodi:linespacing="125%"
-       inkscape:export-xdpi="81.413422"
-       inkscape:export-ydpi="81.413422"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.png"><tspan
+       inkscape:export-xdpi="69"
+       inkscape:export-ydpi="69"
+       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"><tspan
          sodipodi:role="line"
          x="62.986137"
          y="777.28534"
@@ -456,7 +456,7 @@
        y="-20.469414"
        ry="66.225639"
        rx="78.779739"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
+       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311"
        transform="matrix(1.3712351e-3,-0.9999991,0.9999991,1.3728924e-3,0,0)" />
