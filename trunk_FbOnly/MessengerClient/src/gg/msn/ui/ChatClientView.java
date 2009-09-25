@@ -27,6 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
+import java.util.HashMap;
+import java.util.Random;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -53,8 +55,8 @@ public class ChatClientView extends FrameView {
         // <editor-fold defaultstate="collapsed" desc="Window Icon"> 
         try {
             getFrame().setIconImage(getResourceMap().getImageIcon("trayIcon").getImage());
-            ((Graphics2D)getFrame().getIconImage().getGraphics()).setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR));
-            ((Graphics2D)getFrame().getIconImage().getGraphics()).setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
+            ((Graphics2D) getFrame().getIconImage().getGraphics()).setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR));
+            ((Graphics2D) getFrame().getIconImage().getGraphics()).setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
         } catch (Exception e) {
             log.warn(e);
         }
@@ -108,7 +110,6 @@ public class ChatClientView extends FrameView {
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
             }
-            
         });
         //verifico gli aggiornamenti
         //helper.verifyUpdates();
@@ -127,6 +128,46 @@ public class ChatClientView extends FrameView {
             aboutBox.setLocationRelativeTo(mainFrame);
         }
         ChatClientApp.getApplication().show(aboutBox);
+    }
+
+    public static void main(String[] args) {
+        HashMap<Integer, String> hashMap = new HashMap<Integer, String>();
+        hashMap.put(1, "a");
+        hashMap.put(2, "b");
+        hashMap.put(3, "c");
+        hashMap.put(4, "d");
+        hashMap.put(5, "e");
+        hashMap.put(6, "f");
+        hashMap.put(7, "g");
+        hashMap.put(8, "h");
+        hashMap.put(9, "i");
+        hashMap.put(10, "l");
+        hashMap.put(11, "m");
+        hashMap.put(12, "n");
+        hashMap.put(13, "o");
+        hashMap.put(14, "p");
+        hashMap.put(15, "q");
+        hashMap.put(16, "r");
+        hashMap.put(17, "s");
+        hashMap.put(18, "t");
+        hashMap.put(19, "u");
+        hashMap.put(20, "v");
+        hashMap.put(21, "z");
+        hashMap.put(22, "w");
+        hashMap.put(23, "x");
+        hashMap.put(24, "y");
+        hashMap.put(25, "j");
+        Random random = new Random();
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; i < 5; j++) {
+                int nextInt = random.nextInt(24);
+                System.out.println(hashMap.get(nextInt));
+            }
+            System.out.println("\n");
+        }
+        System.out.println("");
+
+
     }
 
     /**
