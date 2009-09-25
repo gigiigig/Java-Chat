@@ -111,11 +111,11 @@
          id="stop3290" />
       <stop
          style="stop-color:#0a0a0a;stop-opacity:0;"
-         offset="0.50470006"
+         offset="0.40016058"
          id="stop3286" />
       <stop
          id="stop3288"
-         offset="0.51679444"
+         offset="0.64401579"
          style="stop-color:#dadada;stop-opacity:0;" />
       <stop
          style="stop-color:#ffffff;stop-opacity:0;"
@@ -144,10 +144,10 @@
        inkscape:collect="always"
        xlink:href="#linearGradient3230"
        id="linearGradient3236"
-       x1="-417.42905"
-       y1="566.66577"
-       x2="217.10689"
-       y2="867.01776"
+       x1="-374.31631"
+       y1="596.17688"
+       x2="86.765251"
+       y2="809.42371"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.0042396,0,0,1.0036332,-441.89211,-493.78315)" />
     <linearGradient
@@ -168,9 +168,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.65490196"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="190.50328"
-     inkscape:cy="392.0545"
+     inkscape:zoom="0.5"
+     inkscape:cx="-400.54814"
+     inkscape:cy="385.45283"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -287,14 +287,14 @@
        y="471.32864"
        ry="74.958824"
        rx="69.296471"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311" />
     <a
        id="a3955"
        style="opacity:1;fill:#ffffff;stroke:#008080;stroke-width:9.28336716;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        transform="matrix(0.8790357,0,0,0.9380751,-174.99227,351.17905)"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311">
       <path
@@ -342,7 +342,7 @@
        y="-310.7728"
        ry="69.779251"
        rx="74.677055"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311"
        transform="matrix(-2.8718491e-3,0.9999959,-0.9999959,-2.8710459e-3,0,0)" />
@@ -440,15 +440,15 @@
        id="text2438"
        transform="matrix(1.1578528,7.5367369e-2,3.3151284e-2,0.8658255,0,0)"
        sodipodi:linespacing="125%"
-       inkscape:export-xdpi="69"
-       inkscape:export-ydpi="69"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"><tspan
+       inkscape:export-xdpi="81.413422"
+       inkscape:export-ydpi="81.413422"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.png"><tspan
          sodipodi:role="line"
          x="62.986137"
          y="777.28534"
          id="tspan4021">l</tspan></text>
     <rect
-       style="opacity:0.70355733;fill:url(#linearGradient3236);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.70355732999999998;fill:url(#linearGradient3236);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3228"
        width="331.39905"
        height="331.17462"
@@ -456,7 +456,7 @@
        y="-20.469414"
        ry="66.225639"
        rx="78.779739"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logo2.png"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311"
        transform="matrix(1.3712351e-3,-0.9999991,0.9999991,1.3728924e-3,0,0)" />
