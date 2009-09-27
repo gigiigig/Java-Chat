@@ -5,6 +5,7 @@ package gg.msn.ui;
 
 import gg.msn.core.commons.Util;
 import java.util.EventObject;
+import javax.swing.LookAndFeel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.application.Application;
@@ -28,6 +29,7 @@ public class ChatClientApp extends SingleFrameApplication {
         // System.out.println(file.getPath());
         // properties.load(new FileInputStream(file));
         log.debug("test [" + Util.getPath() + "]");
+       
         show(new ChatClientView(this));
     }
 
