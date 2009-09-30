@@ -168,9 +168,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.65490196"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="-400.54814"
-     inkscape:cy="385.45283"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="440.70838"
+     inkscape:cy="379.76043"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -290,6 +290,32 @@
        inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
        inkscape:export-xdpi="69.823311"
        inkscape:export-ydpi="69.823311" />
+    <rect
+       style="opacity:0.70355732999999998;fill:url(#linearGradient3236);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3228"
+       width="331.39905"
+       height="331.17462"
+       x="-800.74323"
+       y="-20.469414"
+       ry="66.225639"
+       rx="78.779739"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
+       inkscape:export-xdpi="69.823311"
+       inkscape:export-ydpi="69.823311"
+       transform="matrix(1.3712351e-3,-0.9999991,0.9999991,1.3728924e-3,0,0)" />
+    <rect
+       style="opacity:1;fill:url(#linearGradient3250);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3240"
+       width="329.46698"
+       height="329.48923"
+       x="470.5863"
+       y="-310.7728"
+       ry="69.779251"
+       rx="74.677055"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
+       inkscape:export-xdpi="69.823311"
+       inkscape:export-ydpi="69.823311"
+       transform="matrix(-2.8718491e-3,0.9999959,-0.9999959,-2.8710459e-3,0,0)" />
     <a
        id="a3955"
        style="opacity:1;fill:#ffffff;stroke:#008080;stroke-width:9.28336716;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -333,19 +359,6 @@
            sodipodi:nodetypes="ccc" />
       </g>
     </a>
-    <rect
-       style="opacity:1;fill:url(#linearGradient3250);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3240"
-       width="329.46698"
-       height="329.48923"
-       x="470.5863"
-       y="-310.7728"
-       ry="69.779251"
-       rx="74.677055"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
-       inkscape:export-xdpi="69.823311"
-       inkscape:export-ydpi="69.823311"
-       transform="matrix(-2.8718491e-3,0.9999959,-0.9999959,-2.8710459e-3,0,0)" />
     <a
        id="a2410"
        style="opacity:1;fill:#008080;stroke:#008080;stroke-width:10.38795185;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -447,19 +460,6 @@
          x="62.986137"
          y="777.28534"
          id="tspan4021">l</tspan></text>
-    <rect
-       style="opacity:0.70355732999999998;fill:url(#linearGradient3236);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3228"
-       width="331.39905"
-       height="331.17462"
-       x="-800.74323"
-       y="-20.469414"
-       ry="66.225639"
-       rx="78.779739"
-       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logo.ico.png"
-       inkscape:export-xdpi="69.823311"
-       inkscape:export-ydpi="69.823311"
-       transform="matrix(1.3712351e-3,-0.9999991,0.9999991,1.3728924e-3,0,0)" />
     <rect
        style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:8.97999954;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3284"
