@@ -41,6 +41,8 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 //import net.jmge.gif.Gif89Encoder;
 
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -158,7 +160,8 @@ public class EmoticonsManger {
                 index = 0;
                 oldIndex = startIndex;
             } catch (BadLocationException ex) {
-                log.error(ex);            }
+                log.error(ex);
+            }
         }
 
     }
@@ -207,7 +210,7 @@ public class EmoticonsManger {
         for (EmotionType emotionType : emotionTypes) {
             Emoticon emotion = new Emoticon();
             emotion.setName((String) emotionType.getName());
-            emotion.setShortcut((String) emotionType.getShortcut());
+            emotion.setShortcut(StringEscapeUtils.unescapeHtml((String) emotionType.getShortcut()));
             emotion.setFileName((String) emotionType.getImage());
             File file = new File(Util.getInstance().getPath() + EMOTICONSPATH + emotion.getFileName());
             if (file.isFile()) {
@@ -537,6 +540,8 @@ public class EmoticonsManger {
 
 //        GifImageDecoder  decoder = new GifImageDecoder(ImageIO.createImageInputStream(), arg1);
 
+        String test = "<>";
+        System.out.println(StringEscapeUtils.escapeHtml(test));
 
     }
 

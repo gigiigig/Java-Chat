@@ -12,7 +12,7 @@
     </emotions>
 	<emotions>
         <name>Linguaccia</name>
-        <image>fb_tongue.png</image>
+        <image>fb_tounge.png</image>
         <shortcut>:P</shortcut>
     </emotions>
     <emotions>
@@ -38,7 +38,7 @@
     <emotions>
         <name></name>
         <image>fb_grumpy.png</image>
-        <shortcut>>:(</shortcut>
+        <shortcut>&gt;:(</shortcut>
     </emotions>
     <emotions>
         <name>unsure</name>
@@ -67,8 +67,8 @@
     </emotions>
     <emotions>
         <name>Cuore</name>
-        <image>heart.png</image>
-        <shortcut><3</shortcut>
+        <image>fb_heart.png</image>
+        <shortcut>&lt;3</shortcut>
     </emotions>
     <emotions>
         <name>Kiki</name>
@@ -88,7 +88,7 @@
     <emotions>
         <name>Upset</name>
         <image>fb_upset.png</image>
-        <shortcut>>:O</shortcut>
+        <shortcut>&gt;:O</shortcut>
     </emotions>
     <emotions>
         <name>Pacman</name>
@@ -103,226 +103,21 @@
     <emotions>
         <name>Robot</name>
         <image>robot.gif</image>
-        <shortcut>:|]/shortcut>
+        <shortcut>:|]</shortcut>
     </emotions>
     <emotions>
         <name>Chris Putnam</name>
-        <image>putnam.png</image>
+        <image>putnam.gif</image>
         <shortcut>:putnam:</shortcut>
     </emotions>
     <emotions>
         <name>Sqalo</name>
-        <image>shark.png</image>
+        <image>shark.gif</image>
         <shortcut>(^^^)</shortcut>
     </emotions>
     <emotions>
         <name>Pinguino</name>
-        <image>penguin.png</image>
-        <shortcut><(")</shortcut>
-    </emotions>
-    <emotions>
-        <name>Ti Prego</name>
-        <image>EMO_23.png</image>
-        <shortcut>:3</shortcut>
-    </emotions>
-    <emotions>
-        <name>Ciao</name>
-        <image>EMO_24.png</image>
-        <shortcut>:h)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Mmmmm</name>
-        <image>EMO_25.png</image>
-        <shortcut>+|:</shortcut>
-    </emotions>
-    <emotions>
-        <name>Vendetta</name>
-        <image>EMO_26.png</image>
-        <shortcut>:v|</shortcut>
-    </emotions>
-    <emotions>
-        <name>Japan</name>
-        <image>EMO_27.png</image>
-        <shortcut>G|O</shortcut>
-    </emotions>
-    <emotions>
-        <name>Duro</name>
-        <image>EMO_28.png</image>
-        <shortcut>V:[(</shortcut>
-    </emotions>
-    <emotions>
-        <name>What??</name>
-        <image>EMO_29.png</image>
-        <shortcut>;w|</shortcut>
-    </emotions>
-    <emotions>
-        <name>Yaaa</name>
-        <image>EMO_30.png</image>
-        <shortcut>YV|</shortcut>
-    </emotions>
-    <emotions>
-        <name>Fiumi di lacrime</name>
-        <image>EMO_31.png</image>
-        <shortcut>:***(</shortcut>
-    </emotions>
-    <emotions>
-        <name>Indifferente</name>
-        <image>EMO_32.png</image>
-        <shortcut>|(</shortcut>
-    </emotions>
-    <emotions>
-        <name>Bava</name>
-        <image>EMO_33.png</image>
-        <shortcut>oO)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Arrosito</name>
-        <image>EMO_34.png</image>
-        <shortcut>:8)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Lacrime di Sangue</name>
-        <image>EMO_35.png</image>
-        <shortcut>:__(</shortcut>
-    </emotions>
-    <emotions>
-        <name>Appagato</name>
-        <image>EMO_36.png</image>
-        <shortcut>(:)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Sognatore</name>
-        <image>EMO_37.png</image>
-        <shortcut>°°°:|</shortcut>
-    </emotions>
-    <emotions>
-        <name>Bella Ho!!</name>
-        <image>EMO_38.png</image>
-        <shortcut>:BD</shortcut>
-    </emotions>
-    <emotions>
-        <name>Devil</name>
-        <image>EMO_39.png</image>
-        <shortcut>D:-P</shortcut>
-    </emotions>
-    <emotions>
-        <name>Ops</name>
-        <image>EMO_40.png</image>
-        <shortcut>(ops)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Risatina</name>
-        <image>EMO_41.png</image>
-        <shortcut>(:T)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Matrix</name>
-        <image>EMO_42.png</image>
-        <shortcut>[m][n]</shortcut>
-    </emotions>
-    <emotions>
-        <name>Oh Oh</name>
-        <image>EMO_43.png</image>
-        <shortcut>(ohoh)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Nerd</name>
-        <image>EMO_44.png</image>
-        <shortcut>(ND)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Boing</name>
-        <image>EMO_45.png</image>
-        <shortcut>(:b[]</shortcut>
-    </emotions>
-    <emotions>
-        <name>Incredulo</name>
-        <image>EMO_46.png</image>
-        <shortcut>(OMG)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Picchiato</name>
-        <image>EMO_47.png</image>
-        <shortcut>(x:S)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Yoyo</name>
-        <image>EMO_48.png</image>
-        <shortcut>(Y:Y)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Sconsolato</name>
-        <image>EMO_49.png</image>
-        <shortcut>(8:[)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Sangue dal naso</name>
-        <image>EMO_50.png</image>
-        <shortcut>(:?°)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Schivo</name>
-        <image>EMO_51.png</image>
-        <shortcut>(.-L)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Flagrante</name>
-        <image>EMO_52.png</image>
-        <shortcut>(:#8)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Spider</name>
-        <image>EMO_53.png</image>
-        <shortcut>(spider)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Superiore</name>
-        <image>EMO_54.png</image>
-        <shortcut>(:^)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Irritato</name>
-        <image>EMO_55.png</image>
-        <shortcut>(:m|)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Hurra!!!</name>
-        <image>EMO_56.png</image>
-        <shortcut>(:à)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Meglio di no!!</name>
-        <image>EMO_57.png</image>
-        <shortcut>(:ggg)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Kiss</name>
-        <image>EMO_58.png</image>
-        <shortcut>(:k)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Stanco</name>
-        <image>EMO_59.png</image>
-        <shortcut>((:ò)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Per piangere</name>
-        <image>EMO_60.png</image>
-        <shortcut>(:UU)</shortcut>
-    </emotions>
-    <emotions>
-        <name>AAAARGHH</name>
-        <image>EMO_61.png</image>
-        <shortcut>(:RG)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Tze!!</name>
-        <image>EMO_62.png</image>
-        <shortcut>(:^)</shortcut>
-    </emotions>
-    <emotions>
-        <name>Zone</name>
-        <image>EMO_63.png</image>
-        <shortcut>(lpz)</shortcut>
+        <image>penguin.gif</image>
+        <shortcut>&lt;(")</shortcut>
     </emotions>
 </EMOTIONXML>

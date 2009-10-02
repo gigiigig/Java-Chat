@@ -32,8 +32,8 @@ public class EmotionsPanel extends javax.swing.JPanel {
 //    static final int WINDOWY = 26;
     public static final int WINDOWX = 0;
     public static final int WINDOWY = 0;
-    public static final double SCALEFACTOR = 1;
-    public static final int TRASLAZIONEIMG = (int) (3 * SCALEFACTOR);
+    public static final double SCALEFACTOR = 0.8;
+    public static final int TRASLAZIONEIMG = (int) (5 * SCALEFACTOR);
     public static final int LATOCASELLA = (int) (29 * SCALEFACTOR);
     public static final int IMGSIZE = 14;
     public static final int NUMIMGX = 5;
