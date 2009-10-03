@@ -54,7 +54,7 @@ public class ChatClientView extends FrameView {
 
         // <editor-fold defaultstate="collapsed" desc="Window Icon"> 
         try {
-            getFrame().setIconImage(getResourceMap().getImageIcon("trayIcon").getImage());
+            getFrame().setIconImage(getResourceMap().getImageIcon("windowIcon").getImage());
             ((Graphics2D) getFrame().getIconImage().getGraphics()).setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR));
             ((Graphics2D) getFrame().getIconImage().getGraphics()).setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
         } catch (Exception e) {

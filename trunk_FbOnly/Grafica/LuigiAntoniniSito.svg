@@ -24,20 +24,54 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="438.01042"
-     inkscape:cy="588.49485"
+     inkscape:zoom="1.4"
+     inkscape:cx="512.80719"
+     inkscape:cy="640.50754"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1264"
+     inkscape:window-width="1280"
      inkscape:window-height="738"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:window-x="-8"
+     inkscape:window-y="274"
      showguides="true"
      inkscape:guide-bbox="true" />
   <defs
      id="defs3297">
+    <linearGradient
+       id="linearGradient3552">
+      <stop
+         id="stop3554"
+         offset="0"
+         style="stop-color:#040404;stop-opacity:0.62441313;" />
+      <stop
+         style="stop-color:#070707;stop-opacity:0.01937984"
+         offset="0.69376642"
+         id="stop3556" />
+      <stop
+         style="stop-color:#0a0a0a;stop-opacity:0;"
+         offset="0.85753453"
+         id="stop3558" />
+      <stop
+         id="stop3560"
+         offset="0.99705416"
+         style="stop-color:#dadada;stop-opacity:0;" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop3562" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3444">
+      <stop
+         id="stop3446"
+         offset="0"
+         style="stop-color:#6a6a6a;stop-opacity:0.19907407" />
+      <stop
+         id="stop3448"
+         offset="1"
+         style="stop-color:#6a6a6a;stop-opacity:0;" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient3529">
@@ -51,7 +85,6 @@
          id="stop3533" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3519">
       <stop
          style="stop-color:#6a6a6a;stop-opacity:1;"
@@ -187,20 +220,20 @@
     <linearGradient
        id="linearGradient3230">
       <stop
-         style="stop-color:#040404;stop-opacity:0.60000002;"
+         style="stop-color:#040404;stop-opacity:0.62441313;"
          offset="0"
          id="stop3260" />
       <stop
          id="stop3290"
-         offset="0.40016058"
-         style="stop-color:#070707;stop-opacity:0;" />
+         offset="0.69376642"
+         style="stop-color:#070707;stop-opacity:0.01937984" />
       <stop
          id="stop3286"
-         offset="0.40016058"
+         offset="0.69376642"
          style="stop-color:#0a0a0a;stop-opacity:0;" />
       <stop
          style="stop-color:#dadada;stop-opacity:0;"
-         offset="0.6385088"
+         offset="0.69376642"
          id="stop3288" />
       <stop
          id="stop3234"
@@ -212,7 +245,7 @@
       <stop
          id="stop3266"
          offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.44354838;" />
+         style="stop-color:#ffffff;stop-opacity:0.69014084;" />
       <stop
          style="stop-color:#ffffff;stop-opacity:0.09677419;"
          offset="0.75"
@@ -417,6 +450,52 @@
        y2="282.14285"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.4615084,0,0,1.5370019,146.53339,-947.87916)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3242"
+       id="linearGradient3420"
+       x1="-127.40727"
+       y1="440.60165"
+       x2="-154.61128"
+       y2="426.32367"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-1.1467809,-5.1404837e-3,5.0123301e-3,-0.9999886,-18.272164,-6.00382e-2)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3230"
+       id="linearGradient3442"
+       x1="-186.17508"
+       y1="429.63354"
+       x2="-163.07187"
+       y2="437.7854"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.754229,-1.0667923e-3,-1.0734912e-3,0.9654782,137.62471,14.167713)" />
+    <filter
+       inkscape:collect="always"
+       id="filter3501">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.6714927"
+         id="feGaussianBlur3503" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3552"
+       id="linearGradient3542"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.754229,-1.0667923e-3,-1.0734912e-3,0.9654782,137.62471,14.167713)"
+       x1="-184.90996"
+       y1="431.39957"
+       x2="-166.74184"
+       y2="433.75726" />
+    <filter
+       inkscape:collect="always"
+       id="filter3548">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.58216311"
+         id="feGaussianBlur3550" />
+    </filter>
   </defs>
   <metadata
      id="metadata3300">
@@ -435,7 +514,7 @@
      id="layer1"
      style="display:inline">
     <rect
-       style="opacity:1;fill:#b1e1c1;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#1ad71a;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect2744"
        width="57.956234"
        height="57.958309"
@@ -443,10 +522,36 @@
        y="394.57388"
        ry="13.016641"
        rx="13.777278"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226.60577"
-       inkscape:export-ydpi="226.60577"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471"
        transform="matrix(1.3722125e-3,-0.9999991,0.9999991,1.3719125e-3,0,0)" />
+    <rect
+       style="opacity:1;fill:url(#linearGradient3420);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline;filter:url(#filter3501)"
+       id="rect2642"
+       width="52.90929"
+       height="55.939663"
+       x="125.98475"
+       y="-451.48306"
+       ry="13.01666"
+       rx="15.799656"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471"
+       transform="matrix(3.285929e-3,0.8719919,-0.9999941,2.9988334e-3,0,15.933357)" />
+    <rect
+       style="opacity:0.36821707999999997;fill:url(#linearGradient3542);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline;filter:url(#filter3548)"
+       id="rect3434"
+       width="49.640003"
+       height="54.919765"
+       x="-180.17755"
+       y="396.05862"
+       ry="12.567271"
+       rx="24.168413"
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471"
+       transform="matrix(1.4121014e-3,-0.5700499,1.0357568,7.8714184e-4,-14.868645,78.441808)" />
     <rect
        style="opacity:1;fill:#b1e1c1;fill-opacity:1;fill-rule:nonzero;stroke:#004455;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3832"
@@ -552,9 +657,9 @@
        id="a4056"
        style="fill:#2d5e69;fill-opacity:1;stroke:#008080;stroke-width:9.28336715999999920;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline;filter:url(#filter4430);opacity:0.77632411999999984"
        transform="matrix(0.1311723,0,0,0.1483352,378.48289,109.82938)"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226.60577"
-       inkscape:export-ydpi="226.60577">
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471">
       <path
          style="fill:#2d5e69;fill-opacity:1;stroke:#008080;stroke-width:9.28336715999999920;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d=""
@@ -595,9 +700,9 @@
        id="a3955"
        style="fill:#ffffff;stroke:#008080;stroke-width:9.28336716;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        transform="matrix(0.1311723,0,0,0.1483352,375.78104,108.66279)"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226.60577"
-       inkscape:export-ydpi="226.60577">
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471">
       <path
          style="fill:#ffffff;stroke:#008080;stroke-width:9.28336716;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d=""
@@ -744,11 +849,11 @@
        x="463.96317"
        y="117.70816"
        id="text2621"
-       transform="matrix(1.0402937,0,0,0.9612666,-24.112305,6.6527341)"
+       transform="matrix(1.0402937,0,0,0.9612666,-23.812575,-1.747431)"
        sodipodi:linespacing="125%"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226.60577"
-       inkscape:export-ydpi="226.60577"><tspan
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471"><tspan
          sodipodi:role="line"
          id="tspan2623"
          x="463.96317"
@@ -765,24 +870,24 @@
        xml:space="preserve"
        style="font-size:51.99998856px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#216778;fill-opacity:1;stroke:#ffffff;stroke-width:0.99999982;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-family:Segoe UI;-inkscape-font-specification:Segoe UI Bold"
        x="438.15619"
-       y="124.84722"
+       y="114.44427"
        id="text3915"
        transform="scale(1.0402939,0.9612668)"
        sodipodi:linespacing="125%"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226.60577"
-       inkscape:export-ydpi="226.60577"><tspan
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471"><tspan
          sodipodi:role="line"
          id="tspan3917"
          x="438.15619"
-         y="124.84722"
+         y="114.44427"
          style="font-size:51.99998856px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#216778;fill-opacity:1;stroke:#ffffff;stroke-width:0.99999982;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-family:Segoe UI;-inkscape-font-specification:Segoe UI Bold" /><tspan
          sodipodi:role="line"
          x="438.15619"
-         y="189.84721"
+         y="179.44426"
          id="tspan3919"
          style="font-size:51.99998856px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#216778;fill-opacity:1;stroke:#ffffff;stroke-width:0.99999982;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-family:Segoe UI;-inkscape-font-specification:Segoe UI Bold">fl<tspan
-   style="font-size:51.99998855999999800px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#00d400;fill-opacity:1;stroke-width:0.99999981999999998;font-family:Segoe UI;-inkscape-font-specification:Segoe UI Bold Italic"
+   style="font-size:51.99998855999999800px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#00d100;fill-opacity:1;stroke-width:0.99999981999999998;font-family:Segoe UI;-inkscape-font-specification:Segoe UI Bold Italic"
    id="tspan3366">ee</tspan>c</tspan></text>
     <text
        xml:space="preserve"
@@ -1114,17 +1219,17 @@
        sodipodi:ry="2.3991122"
        d="M 419.21331,145.55252 A 2.7779195,2.3991122 0 1 1 413.65747,145.55252 A 2.7779195,2.3991122 0 1 1 419.21331,145.55252 z"
        transform="matrix(0.7919596,0,0,0.9170059,87.820733,13.199978)"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226.60577"
-       inkscape:export-ydpi="226.60577" />
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471" />
     <path
        style="opacity:1;fill:#216778;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.39999998;stroke-miterlimit:4;stroke-opacity:1"
        d="M 425.41168,141.76445 C 427.00504,141.76445 432.9338,146.0363 432.9338,151.26341 C 432.9338,156.49053 425.89884,161.33615 424.30548,161.33615 C 422.71211,161.33615 429.58071,156.4274 429.58071,151.20028 C 429.58071,145.97317 423.81832,141.76445 425.41168,141.76445 z"
        id="rect3314"
        sodipodi:nodetypes="csssc"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226.60577"
-       inkscape:export-ydpi="226.60577" />
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#216778;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.39999998;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
@@ -1135,17 +1240,17 @@
        sodipodi:ry="2.3991122"
        d="M 419.21331,145.55252 A 2.7779195,2.3991122 0 1 1 413.65747,145.55252 A 2.7779195,2.3991122 0 1 1 419.21331,145.55252 z"
        transform="matrix(0.7919596,0,0,0.9170059,87.814992,21.591459)"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226.60577"
-       inkscape:export-ydpi="226.60577" />
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471" />
     <path
        style="fill:#216778;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.39999998;stroke-miterlimit:4;stroke-opacity:1"
        d="M 416.53563,160.62588 C 415.98266,160.55369 417.6975,158.37419 417.41951,157.26397 C 417.07905,155.90426 418.60077,155.65383 419.13992,155.2121 C 419.85271,154.6281 419.61344,154.01735 419.81863,155.27524 M 419.81863,155.27524 C 419.88053,156.66503 418.01989,160.33858 416.53563,160.62588"
        id="path3319"
        sodipodi:nodetypes="cssccs"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226.60577"
-       inkscape:export-ydpi="226.60577" />
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471" />
     <path
        sodipodi:type="arc"
        style="opacity:1;fill:#ceecd8;fill-opacity:1;fill-rule:nonzero;stroke:#b1e1c1;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -2096,7 +2201,7 @@
            height="84.852814"
            x="-24.24366"
            y="635.35022" /></flowRegion><flowPara
-         id="flowPara3505"></flowPara></flowRoot>    <rect
+         id="flowPara3505" /></flowRoot>    <rect
        style="opacity:0.9486166;fill:url(#linearGradient3537);fill-opacity:1;fill-rule:nonzero;stroke:url(#linearGradient3535);stroke-width:2.58746147;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3517"
        width="6.472753"
@@ -2114,9 +2219,9 @@
        y="121.68767"
        rx="0"
        ry="0"
-       inkscape:export-filename="C:\Users\Luigi\Documents\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
-       inkscape:export-xdpi="226"
-       inkscape:export-ydpi="226" />
+       inkscape:export-filename="D:\Documenti\Workspaces\ProgettiNetBeans\MessengerSRC\Grafica\logoSito.png"
+       inkscape:export-xdpi="91.046471"
+       inkscape:export-ydpi="91.046471" />
   </g>
   <g
      inkscape:groupmode="layer"
