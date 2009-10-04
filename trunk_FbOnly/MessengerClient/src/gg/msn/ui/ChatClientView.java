@@ -74,7 +74,7 @@ public class ChatClientView extends FrameView {
         helper = new ChatClientViewHelper(this);
 
 
-        //inizializzo le prprietà
+        //inizializzo le prprietÃ 
         Util.initializeProperties();
 
         //<editor-fold defaultstate="collapsed" desc="System tray control">             
@@ -201,7 +201,7 @@ public class ChatClientView extends FrameView {
                 }
             });
             PopupMenu trayPopupMenu = new PopupMenu();
-            MenuItem open = new MenuItem("Apri Gigi Messenger");
+            MenuItem open = new MenuItem("Apri fleec");
             open.addActionListener(new AbstractAction() {
 
                 public void actionPerformed(ActionEvent e) {
@@ -210,7 +210,7 @@ public class ChatClientView extends FrameView {
                     getFrame().setState(JFrame.NORMAL);
                 }
             });
-            MenuItem close = new MenuItem("Chiudi Gigi Messenger");
+            MenuItem close = new MenuItem("Chiudi fleec");
             close.addActionListener(new AbstractAction() {
 
                 public void actionPerformed(ActionEvent e) {
