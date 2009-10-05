@@ -1,2 +1,3 @@
-download della cronologia   
-stop del thread di ricezione messaggi quancdo si fa il logout
+tooltip su info button
+immagine pannello about 
+link buttton su finestra di aggiornamento
