@@ -1,3 +1,4 @@
 tooltip su info button
 immagine pannello about 
 link buttton su finestra di aggiornamento
+icona grande su tutte le finestre
