@@ -17,6 +17,7 @@ import gg.msn.core.manager.PersistentDataManager;
 import gg.msn.ui.ChatClientApp;
 import gg.msn.ui.facebook.panel.FBLoginPanel;
 import gg.msn.ui.facebook.thread.MessageRequester;
+import gg.msn.ui.form.NewUpdateForm;
 import gg.msn.ui.theme.ThemeManager;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
@@ -281,12 +282,10 @@ public class ChatClientViewHelper {
             String responseBody = httpclient.execute(httpget, responseHandler);
 
             log.debug("response [" + responseBody + "]");
-            if (BooleanUtils.toBoolean(responseBody)) {
-                String message = "<html>" +
-                        "E' disponibile una nuova versione di Giff ,scaricala all'indirizzo " +
-                        "<a href=\"www.luigiantonini.it\">www.luigiantonini.it</a>!<html> ";
-                JOptionPane.showMessageDialog(ccv.getFrame(), message, "Aggiornamento disponibile", JOptionPane.INFORMATION_MESSAGE);
-
+            if (!BooleanUtils.toBoolean(responseBody)) {
+                NewUpdateForm newUpdateForm = new NewUpdateForm(ccv.getFrame(), true);
+                newUpdateForm.setLocationRelativeTo(ccv.getFrame());
+                newUpdateForm.setVisible(true);
             }
 
             // When HttpClient instance is no longer needed,
