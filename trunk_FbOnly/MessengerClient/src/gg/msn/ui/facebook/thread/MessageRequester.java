@@ -100,6 +100,8 @@ public class MessageRequester implements Runnable {
                     login = true;
                     //get the old message between oldseq and seq
                     String msgResponseBody = FacebookManager.facebookGetMethod(fbManger.getMessageRequestingUrl(FacebookManager.channel, FacebookManager.seq));
+                    
+                    //todo: da nullpointer se la chat è offline
                     List<FacebookMessage> facebookMessages = ResponseParser.messageRequestResultParser(msgResponseBody, fbManger);
 
                     for (FacebookMessage fm : facebookMessages) {
